@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no" ?>
+<p1:oadrPayload xmlns:p1="http://openadr.org/oadr-2.0b/2012/07">
+
+  <p1:oadrSignedObject>
+    <p1:oadrCreateOpt xmlns:p2="http://docs.oasis-open.org/ns/energyinterop/201110" p2:schemaVersion="2.0b" xmlns:p3="http://docs.oasis-open.org/ns/emix/2011/06" xmlns:p4="urn:ietf:params:xml:ns:icalendar-2.0" xmlns:p5="http://docs.oasis-open.org/ns/energyinterop/201110/payloads">
+      <p2:optID>optid</p2:optID>
+      <p2:optType>optIn</p2:optType>
+      <p2:optReason>economic</p2:optReason>
+      <p3:marketContext>MarketContext1</p3:marketContext>
+      <p2:venID>venid</p2:venID>
+      <p4:vavailability>
+        <p4:components>
+          <p4:available>
+            <p4:properties>
+              <p4:dtstart>
+                <p4:date-time>2013-12-30T16:19:58Z</p4:date-time>
+              </p4:dtstart>
+              <p4:duration>
+                <p4:duration>PT24H</p4:duration>
+              </p4:duration>
+            </p4:properties>
+          </p4:available>
+          <p4:available>
+            <p4:properties>
+              <p4:dtstart>
+                <p4:date-time>2013-12-30T16:19:58Z</p4:date-time>
+              </p4:dtstart>
+              <p4:duration>
+                <p4:duration>PT24H</p4:duration>
+              </p4:duration>
+            </p4:properties>
+          </p4:available>
+          <p4:available>
+            <p4:properties>
+              <p4:dtstart>
+                <p4:date-time>2013-12-30T16:19:58Z</p4:date-time>
+              </p4:dtstart>
+              <p4:duration>
+                <p4:duration>PT24H</p4:duration>
+              </p4:duration>
+            </p4:properties>
+          </p4:available>
+        </p4:components>
+      </p4:vavailability>
+      <p2:createdDateTime>2013-12-30T16:19:58Z</p2:createdDateTime>
+      <p5:requestID>requestID</p5:requestID>
+      <p2:eiTarget>
+        <p2:resourceID>resourceid</p2:resourceID>
+      </p2:eiTarget>
+    </p1:oadrCreateOpt>
+  </p1:oadrSignedObject>
+
+</p1:oadrPayload>

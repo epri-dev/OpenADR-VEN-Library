@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no" ?>
+<p1:currencyPerKW xmlns:p1="http://openadr.org/oadr-2.0b/2012/07" xmlns:p2="http://docs.oasis-open.org/ns/emix/2011/06/siscale">
+
+  <p1:itemDescription>currency</p1:itemDescription>
+
+  <p1:itemUnits>AED</p1:itemUnits>
+
+  <p2:siScaleCode>p</p2:siScaleCode>
+
+</p1:currencyPerKW>

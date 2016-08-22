@@ -1,0 +1,234 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no" ?>
+<p1:oadrPayload xmlns:p1="http://openadr.org/oadr-2.0b/2012/07">
+
+  <p1:oadrSignedObject>
+    <p1:oadrUpdateReport xmlns:p3="http://docs.oasis-open.org/ns/energyinterop/201110" p3:schemaVersion="2.0b" xmlns:p2="http://docs.oasis-open.org/ns/energyinterop/201110/payloads">
+      <p2:requestID>request_id</p2:requestID>
+      <p1:oadrReport xmlns:p3="urn:ietf:params:xml:ns:icalendar-2.0:stream" xmlns:p4="http://docs.oasis-open.org/ns/energyinterop/201110">
+        <p3:intervals xmlns:p4="http://docs.oasis-open.org/ns/energyinterop/201110">
+          <p4:interval xmlns:p5="urn:ietf:params:xml:ns:icalendar-2.0">
+            <p5:dtstart>
+              <p5:date-time>2013-12-30T16:19:58Z</p5:date-time>
+            </p5:dtstart>
+            <p5:duration>
+              <p5:duration>PT2M</p5:duration>
+            </p5:duration>
+            <p5:uid>
+              <p5:text>0</p5:text>
+            </p5:uid>
+            <p1:oadrReportPayload>
+              <p4:rID>status_rid</p4:rID>
+              <p4:confidence>100</p4:confidence>
+              <p4:accuracy>100</p4:accuracy>
+              <p1:oadrPayloadResourceStatus>
+                <p1:oadrOnline>true</p1:oadrOnline>
+                <p1:oadrManualOverride>true</p1:oadrManualOverride>
+                <p1:oadrLoadControlState>
+                  <p1:oadrCapacity>
+                    <p1:oadrMin>0</p1:oadrMin>
+                    <p1:oadrMax>0</p1:oadrMax>
+                    <p1:oadrCurrent>0</p1:oadrCurrent>
+                    <p1:oadrNormal>0</p1:oadrNormal>
+                  </p1:oadrCapacity>
+                  <p1:oadrLevelOffset>
+                    <p1:oadrMin>0</p1:oadrMin>
+                    <p1:oadrMax>0</p1:oadrMax>
+                    <p1:oadrCurrent>0</p1:oadrCurrent>
+                    <p1:oadrNormal>0</p1:oadrNormal>
+                  </p1:oadrLevelOffset>
+                  <p1:oadrPercentOffset>
+                    <p1:oadrMin>0</p1:oadrMin>
+                    <p1:oadrMax>0</p1:oadrMax>
+                    <p1:oadrCurrent>0</p1:oadrCurrent>
+                    <p1:oadrNormal>0</p1:oadrNormal>
+                  </p1:oadrPercentOffset>
+                  <p1:oadrSetPoint>
+                    <p1:oadrMin>0</p1:oadrMin>
+                    <p1:oadrMax>0</p1:oadrMax>
+                    <p1:oadrCurrent>0</p1:oadrCurrent>
+                    <p1:oadrNormal>0</p1:oadrNormal>
+                  </p1:oadrSetPoint>
+                </p1:oadrLoadControlState>
+              </p1:oadrPayloadResourceStatus>
+              <p1:oadrDataQuality>Quality Good - Non Specific</p1:oadrDataQuality>
+            </p1:oadrReportPayload>
+            <p1:oadrReportPayload>
+              <p4:rID>status_rid</p4:rID>
+              <p4:confidence>100</p4:confidence>
+              <p4:accuracy>100</p4:accuracy>
+              <p1:oadrPayloadResourceStatus>
+                <p1:oadrOnline>false</p1:oadrOnline>
+                <p1:oadrManualOverride>false</p1:oadrManualOverride>
+                <p1:oadrLoadControlState>
+                  <p1:oadrCapacity>
+                    <p1:oadrMin>0</p1:oadrMin>
+                    <p1:oadrMax>0</p1:oadrMax>
+                    <p1:oadrCurrent>0</p1:oadrCurrent>
+                    <p1:oadrNormal>0</p1:oadrNormal>
+                  </p1:oadrCapacity>
+                  <p1:oadrLevelOffset>
+                    <p1:oadrMin>0</p1:oadrMin>
+                    <p1:oadrMax>0</p1:oadrMax>
+                    <p1:oadrCurrent>0</p1:oadrCurrent>
+                    <p1:oadrNormal>0</p1:oadrNormal>
+                  </p1:oadrLevelOffset>
+                  <p1:oadrPercentOffset>
+                    <p1:oadrMin>0</p1:oadrMin>
+                    <p1:oadrMax>0</p1:oadrMax>
+                    <p1:oadrCurrent>0</p1:oadrCurrent>
+                    <p1:oadrNormal>0</p1:oadrNormal>
+                  </p1:oadrPercentOffset>
+                  <p1:oadrSetPoint>
+                    <p1:oadrMin>0</p1:oadrMin>
+                    <p1:oadrMax>0</p1:oadrMax>
+                    <p1:oadrCurrent>0</p1:oadrCurrent>
+                    <p1:oadrNormal>0</p1:oadrNormal>
+                  </p1:oadrSetPoint>
+                </p1:oadrLoadControlState>
+              </p1:oadrPayloadResourceStatus>
+              <p1:oadrDataQuality>Quality Good - Non Specific</p1:oadrDataQuality>
+            </p1:oadrReportPayload>
+          </p4:interval>
+        </p3:intervals>
+        <p4:reportRequestID>report_request_id</p4:reportRequestID>
+        <p4:reportSpecifierID>report_spec_1</p4:reportSpecifierID>
+        <p4:reportName>TELEMETRY_STATUS</p4:reportName>
+        <p4:createdDateTime>2013-12-30T16:19:58Z</p4:createdDateTime>
+      </p1:oadrReport>
+      <p1:oadrReport xmlns:p3="urn:ietf:params:xml:ns:icalendar-2.0:stream" xmlns:p4="http://docs.oasis-open.org/ns/energyinterop/201110">
+        <p3:intervals xmlns:p4="http://docs.oasis-open.org/ns/energyinterop/201110">
+          <p4:interval xmlns:p5="urn:ietf:params:xml:ns:icalendar-2.0">
+            <p5:dtstart>
+              <p5:date-time>2013-12-30T16:19:58Z</p5:date-time>
+            </p5:dtstart>
+            <p5:duration>
+              <p5:duration>PT2H</p5:duration>
+            </p5:duration>
+            <p5:uid>
+              <p5:text>0</p5:text>
+            </p5:uid>
+            <p1:oadrReportPayload>
+              <p4:rID>energy_rid</p4:rID>
+              <p4:confidence>100</p4:confidence>
+              <p4:accuracy>100</p4:accuracy>
+              <p4:payloadFloat>
+                <p4:value>1</p4:value>
+              </p4:payloadFloat>
+              <p1:oadrDataQuality>Quality Good - Non Specific</p1:oadrDataQuality>
+            </p1:oadrReportPayload>
+            <p1:oadrReportPayload>
+              <p4:rID>energy_rid</p4:rID>
+              <p4:confidence>100</p4:confidence>
+              <p4:accuracy>100</p4:accuracy>
+              <p4:payloadFloat>
+                <p4:value>2</p4:value>
+              </p4:payloadFloat>
+              <p1:oadrDataQuality>Quality Good - Non Specific</p1:oadrDataQuality>
+            </p1:oadrReportPayload>
+          </p4:interval>
+          <p4:interval xmlns:p5="urn:ietf:params:xml:ns:icalendar-2.0">
+            <p5:dtstart>
+              <p5:date-time>2013-12-30T16:19:58Z</p5:date-time>
+            </p5:dtstart>
+            <p5:duration>
+              <p5:duration>PT20S</p5:duration>
+            </p5:duration>
+            <p5:uid>
+              <p5:text>1</p5:text>
+            </p5:uid>
+            <p1:oadrReportPayload>
+              <p4:rID>power_rid</p4:rID>
+              <p4:confidence>100</p4:confidence>
+              <p4:accuracy>100</p4:accuracy>
+              <p4:payloadFloat>
+                <p4:value>1</p4:value>
+              </p4:payloadFloat>
+              <p1:oadrDataQuality>Quality Good - Non Specific</p1:oadrDataQuality>
+            </p1:oadrReportPayload>
+            <p1:oadrReportPayload>
+              <p4:rID>power_rid</p4:rID>
+              <p4:confidence>100</p4:confidence>
+              <p4:accuracy>100</p4:accuracy>
+              <p4:payloadFloat>
+                <p4:value>2</p4:value>
+              </p4:payloadFloat>
+              <p1:oadrDataQuality>Quality Good - Non Specific</p1:oadrDataQuality>
+            </p1:oadrReportPayload>
+          </p4:interval>
+        </p3:intervals>
+        <p4:reportRequestID>report_request_id</p4:reportRequestID>
+        <p4:reportSpecifierID>report_spec_2</p4:reportSpecifierID>
+        <p4:reportName>TELEMETRY_USAGE</p4:reportName>
+        <p4:createdDateTime>2013-12-30T16:19:58Z</p4:createdDateTime>
+      </p1:oadrReport>
+      <p1:oadrReport xmlns:p3="urn:ietf:params:xml:ns:icalendar-2.0:stream" xmlns:p4="http://docs.oasis-open.org/ns/energyinterop/201110">
+        <p3:intervals xmlns:p4="http://docs.oasis-open.org/ns/energyinterop/201110">
+          <p4:interval xmlns:p5="urn:ietf:params:xml:ns:icalendar-2.0">
+            <p5:dtstart>
+              <p5:date-time>2013-12-30T16:19:58Z</p5:date-time>
+            </p5:dtstart>
+            <p5:duration>
+              <p5:duration>PT2H</p5:duration>
+            </p5:duration>
+            <p5:uid>
+              <p5:text>0</p5:text>
+            </p5:uid>
+            <p1:oadrReportPayload>
+              <p4:rID>energy_rid</p4:rID>
+              <p4:confidence>100</p4:confidence>
+              <p4:accuracy>100</p4:accuracy>
+              <p4:payloadFloat>
+                <p4:value>1</p4:value>
+              </p4:payloadFloat>
+              <p1:oadrDataQuality>Quality Good - Non Specific</p1:oadrDataQuality>
+            </p1:oadrReportPayload>
+            <p1:oadrReportPayload>
+              <p4:rID>energy_rid</p4:rID>
+              <p4:confidence>100</p4:confidence>
+              <p4:accuracy>100</p4:accuracy>
+              <p4:payloadFloat>
+                <p4:value>2</p4:value>
+              </p4:payloadFloat>
+              <p1:oadrDataQuality>Quality Good - Non Specific</p1:oadrDataQuality>
+            </p1:oadrReportPayload>
+          </p4:interval>
+          <p4:interval xmlns:p5="urn:ietf:params:xml:ns:icalendar-2.0">
+            <p5:dtstart>
+              <p5:date-time>2013-12-30T16:19:58Z</p5:date-time>
+            </p5:dtstart>
+            <p5:duration>
+              <p5:duration>PT20S</p5:duration>
+            </p5:duration>
+            <p5:uid>
+              <p5:text>1</p5:text>
+            </p5:uid>
+            <p1:oadrReportPayload>
+              <p4:rID>power_rid</p4:rID>
+              <p4:confidence>100</p4:confidence>
+              <p4:accuracy>100</p4:accuracy>
+              <p4:payloadFloat>
+                <p4:value>1</p4:value>
+              </p4:payloadFloat>
+              <p1:oadrDataQuality>Quality Good - Non Specific</p1:oadrDataQuality>
+            </p1:oadrReportPayload>
+            <p1:oadrReportPayload>
+              <p4:rID>power_rid</p4:rID>
+              <p4:confidence>100</p4:confidence>
+              <p4:accuracy>100</p4:accuracy>
+              <p4:payloadFloat>
+                <p4:value>2</p4:value>
+              </p4:payloadFloat>
+              <p1:oadrDataQuality>Quality Good - Non Specific</p1:oadrDataQuality>
+            </p1:oadrReportPayload>
+          </p4:interval>
+        </p3:intervals>
+        <p4:reportRequestID>report_request_id</p4:reportRequestID>
+        <p4:reportSpecifierID>report_spec_3</p4:reportSpecifierID>
+        <p4:reportName>HISTORY_USAGE</p4:reportName>
+        <p4:createdDateTime>2013-12-30T16:19:58Z</p4:createdDateTime>
+      </p1:oadrReport>
+      <p3:venID>ven_id</p3:venID>
+    </p1:oadrUpdateReport>
+  </p1:oadrSignedObject>
+
+</p1:oadrPayload>

@@ -1,0 +1,18 @@
+import glob
+import os
+import sconsHelper
+
+Import('cflags buildmode')
+
+# Get the GTEST path from the environment.
+gtest = os.getenv('GTEST_PATH')
+
+gtestLib = gtest + '/lib'
+gtestHeaders = gtest + '/include'
+
+cppPath = ['helper', gtestHeaders, '#oadr', '#oadrsd', '../xsd-4.0.0']
+libDir = ['../oadr/' + buildmode, '../oadrsd/' + buildmode, gtestLib]
+libs = ['oadr', 'oadrsd', 'ssl', 'crypto', 'gtest', 'pthread', 'libcurl', 'xerces-c']
+
+sconsHelper.build('oadrtest', cppPath, cflags, libDir, libs, buildmode, "program")
+

@@ -1,0 +1,26 @@
+HTTP/1.1 200 OK
+Server: Apache-Coyote/1.1
+X-UA-Compatible: IE=Edge
+ETag: "ce9fc5cb1bdd952d0b00d904ca96dac4"
+Cache-Control: max-age=0, private, must-revalidate
+Set-Cookie: _oadr_session=BAh7BkkiD3Nlc3Npb25faWQGOgZFRkkiJTI1OTRiMDAwYzI1YjJhNjY4MzkwMjhiOTZmZDdjYzNmBjsAVA%3D%3D--7e20313fa96bcbd9f835f1896ab0c1b86d741407; path=/; HttpOnly
+Set-Cookie: oadr_remember_token=; path=/; expires=Thu, 01-Jan-1970 00:00:00 GMT
+X-Request-Id: 4dfcd3f89f5f2652b0803062a73c38f3
+X-Runtime: 0.073000
+Content-Type: application/xml;charset=utf-8
+Content-Length: 1308
+Date: Fri, 20 Dec 2013 07:30:46 GMT
+
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<ns1:oadrPayload xmlns:ns1="http://openadr.org/oadr-2.0b/2012/07" xmlns:ns2="http://docs.oasis-open.org/ns/energyinterop/201110" xmlns:ns3="http://docs.oasis-open.org/ns/energyinterop/201110/payloads" xmlns:ns4="urn:ietf:params:xml:ns:icalendar-2.0" xmlns:ns5="http://docs.oasis-open.org/ns/emix/2011/06" xmlns:ns6="urn:ietf:params:xml:ns:icalendar-2.0:stream" xmlns:ns7="http://www.w3.org/2005/Atom" xmlns:ns8="http://docs.oasis-open.org/ns/emix/2011/06/power" xmlns:ns9="http://www.opengis.net/gml/3.2" xmlns:ns10="http://docs.oasis-open.org/ns/emix/2011/06/siscale" xmlns:ns11="http://www.w3.org/2000/09/xmldsig#" xmlns:ns12="http://www.w3.org/2009/xmldsig11#" xmlns:ns13="http://openadr.org/oadr-2.0b/2012/07/xmldsig-properties" xmlns:ns14="urn:un:unece:uncefact:codelist:standard:5:ISO42173A:2010-04-07">
+    <ns1:oadrSignedObject>
+        <ns1:oadrResponse ns2:schemaVersion="2.0b">
+            <ns2:eiResponse>
+                <ns2:responseCode>452</ns2:responseCode>
+                <ns2:responseDescription>Invalid ID</ns2:responseDescription>
+                <ns3:requestID>F3379C25CB</ns3:requestID>
+            </ns2:eiResponse>
+            <ns2:venID></ns2:venID>
+        </ns1:oadrResponse>
+    </ns1:oadrSignedObject>
+</ns1:oadrPayload>

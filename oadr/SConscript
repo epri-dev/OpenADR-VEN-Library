@@ -1,0 +1,13 @@
+import glob
+import os
+import sconsHelper
+
+Import('cflags buildmode')
+
+cppPath = ['#oadrsd', '../xsd-4.0.0']
+libDir = ['../oadrsd/' + buildmode]
+libs = ['ssl', 'crypto', 'pthread', 'curl', 'xerces-c', 'oadrsd']
+
+sconsHelper.build('oadr', cppPath, cflags, libDir, libs, buildmode, "shared")
+
+

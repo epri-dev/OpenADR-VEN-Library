@@ -1,0 +1,138 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no" ?>
+<p1:oadrPayload xmlns:p1="http://openadr.org/oadr-2.0b/2012/07">
+
+  <p1:oadrSignedObject>
+    <p1:oadrRegisterReport xmlns:p3="http://docs.oasis-open.org/ns/energyinterop/201110" p3:schemaVersion="2.0b" xmlns:p2="http://docs.oasis-open.org/ns/energyinterop/201110/payloads">
+      <p2:requestID>request_id</p2:requestID>
+      <p1:oadrReport xmlns:p3="urn:ietf:params:xml:ns:icalendar-2.0" xmlns:p4="http://docs.oasis-open.org/ns/energyinterop/201110">
+        <p3:duration>
+          <p3:duration>PT10M</p3:duration>
+        </p3:duration>
+        <p1:oadrReportDescription xmlns:p4="http://docs.oasis-open.org/ns/energyinterop/201110" xmlns:p5="http://docs.oasis-open.org/ns/emix/2011/06">
+          <p4:rID>status_rid</p4:rID>
+          <p4:reportDataSource>
+            <p4:resourceID>resource_id</p4:resourceID>
+          </p4:reportDataSource>
+          <p4:reportType>x-resourceStatus</p4:reportType>
+          <p4:readingType>x-notApplicable</p4:readingType>
+          <p5:marketContext>http://MarketContext1</p5:marketContext>
+          <p1:oadrSamplingRate>
+            <p1:oadrMinPeriod>PT1M</p1:oadrMinPeriod>
+            <p1:oadrMaxPeriod>PT1M</p1:oadrMaxPeriod>
+            <p1:oadrOnChange>false</p1:oadrOnChange>
+          </p1:oadrSamplingRate>
+        </p1:oadrReportDescription>
+        <p4:reportRequestID>0</p4:reportRequestID>
+        <p4:reportSpecifierID>report_spec_1</p4:reportSpecifierID>
+        <p4:reportName>MEDATA_DATA_TELEMETRY_STATUS</p4:reportName>
+        <p4:createdDateTime>2013-12-30T16:19:58Z</p4:createdDateTime>
+      </p1:oadrReport>
+      <p1:oadrReport xmlns:p3="urn:ietf:params:xml:ns:icalendar-2.0" xmlns:p4="http://docs.oasis-open.org/ns/energyinterop/201110">
+        <p3:duration>
+          <p3:duration>PT24H</p3:duration>
+        </p3:duration>
+        <p1:oadrReportDescription xmlns:p4="http://docs.oasis-open.org/ns/energyinterop/201110" xmlns:p5="http://docs.oasis-open.org/ns/emix/2011/06/power" xmlns:p6="http://docs.oasis-open.org/ns/emix/2011/06">
+          <p4:rID>energy_rid</p4:rID>
+          <p4:reportDataSource>
+            <p4:resourceID>resoruce_id</p4:resourceID>
+          </p4:reportDataSource>
+          <p4:reportType>reading</p4:reportType>
+          <p5:energyReal xmlns:p6="http://docs.oasis-open.org/ns/emix/2011/06/siscale">
+            <p5:itemDescription/>
+            <p5:itemUnits>Wh</p5:itemUnits>
+            <p6:siScaleCode>none</p6:siScaleCode>
+          </p5:energyReal>
+          <p4:readingType>Direct Read</p4:readingType>
+          <p6:marketContext>http://MarketContext1</p6:marketContext>
+          <p1:oadrSamplingRate>
+            <p1:oadrMinPeriod>PT1H</p1:oadrMinPeriod>
+            <p1:oadrMaxPeriod>PT1H</p1:oadrMaxPeriod>
+            <p1:oadrOnChange>false</p1:oadrOnChange>
+          </p1:oadrSamplingRate>
+        </p1:oadrReportDescription>
+        <p1:oadrReportDescription xmlns:p4="http://docs.oasis-open.org/ns/energyinterop/201110" xmlns:p5="http://docs.oasis-open.org/ns/emix/2011/06/power" xmlns:p6="http://docs.oasis-open.org/ns/emix/2011/06">
+          <p4:rID>power_rid</p4:rID>
+          <p4:reportDataSource>
+            <p4:resourceID>resoruce_id</p4:resourceID>
+          </p4:reportDataSource>
+          <p4:reportType>reading</p4:reportType>
+          <p5:powerReal xmlns:p6="http://docs.oasis-open.org/ns/emix/2011/06/siscale">
+            <p5:itemDescription/>
+            <p5:itemUnits>W</p5:itemUnits>
+            <p6:siScaleCode>none</p6:siScaleCode>
+            <p5:powerAttributes>
+              <p5:hertz>60</p5:hertz>
+              <p5:voltage>120</p5:voltage>
+              <p5:ac>true</p5:ac>
+            </p5:powerAttributes>
+          </p5:powerReal>
+          <p4:readingType>Direct Read</p4:readingType>
+          <p6:marketContext>http://MarketContext1</p6:marketContext>
+          <p1:oadrSamplingRate>
+            <p1:oadrMinPeriod>PT10S</p1:oadrMinPeriod>
+            <p1:oadrMaxPeriod>PT10S</p1:oadrMaxPeriod>
+            <p1:oadrOnChange>false</p1:oadrOnChange>
+          </p1:oadrSamplingRate>
+        </p1:oadrReportDescription>
+        <p4:reportRequestID>0</p4:reportRequestID>
+        <p4:reportSpecifierID>report_spec_2</p4:reportSpecifierID>
+        <p4:reportName>MEDATA_DATA_TELEMETRY_USAGE</p4:reportName>
+        <p4:createdDateTime>2013-12-30T16:19:58Z</p4:createdDateTime>
+      </p1:oadrReport>
+      <p1:oadrReport xmlns:p3="urn:ietf:params:xml:ns:icalendar-2.0" xmlns:p4="http://docs.oasis-open.org/ns/energyinterop/201110">
+        <p3:duration>
+          <p3:duration>PT24H</p3:duration>
+        </p3:duration>
+        <p1:oadrReportDescription xmlns:p4="http://docs.oasis-open.org/ns/energyinterop/201110" xmlns:p5="http://docs.oasis-open.org/ns/emix/2011/06/power" xmlns:p6="http://docs.oasis-open.org/ns/emix/2011/06">
+          <p4:rID>energy_rid</p4:rID>
+          <p4:reportDataSource>
+            <p4:resourceID>resoruce_id</p4:resourceID>
+          </p4:reportDataSource>
+          <p4:reportType>reading</p4:reportType>
+          <p5:energyReal xmlns:p6="http://docs.oasis-open.org/ns/emix/2011/06/siscale">
+            <p5:itemDescription/>
+            <p5:itemUnits>Wh</p5:itemUnits>
+            <p6:siScaleCode>none</p6:siScaleCode>
+          </p5:energyReal>
+          <p4:readingType>Direct Read</p4:readingType>
+          <p6:marketContext>http://MarketContext1</p6:marketContext>
+          <p1:oadrSamplingRate>
+            <p1:oadrMinPeriod>PT1H</p1:oadrMinPeriod>
+            <p1:oadrMaxPeriod>PT1H</p1:oadrMaxPeriod>
+            <p1:oadrOnChange>false</p1:oadrOnChange>
+          </p1:oadrSamplingRate>
+        </p1:oadrReportDescription>
+        <p1:oadrReportDescription xmlns:p4="http://docs.oasis-open.org/ns/energyinterop/201110" xmlns:p5="http://docs.oasis-open.org/ns/emix/2011/06/power" xmlns:p6="http://docs.oasis-open.org/ns/emix/2011/06">
+          <p4:rID>power_rid</p4:rID>
+          <p4:reportDataSource>
+            <p4:resourceID>resoruce_id</p4:resourceID>
+          </p4:reportDataSource>
+          <p4:reportType>reading</p4:reportType>
+          <p5:powerReal xmlns:p6="http://docs.oasis-open.org/ns/emix/2011/06/siscale">
+            <p5:itemDescription/>
+            <p5:itemUnits>W</p5:itemUnits>
+            <p6:siScaleCode>none</p6:siScaleCode>
+            <p5:powerAttributes>
+              <p5:hertz>60</p5:hertz>
+              <p5:voltage>120</p5:voltage>
+              <p5:ac>true</p5:ac>
+            </p5:powerAttributes>
+          </p5:powerReal>
+          <p4:readingType>Direct Read</p4:readingType>
+          <p6:marketContext>http://MarketContext1</p6:marketContext>
+          <p1:oadrSamplingRate>
+            <p1:oadrMinPeriod>PT10S</p1:oadrMinPeriod>
+            <p1:oadrMaxPeriod>PT10S</p1:oadrMaxPeriod>
+            <p1:oadrOnChange>false</p1:oadrOnChange>
+          </p1:oadrSamplingRate>
+        </p1:oadrReportDescription>
+        <p4:reportRequestID>0</p4:reportRequestID>
+        <p4:reportSpecifierID>report_spec_3</p4:reportSpecifierID>
+        <p4:reportName>MEDATA_DATA_HISTORY_USAGE</p4:reportName>
+        <p4:createdDateTime>2013-12-30T16:19:58Z</p4:createdDateTime>
+      </p1:oadrReport>
+      <p3:venID>ven_id</p3:venID>
+    </p1:oadrRegisterReport>
+  </p1:oadrSignedObject>
+
+</p1:oadrPayload>

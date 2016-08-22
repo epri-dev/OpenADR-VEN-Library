@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<currencyPerKW xmlns:xcal="urn:ietf:params:xml:ns:icalendar-2.0"
+ xmlns:ei="http://docs.oasis-open.org/ns/energyinterop/201110"
+ xmlns:atom="http://www.w3.org/2005/Atom"
+ xmlns:clm5ISO42173A="urn:un:unece:uncefact:codelist:standard:5:ISO42173A:2010-04-07"
+ xmlns:ccts="urn:un:unece:uncefact:documentation:standard:CoreComponentsTechnicalSpecification:2"
+ xmlns:gml="http://www.opengis.net/gml/3.2"
+ xmlns:pyld="http://docs.oasis-open.org/ns/energyinterop/201110/payloads"
+ xmlns:emix="http://docs.oasis-open.org/ns/emix/2011/06"
+ xmlns:strm="urn:ietf:params:xml:ns:icalendar-2.0:stream"
+ xmlns:power="http://docs.oasis-open.org/ns/emix/2011/06/power"
+ xmlns:gmlsf="http://www.opengis.net/gmlsf/2.0"
+ xmlns:scale="http://docs.oasis-open.org/ns/emix/2011/06/siscale"
+ xmlns:ds="http://www.w3.org/2000/09/xmldsig#"
+ xmlns:dsig11="http://www.w3.org/2009/xmldsig11#"
+ xmlns="http://openadr.org/oadr-2.0b/2012/07"
+ xmlns:gb="http://naesb.org/espi"
+ xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+ xsi:schemaLocation="http://openadr.org/oadr-2.0b/2012/07 file:/contracts/nebland/oadrlib/schema/2b/oadr_20b.xsd">
+    <itemDescription>currencyPerKW</itemDescription>
+    <itemUnits>AED</itemUnits>
+    <scale:siScaleCode>p</scale:siScaleCode>
+</currencyPerKW>

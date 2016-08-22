@@ -1,0 +1,12 @@
+import glob
+import os
+import sconsHelper
+
+Import('cflags buildmode')
+
+cppPath = ['../xsd-4.0.0']
+libDir = []
+libs = ['xerces-c']
+
+sconsHelper.build('oadrsd', cppPath, cflags, libDir, libs, buildmode, "shared")
+

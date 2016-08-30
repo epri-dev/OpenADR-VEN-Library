@@ -336,6 +336,11 @@
 #include <oadrsd/2b/PowerRealType.hxx>
 #include <oadrsd/2b/PowerAttributesType.hxx>
 
+#include <oadrsd/2b/temperatureUnitType.hxx>
+#include <oadrsd/2b/temperatureType.hxx>
+
+#include <oadrsd/2b/BaseUnitType.hxx>
+
 #include <oadrsd/2b/oadrReportType.hxx>
 
 #include <oadrsd/2b/DurationPropType.hxx>
@@ -395,7 +400,7 @@ class ReportHelper {
 	static oadrReportDescriptionType generateDescription(string rID, string resourceID, ReportEnumeratedType::value reportType,
 			ReadingTypeEnumeratedType::value readingType, string marketContext,
 			int minSamplingPeriod, int maxSamplingPeriod, bool onChange, DurationModifier *durationModifier,
-			auto_ptr<oadrReportDescriptionType::itemBase_type> *measuredValue = NULL);
+			oadrReportDescriptionType::itemBase_type *measuredValue = NULL);
 
 public:
 
@@ -418,7 +423,6 @@ public:
 	static oadrReportDescriptionType generateDescriptionResourceStatus(string rID, string resourceID, string marketContext,
 			int minSamplingPeriod, int maxSamplingPeriod, bool onChange, DurationModifier *durationModifier);
 
-
 	static oadrReportDescriptionType generateDescriptionEnergyItem(string rID, string resourceID, ReportEnumeratedType::value reportType,
 			ReadingTypeEnumeratedType::value readingType, string marketContext, int minSamplingPeriod,
 			int maxSamplingPeriod, bool onChange, DurationModifier *durationModifier, eEnergyItemType energyItemType,
@@ -430,17 +434,27 @@ public:
 			ePowerItemType powerItemType, string units, SiScaleCodeType::value siScaleCodeType, double hertz,
 			double voltage, bool ac, string description = "");
 
-	static IntervalType generateInterval(string rID, time_t dtstart, int duration, DurationModifier *durationModifier);
+	static oadrReportDescriptionType generateDescriptionCustom(string rID, string resourceID, ReportEnumeratedType::value reportType,
+			ReadingTypeEnumeratedType::value readingType, string marketContext, int minSamplingPeriod,
+			int maxSamplingPeriod, bool onChange, DurationModifier *durationModifier, string description,
+			string units, SiScaleCodeType::value siScaleCodeType);
+
+	static oadrReportDescriptionType generateDescriptionTemperature(string rID, string resourceID, ReportEnumeratedType::value reportType,
+			ReadingTypeEnumeratedType::value readingType, string marketContext, int minSamplingPeriod,
+			int maxSamplingPeriod, bool onChange, DurationModifier *durationModifier, temperatureUnitType units,
+			SiScaleCodeType::value siScaleCodeType);
+
+	static IntervalType generateInterval(time_t dtstart, int duration, DurationModifier *durationModifier);
 
 	static oadrReportPayloadType generateOadrReportPayloadFloat(string rID, float value, oadrDataQualityType::value dataQuality = oadrDataQualityType::Quality_Good___Non_Specific, unsigned int confidence = 100, unsigned int accuracy = 100);
 
 	static oadrReportPayloadType generateOadrReportPayloadResourceStatus(string rID, bool online, bool manualOverride, oadrDataQualityType::value dataQuality = oadrDataQualityType::Quality_Good___Non_Specific, unsigned int confidence = 100, unsigned int accuracy = 100);
 
 	static oadrReportType generateReportDescription(ReportName *reportName, int duration, DurationModifier *durationModifier,
-			string reportSpecifierID, time_t createDateTimeUTC, oadrReportType::oadrReportDescription_sequence sequence);
+			string reportSpecifierID, time_t createDateTimeUTC, oadrReportType::oadrReportDescription_sequence &sequence);
 
-	static oadrReportType generateReport(ReportName *reportName, int duration, DurationModifier *durationModifier,
-			string reportSpecifierID, string reportRequestID, time_t dtstartUTC, time_t createDateTimeUTC, intervals::interval_sequence sequence);
+	static oadrReportType generateReport(ReportName *reportName, string reportSpecifierID, string reportRequestID,
+			time_t createDateTimeUTC, intervals::interval_sequence &sequence);
 };
 
 #endif /* REPORTHELPER_H_ */

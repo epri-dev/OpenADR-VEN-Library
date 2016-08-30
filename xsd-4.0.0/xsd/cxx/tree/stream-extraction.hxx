@@ -1,6 +1,5 @@
 // file      : xsd/cxx/tree/stream-extraction.hxx
-// author    : Boris Kolpackov <boris@codesynthesis.com>
-// copyright : Copyright (c) 2005-2011 Code Synthesis Tools CC
+// copyright : Copyright (c) 2005-2014 Code Synthesis Tools CC
 // license   : GNU GPL v2 + exceptions; see accompanying LICENSE file
 
 #ifndef XSD_CXX_TREE_STREAM_EXTRACTION_HXX
@@ -29,12 +28,18 @@ namespace xsd
 
       // simple_type
       //
-      template <typename B>
+      template <typename C, typename B>
       template <typename S>
-      inline simple_type<B>::
+      inline simple_type<C, B>::
       simple_type (istream<S>& s, flags f, container* c)
-          : type (s, f, c)
+          : type (s, f & ~flags::extract_content, c)
       {
+        if (f & flags::extract_content)
+        {
+          std::basic_string<C> t;
+          s >> t;
+          this->content_.reset (new text_content_type (t));
+        }
       }
 
       // fundamental_base
@@ -66,9 +71,7 @@ namespace xsd
           this->reserve (size);
 
           while (size--)
-          {
-            this->push_back (XSD_AUTO_PTR<T> (new T (s, f, c)));
-          }
+            this->push_back (traits<T, C, ST>::create (s, f, c));
         }
       }
 

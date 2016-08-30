@@ -329,42 +329,6 @@ Oadr2bHelper::~Oadr2bHelper()
 
 /********************************************************************************/
 
-icalendar_2_0::dtstart Oadr2bHelper::timetTo_dtstart(time_t &utc)
-{
-	icalendar_2_0::DateTimeType temp_DateTimeType = timetToiCalDateTime(utc);
-
-	icalendar_2_0::dtstart temp_dtstart(temp_DateTimeType);
-
-	return temp_dtstart;
-}
-
-/********************************************************************************/
-
-icalendar_2_0::DateTimeType Oadr2bHelper::timetToiCalDateTime(time_t &utc)
-{
-	tm tm_utc;
-
-	gmtime_r(&utc, &tm_utc);
-
-	icalendar_2_0::DateTimeType dateTimeType(icalendar_2_0::DateTimeType(::xml_schema::date_time(tm_utc.tm_year + 1900,
-			tm_utc.tm_mon + 1, tm_utc.tm_mday, tm_utc.tm_hour, tm_utc.tm_min, tm_utc.tm_sec, 0, 0)));
-
-	return dateTimeType;
-}
-
-/********************************************************************************/
-
-icalendar_2_0::DateTimeType Oadr2bHelper::nowToiCalDateTime()
-{
-	time_t now;
-
-	time(&now);
-
-	return timetToiCalDateTime(now);
-}
-
-/********************************************************************************/
-
 string Oadr2bHelper::generateDurationValueType(int duration, DurationModifier *durationModifier)
 {
 	stringstream ss;
@@ -410,3 +374,21 @@ oadr2b::oadr::oadrLoadControlStateType Oadr2bHelper::generateEmptyLoadControlSta
 
 	return loadControlState;
 }
+
+/********************************************************************************/
+
+void Oadr2bHelper::appendEventResponse(eventResponses::eventResponse_sequence &ers, string responseCode,
+		string responseDescription, string eventID, unsigned int modificationNumber,
+		OptTypeType::value optType, string requestID)
+{
+	eventResponse::qualifiedEventID_type qeid(eventID, modificationNumber);
+
+	OptTypeType ott(optType);
+
+    eventResponse er(responseCode, requestID, qeid, ott);
+
+    er.responseDescription(responseDescription);
+
+	ers.push_back(er);
+}
+

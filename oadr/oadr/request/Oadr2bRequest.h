@@ -351,14 +351,16 @@ private:
 	string m_httpResponseMessage;
 	string m_httpResponseCode;
 
-	auto_ptr<oadrPayload> m_request;
-	auto_ptr<oadrPayload> m_response;
+	unique_ptr<oadrPayload> m_request;
+	unique_ptr<oadrPayload> m_response;
+
+	RandomHex m_randomHex;
 
 protected:
 
-	string serializePayload(auto_ptr<oadrPayload> payload);
+	string serializePayload(oadrPayload *payload);
 
-	virtual auto_ptr<oadrPayload> generatePayload() = 0;
+	virtual unique_ptr<oadrPayload> generatePayload() = 0;
 
 public:
 	Oadr2bRequest(string requestType, string responseType, string requestID);

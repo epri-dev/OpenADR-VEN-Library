@@ -1,6 +1,5 @@
 // file      : xsd/cxx/parser/non-validating/xml-schema-pimpl.hxx
-// author    : Boris Kolpackov <boris@codesynthesis.com>
-// copyright : Copyright (c) 2005-2011 Code Synthesis Tools CC
+// copyright : Copyright (c) 2005-2014 Code Synthesis Tools CC
 // license   : GNU GPL v2 + exceptions; see accompanying LICENSE file
 
 #ifndef XSD_CXX_PARSER_NON_VALIDATING_XML_SCHEMA_PIMPL_HXX

@@ -323,7 +323,9 @@ OptSchedule::OptSchedule(EiOptType::optType_type optType, OptReasonValue optReas
 	m_marketContext(marketContext),
 	m_resourceID(resourceID)
 {
-	m_optID = (optID != "" ? optID : RandomHex::instance()->generateRandomHex());
+	RandomHex randomHex;
+
+	m_optID = (optID != "" ? optID : randomHex.generateRandomHex());
 }
 
 /********************************************************************************/

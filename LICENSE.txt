@@ -1,5 +1,5 @@
 //*********************************************************************************************************************
-// Copyright (c) 2013, Electric Power Research Institute (EPRI)
+// Copyright (c) 2016, Electric Power Research Institute (EPRI)
 // All rights reserved.
 // 
 // liboadr ("this software") is licensed under BSD 3-Clause license.
@@ -312,6 +312,6 @@
 // NEW BSD LICENSE (BSD-3-Clause)
 // #########################################################################################
 //
-// * gtest (https://code.google.com/p/googletest/) Copyright 2005 Google Inc.  All rights reserved.
+// * gtest (https://github.com/google/googletest) Copyright 2005 Google Inc.  All rights reserved.
 //
 

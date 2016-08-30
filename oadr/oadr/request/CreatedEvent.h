@@ -324,21 +324,20 @@
 
 #include "Oadr2bRequest.h"
 
-#include "EventResponses.h"
-
 using namespace oadr2b::ei;
 using namespace payloads;
 
 class CreatedEvent: public Oadr2bRequest
 {
 private:
-	EventResponses m_eventResponses;
+
+	eventResponses::eventResponse_sequence m_eventResponses;
 
 protected:
-	virtual auto_ptr<oadrPayload> generatePayload();
+	virtual unique_ptr<oadrPayload> generatePayload();
 
 public:
-	CreatedEvent(string venID, string responseCode, string responseDescription, EventResponses &responses, string requestID = "");
+	CreatedEvent(string venID, string responseCode, string responseDescription, eventResponses::eventResponse_sequence &ers, string requestID = "");
 	virtual ~CreatedEvent();
 };
 

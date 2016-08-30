@@ -317,9 +317,9 @@
 
 #include "DurationModifier.h"
 
-DurationModifier* DurationModifier::SECONDS = new DurationModifier("S");
-DurationModifier* DurationModifier::MINUTES = new DurationModifier("M");
-DurationModifier* DurationModifier::HOURS = new DurationModifier("H");
+DurationModifier DurationModifier::SECONDS("S");
+DurationModifier DurationModifier::MINUTES("M");
+DurationModifier DurationModifier::HOURS("H");
 
 DurationModifier::DurationModifier(string value)
 {

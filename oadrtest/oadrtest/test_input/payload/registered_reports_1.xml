@@ -1,0 +1,136 @@
+<?xml version="1.0" encoding="utf-8"?>
+<oadrPayload xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns="http://openadr.org/oadr-2.0b/2012/07">
+  <oadrSignedObject>
+    <oadrRegisterReport d3p1:schemaVersion="2.0b" xmlns:d3p1="http://docs.oasis-open.org/ns/energyinterop/201110">
+      <requestID xmlns="http://docs.oasis-open.org/ns/energyinterop/201110/payloads">bfb55ee8ec</requestID>
+      <oadrReport>
+        <duration xmlns="urn:ietf:params:xml:ns:icalendar-2.0">
+          <duration>PT2H</duration>
+        </duration>
+        <oadrReportDescription>
+          <d3p1:rID>resource1_status</d3p1:rID>
+          <d3p1:reportDataSource>
+            <d3p1:resourceID>resource1</d3p1:resourceID>
+          </d3p1:reportDataSource>
+          <d3p1:reportType>x-resourceStatus</d3p1:reportType>
+          <d3p1:readingType>x-notApplicable</d3p1:readingType>
+          <marketContext xmlns="http://docs.oasis-open.org/ns/emix/2011/06">http://MarketContext1</marketContext>
+          <oadrSamplingRate>
+            <oadrMinPeriod>PT1M</oadrMinPeriod>
+            <oadrMaxPeriod>PT1M</oadrMaxPeriod>
+            <oadrOnChange>false</oadrOnChange>
+          </oadrSamplingRate>
+        </oadrReportDescription>
+        <d3p1:reportRequestID>0</d3p1:reportRequestID>
+        <d3p1:reportSpecifierID>789ed6cd4e_telemetry_status</d3p1:reportSpecifierID>
+        <d3p1:reportName>METADATA_TELEMETRY_STATUS</d3p1:reportName>
+        <d3p1:createdDateTime>2014-12-02T18:05:39.0936739Z</d3p1:createdDateTime>
+      </oadrReport>
+      <oadrReport>
+        <duration xmlns="urn:ietf:params:xml:ns:icalendar-2.0">
+          <duration>PT2H</duration>
+        </duration>
+        <oadrReportDescription>
+          <d3p1:rID>resource1_energy</d3p1:rID>
+          <d3p1:reportDataSource>
+            <d3p1:resourceID>resource1</d3p1:resourceID>
+          </d3p1:reportDataSource>
+          <d3p1:reportType>usage</d3p1:reportType>
+          <energyReal xmlns="http://docs.oasis-open.org/ns/emix/2011/06/power">
+            <itemDescription>RealEnergy</itemDescription>
+            <itemUnits>Wh</itemUnits>
+            <siScaleCode xmlns="http://docs.oasis-open.org/ns/emix/2011/06/siscale">n</siScaleCode>
+          </energyReal>
+          <d3p1:readingType>Direct Read</d3p1:readingType>
+          <marketContext xmlns="http://docs.oasis-open.org/ns/emix/2011/06">http://MarketContext1</marketContext>
+          <oadrSamplingRate>
+            <oadrMinPeriod>PT1M</oadrMinPeriod>
+            <oadrMaxPeriod>PT1M</oadrMaxPeriod>
+            <oadrOnChange>false</oadrOnChange>
+          </oadrSamplingRate>
+        </oadrReportDescription>
+        <oadrReportDescription>
+          <d3p1:rID>resource1_power</d3p1:rID>
+          <d3p1:reportDataSource>
+            <d3p1:resourceID>resource1</d3p1:resourceID>
+          </d3p1:reportDataSource>
+          <d3p1:reportType>usage</d3p1:reportType>
+          <powerReal xmlns="http://docs.oasis-open.org/ns/emix/2011/06/power">
+            <itemDescription>RealPower</itemDescription>
+            <itemUnits>W</itemUnits>
+            <siScaleCode xmlns="http://docs.oasis-open.org/ns/emix/2011/06/siscale">n</siScaleCode>
+            <powerAttributes>
+              <hertz>60</hertz>
+              <voltage>110</voltage>
+              <ac>false</ac>
+            </powerAttributes>
+          </powerReal>
+          <d3p1:readingType>Direct Read</d3p1:readingType>
+          <marketContext xmlns="http://docs.oasis-open.org/ns/emix/2011/06">http://MarketContext1</marketContext>
+          <oadrSamplingRate>
+            <oadrMinPeriod>PT1M</oadrMinPeriod>
+            <oadrMaxPeriod>PT1M</oadrMaxPeriod>
+            <oadrOnChange>false</oadrOnChange>
+          </oadrSamplingRate>
+        </oadrReportDescription>
+        <d3p1:reportRequestID>0</d3p1:reportRequestID>
+        <d3p1:reportSpecifierID>789ed6cd4e_telemetry_usage</d3p1:reportSpecifierID>
+        <d3p1:reportName>METADATA_TELEMETRY_USAGE</d3p1:reportName>
+        <d3p1:createdDateTime>2014-12-02T18:05:39.0936739Z</d3p1:createdDateTime>
+      </oadrReport>
+      <oadrReport>
+        <duration xmlns="urn:ietf:params:xml:ns:icalendar-2.0">
+          <duration>PT2H</duration>
+        </duration>
+        <oadrReportDescription>
+          <d3p1:rID>resource1_energy</d3p1:rID>
+          <d3p1:reportDataSource>
+            <d3p1:resourceID>resource1</d3p1:resourceID>
+          </d3p1:reportDataSource>
+          <d3p1:reportType>usage</d3p1:reportType>
+          <energyReal xmlns="http://docs.oasis-open.org/ns/emix/2011/06/power">
+            <itemDescription>RealEnergy</itemDescription>
+            <itemUnits>Wh</itemUnits>
+            <siScaleCode xmlns="http://docs.oasis-open.org/ns/emix/2011/06/siscale">n</siScaleCode>
+          </energyReal>
+          <d3p1:readingType>Direct Read</d3p1:readingType>
+          <marketContext xmlns="http://docs.oasis-open.org/ns/emix/2011/06">http://MarketContext1</marketContext>
+          <oadrSamplingRate>
+            <oadrMinPeriod>PT1M</oadrMinPeriod>
+            <oadrMaxPeriod>PT1M</oadrMaxPeriod>
+            <oadrOnChange>false</oadrOnChange>
+          </oadrSamplingRate>
+        </oadrReportDescription>
+        <oadrReportDescription>
+          <d3p1:rID>resource1_power</d3p1:rID>
+          <d3p1:reportDataSource>
+            <d3p1:resourceID>resource1</d3p1:resourceID>
+          </d3p1:reportDataSource>
+          <d3p1:reportType>usage</d3p1:reportType>
+          <powerReal xmlns="http://docs.oasis-open.org/ns/emix/2011/06/power">
+            <itemDescription>RealPower</itemDescription>
+            <itemUnits>W</itemUnits>
+            <siScaleCode xmlns="http://docs.oasis-open.org/ns/emix/2011/06/siscale">n</siScaleCode>
+            <powerAttributes>
+              <hertz>60</hertz>
+              <voltage>110</voltage>
+              <ac>false</ac>
+            </powerAttributes>
+          </powerReal>
+          <d3p1:readingType>Direct Read</d3p1:readingType>
+          <marketContext xmlns="http://docs.oasis-open.org/ns/emix/2011/06">http://MarketContext1</marketContext>
+          <oadrSamplingRate>
+            <oadrMinPeriod>PT1M</oadrMinPeriod>
+            <oadrMaxPeriod>PT1M</oadrMaxPeriod>
+            <oadrOnChange>false</oadrOnChange>
+          </oadrSamplingRate>
+        </oadrReportDescription>
+        <d3p1:reportRequestID>0</d3p1:reportRequestID>
+        <d3p1:reportSpecifierID>789ed6cd4e_history_usage</d3p1:reportSpecifierID>
+        <d3p1:reportName>METADATA_HISTORY_USAGE</d3p1:reportName>
+        <d3p1:createdDateTime>2014-12-02T18:05:39.0936739Z</d3p1:createdDateTime>
+      </oadrReport>
+      <d3p1:venID>b5f74feb5a3d4640f1b9</d3p1:venID>
+    </oadrRegisterReport>
+  </oadrSignedObject>
+</oadrPayload>

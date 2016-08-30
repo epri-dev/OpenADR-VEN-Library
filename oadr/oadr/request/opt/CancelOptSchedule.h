@@ -327,7 +327,7 @@ private:
 	string m_optID;
 
 protected:
-	virtual auto_ptr<oadrPayload> generatePayload();
+	virtual unique_ptr<oadrPayload> generatePayload();
 
 public:
 	CancelOptSchedule(string venID, string optID, string requestID = "");

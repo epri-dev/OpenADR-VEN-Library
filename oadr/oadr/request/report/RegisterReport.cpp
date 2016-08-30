@@ -331,21 +331,21 @@ RegisterReport::~RegisterReport()
 
 /********************************************************************************/
 
-auto_ptr<oadrPayload> RegisterReport::generatePayload()
+unique_ptr<oadrPayload> RegisterReport::generatePayload()
 {
-	auto_ptr<oadrRegisterReportType> request(new oadrRegisterReportType(requestID()));
+	oadrRegisterReportType request(requestID());
 
-	request->schemaVersion("2.0b");
+	request.schemaVersion("2.0b");
 
-	request->venID(venID());
+	request.venID(venID());
 
-	request->oadrReport(m_sequence);
+	request.oadrReport(m_sequence);
 
-	auto_ptr<oadrSignedObject> oso(new oadrSignedObject());
+	unique_ptr<oadrSignedObject> oso(new oadrSignedObject());
 
 	oso->oadrRegisterReport(request);
 
-	auto_ptr<oadrPayload> payload(new oadrPayload(oso));
+	unique_ptr<oadrPayload> payload(new oadrPayload(std::move(oso)));
 
 	return payload;
 }

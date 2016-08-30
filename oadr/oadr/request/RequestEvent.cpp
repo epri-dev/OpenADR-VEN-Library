@@ -332,7 +332,7 @@ RequestEvent::~RequestEvent()
 
 /********************************************************************************/
 
-auto_ptr<oadrPayload> RequestEvent::generatePayload()
+unique_ptr<oadrPayload> RequestEvent::generatePayload()
 {
 	eiRequestEvent ei(requestID(), m_venID);
 
@@ -347,7 +347,7 @@ auto_ptr<oadrPayload> RequestEvent::generatePayload()
 
 	oso.oadrRequestEvent(request);
 
-	auto_ptr<oadrPayload> payload(new oadrPayload(oso));
+	unique_ptr<oadrPayload> payload(new oadrPayload(oso));
 
 	return payload;
 }

@@ -328,7 +328,15 @@
 #include <oadrsd/2b/oadrLoadControlStateType.hxx>
 #include <oadrsd/2b/oadrLoadControlStateTypeType.hxx>
 
+#include <oadrsd/2b/eventResponses.hxx>
+#include <oadrsd/2b/eventResponse.hxx>
+#include <oadrsd/2b/OptTypeType.hxx>
+#include <oadrsd/2b/QualifiedEventIDType.hxx>
+#include <oadrsd/2b/ResponseCodeType.hxx>
+
 #include "DurationModifier.h"
+
+using namespace oadr2b::ei;
 
 class Oadr2bHelper
 {
@@ -338,16 +346,16 @@ private:
 public:
 	Oadr2bHelper();
 
-	static icalendar_2_0::dtstart timetTo_dtstart(time_t &utc);
-	static icalendar_2_0::DateTimeType timetToiCalDateTime(time_t &utc);
-	static icalendar_2_0::DateTimeType nowToiCalDateTime();
-
 	static string generateDurationValueType(int duration, DurationModifier *durationModifier);
 	static icalendar_2_0::DurationPropType generateDurationPropType(int duration, DurationModifier *durationModifier);
 
 	static oadr2b::oadr::oadrLoadControlStateTypeType generateLoadControlStateType(float min, float max, float current, float normal);
 
 	static oadr2b::oadr::oadrLoadControlStateType generateEmptyLoadControlState();
+
+	static void appendEventResponse(eventResponses::eventResponse_sequence &ers, string responseCode,
+			string responseDescription, string eventID, unsigned int modificationNumber,
+			OptTypeType::value optType, string requestID);
 };
 
 #endif /* OADR2BHELPER_H_ */

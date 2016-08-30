@@ -322,6 +322,8 @@
 
 #include <curl/curl.h>
 
+#include <string>
+
 using namespace std;
 
 // CURL error codes: http://curl.haxx.se/libcurl/c/libcurl-errors.html
@@ -330,7 +332,7 @@ class CurlException : public exception
 {
 private:
 	CURLcode m_result;
-	char *m_message;
+	string m_message;
 
 public:
 	CurlException(CURLcode result, char *message);

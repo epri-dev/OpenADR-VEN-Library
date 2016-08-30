@@ -332,7 +332,7 @@ Poll::~Poll()
 
 /********************************************************************************/
 
-auto_ptr<oadrPayload> Poll::generatePayload()
+unique_ptr<oadrPayload> Poll::generatePayload()
 {
 	oadrPollType request(venID());
 
@@ -342,7 +342,7 @@ auto_ptr<oadrPayload> Poll::generatePayload()
 
 	oso.oadrPoll(request);
 
-	auto_ptr<oadrPayload> payload(new oadrPayload(oso));
+	unique_ptr<oadrPayload> payload(new oadrPayload(oso));
 
 	return payload;
 }

@@ -1,0 +1,151 @@
+<?xml version="1.0" encoding="utf-8"?>
+<oadrPayload xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns="http://openadr.org/oadr-2.0b/2012/07">
+  <oadrSignedObject>
+    <oadrDistributeEvent d3p1:schemaVersion="2.0b" xmlns:d3p1="http://docs.oasis-open.org/ns/energyinterop/201110">
+      <d3p1:eiResponse>
+        <d3p1:responseCode>200</d3p1:responseCode>
+        <d3p1:responseDescription>OK</d3p1:responseDescription>
+        <requestID xmlns="http://docs.oasis-open.org/ns/energyinterop/201110/payloads">895ba32f98cc61658197</requestID>
+      </d3p1:eiResponse>
+      <requestID xmlns="http://docs.oasis-open.org/ns/energyinterop/201110/payloads">0ffa48412ecb8ecd50c5</requestID>
+      <d3p1:vtnID>EPRI_VTN</d3p1:vtnID>
+      <oadrEvent>
+        <d3p1:eiEvent>
+          <d3p1:eventDescriptor>
+            <d3p1:eventID>71dd232a8dab3b1a7279</d3p1:eventID>
+            <d3p1:modificationNumber>0</d3p1:modificationNumber>
+            <d3p1:modificationReason />
+            <d3p1:priority>0</d3p1:priority>
+            <d3p1:eiMarketContext>
+              <marketContext xmlns="http://docs.oasis-open.org/ns/emix/2011/06">http://MarketContext1</marketContext>
+            </d3p1:eiMarketContext>
+            <d3p1:createdDateTime>2015-06-26T17:52:34Z</d3p1:createdDateTime>
+            <d3p1:eventStatus>far</d3p1:eventStatus>
+            <d3p1:testEvent>false</d3p1:testEvent>
+            <d3p1:vtnComment />
+          </d3p1:eventDescriptor>
+          <d3p1:eiActivePeriod>
+            <properties xmlns="urn:ietf:params:xml:ns:icalendar-2.0">
+              <dtstart>
+                <date-time>2015-06-26T18:00:00Z</date-time>
+              </dtstart>
+              <duration>
+                <duration>PT120M</duration>
+              </duration>
+              <tolerance>
+                <tolerate>
+                  <startafter>PT0M</startafter>
+                </tolerate>
+              </tolerance>
+              <d3p1:x-eiNotification>
+                <duration>PT0M</duration>
+              </d3p1:x-eiNotification>
+              <d3p1:x-eiRampUp>
+                <duration>PT0M</duration>
+              </d3p1:x-eiRampUp>
+              <d3p1:x-eiRecovery>
+                <duration>PT0M</duration>
+              </d3p1:x-eiRecovery>
+            </properties>
+            <components xsi:nil="true" xmlns="urn:ietf:params:xml:ns:icalendar-2.0" />
+          </d3p1:eiActivePeriod>
+          <d3p1:eiEventSignals>
+            <d3p1:eiEventSignal>
+              <intervals xmlns="urn:ietf:params:xml:ns:icalendar-2.0:stream">
+                <d3p1:interval>
+                  <duration xmlns="urn:ietf:params:xml:ns:icalendar-2.0">
+                    <duration>PT60M</duration>
+                  </duration>
+                  <uid xmlns="urn:ietf:params:xml:ns:icalendar-2.0">
+                    <text>0</text>
+                  </uid>
+                  <d3p1:signalPayload>
+                    <d3p1:payloadFloat>
+                      <d3p1:value>0.5</d3p1:value>
+                    </d3p1:payloadFloat>
+                  </d3p1:signalPayload>
+                </d3p1:interval>
+                <d3p1:interval>
+                  <duration xmlns="urn:ietf:params:xml:ns:icalendar-2.0">
+                    <duration>PT60M</duration>
+                  </duration>
+                  <uid xmlns="urn:ietf:params:xml:ns:icalendar-2.0">
+                    <text>1</text>
+                  </uid>
+                  <d3p1:signalPayload>
+                    <d3p1:payloadFloat>
+                      <d3p1:value>0.75</d3p1:value>
+                    </d3p1:payloadFloat>
+                  </d3p1:signalPayload>
+                </d3p1:interval>
+              </intervals>
+              <d3p1:signalName>ENERGY_PRICE</d3p1:signalName>
+              <d3p1:signalType>price</d3p1:signalType>
+              <d3p1:signalID>91a13ce4059321b76d72</d3p1:signalID>
+              <d3p1:currentValue>
+                <d3p1:payloadFloat>
+                  <d3p1:value>0</d3p1:value>
+                </d3p1:payloadFloat>
+              </d3p1:currentValue>
+            </d3p1:eiEventSignal>
+            <d3p1:eiEventSignal>
+              <intervals xmlns="urn:ietf:params:xml:ns:icalendar-2.0:stream">
+                <d3p1:interval>
+                  <duration xmlns="urn:ietf:params:xml:ns:icalendar-2.0">
+                    <duration>PT40M</duration>
+                  </duration>
+                  <uid xmlns="urn:ietf:params:xml:ns:icalendar-2.0">
+                    <text>0</text>
+                  </uid>
+                  <d3p1:signalPayload>
+                    <d3p1:payloadFloat>
+                      <d3p1:value>0</d3p1:value>
+                    </d3p1:payloadFloat>
+                  </d3p1:signalPayload>
+                </d3p1:interval>
+                <d3p1:interval>
+                  <duration xmlns="urn:ietf:params:xml:ns:icalendar-2.0">
+                    <duration>PT40M</duration>
+                  </duration>
+                  <uid xmlns="urn:ietf:params:xml:ns:icalendar-2.0">
+                    <text>1</text>
+                  </uid>
+                  <d3p1:signalPayload>
+                    <d3p1:payloadFloat>
+                      <d3p1:value>1</d3p1:value>
+                    </d3p1:payloadFloat>
+                  </d3p1:signalPayload>
+                </d3p1:interval>
+                <d3p1:interval>
+                  <duration xmlns="urn:ietf:params:xml:ns:icalendar-2.0">
+                    <duration>PT40M</duration>
+                  </duration>
+                  <uid xmlns="urn:ietf:params:xml:ns:icalendar-2.0">
+                    <text>2</text>
+                  </uid>
+                  <d3p1:signalPayload>
+                    <d3p1:payloadFloat>
+                      <d3p1:value>2</d3p1:value>
+                    </d3p1:payloadFloat>
+                  </d3p1:signalPayload>
+                </d3p1:interval>
+              </intervals>
+              <d3p1:signalName>simple</d3p1:signalName>
+              <d3p1:signalType>delta</d3p1:signalType>
+              <d3p1:signalID>413452dd95b8ffdb2f28</d3p1:signalID>
+              <d3p1:currentValue>
+                <d3p1:payloadFloat>
+                  <d3p1:value>0</d3p1:value>
+                </d3p1:payloadFloat>
+              </d3p1:currentValue>
+            </d3p1:eiEventSignal>
+          </d3p1:eiEventSignals>
+          <d3p1:eiTarget>
+            <d3p1:venID>deef06ba5329fcc0e5fa</d3p1:venID>
+          </d3p1:eiTarget>
+        </d3p1:eiEvent>
+        <oadrResponseRequired>always</oadrResponseRequired>
+      </oadrEvent>
+    </oadrDistributeEvent>
+  </oadrSignedObject>
+</oadrPayload>

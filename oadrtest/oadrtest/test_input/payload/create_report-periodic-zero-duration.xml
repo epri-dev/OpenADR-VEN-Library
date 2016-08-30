@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<oadrPayload xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns="http://openadr.org/oadr-2.0b/2012/07">
+  <oadrSignedObject>
+    <oadrCreateReport d3p1:schemaVersion="2.0b" xmlns:d3p1="http://docs.oasis-open.org/ns/energyinterop/201110">
+      <requestID xmlns="http://docs.oasis-open.org/ns/energyinterop/201110/payloads">e3287c948fc00dcd40ca</requestID>
+      <oadrReportRequest>
+        <d3p1:reportRequestID>d41628197365b70b3e23</d3p1:reportRequestID>
+        <d3p1:reportSpecifier>
+          <d3p1:reportSpecifierID>789ed6cd4e_telemetry_usage</d3p1:reportSpecifierID>
+          <granularity xmlns="urn:ietf:params:xml:ns:icalendar-2.0">
+            <duration>PT1M</duration>
+          </granularity>
+          <d3p1:reportBackDuration>
+            <duration xmlns="urn:ietf:params:xml:ns:icalendar-2.0">PT2M</duration>
+          </d3p1:reportBackDuration>
+          <d3p1:reportInterval>
+            <properties xmlns="urn:ietf:params:xml:ns:icalendar-2.0">
+              <dtstart>
+                <date-time>2014-12-02T18:20:22Z</date-time>
+              </dtstart>
+              <duration>
+                <duration>PT0M</duration>
+              </duration>
+            </properties>
+          </d3p1:reportInterval>
+          <d3p1:specifierPayload>
+            <d3p1:rID>resource1_energy</d3p1:rID>
+            <d3p1:readingType>x-notApplicable</d3p1:readingType>
+          </d3p1:specifierPayload>
+          <d3p1:specifierPayload>
+            <d3p1:rID>resource1_power</d3p1:rID>
+            <d3p1:readingType>x-notApplicable</d3p1:readingType>
+          </d3p1:specifierPayload>
+        </d3p1:reportSpecifier>
+      </oadrReportRequest>
+    </oadrCreateReport>
+  </oadrSignedObject>
+</oadrPayload>

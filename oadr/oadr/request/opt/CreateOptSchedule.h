@@ -331,7 +331,7 @@ private:
 	time_t m_createdDateTime;
 
 protected:
-	virtual auto_ptr<oadrPayload> generatePayload();
+	virtual unique_ptr<oadrPayload> generatePayload();
 
 public:
 	CreateOptSchedule(string venID, OptSchedule &optSchedule, string requestID);

@@ -346,7 +346,7 @@ TEST(Parser, TestParser1NoValidation) {
 
 	stringstream iss(content);
 
-	auto_ptr<oadrPayload> payload(oadrPayload_(iss, flags::dont_validate));
+	unique_ptr<oadrPayload> payload(oadrPayload_(iss, flags::dont_validate));
 
 	ASSERT_EQ("A40A878C91", payload->oadrSignedObject().oadrResponse()->eiResponse().requestID());
 	ASSERT_EQ("452", payload->oadrSignedObject().oadrResponse()->eiResponse().responseCode());
@@ -372,7 +372,7 @@ TEST(Parser, DISABLED_TestParser1WithValidation) {
 	// prop.no_namespace_schema_location("../../schema/2b/oadr_20b.xsd");
 	// prop.no_namespace_schema_location("../../schema/2b/");
 
-	auto_ptr<oadrPayload> payload(oadrPayload_("../test_input/test_parser1.xml", 0, prop));
+	unique_ptr<oadrPayload> payload(oadrPayload_("../test_input/test_parser1.xml", 0, prop));
 
 	ASSERT_EQ("A40A878C91", payload->oadrSignedObject().oadrResponse()->eiResponse().requestID());
 	ASSERT_EQ("452", payload->oadrSignedObject().oadrResponse()->eiResponse().responseCode());

@@ -317,6 +317,8 @@
 
 #include "CreateOptEvent.h"
 
+#include "../../helper/DateTimeConverter.h"
+
 CreateOptEvent::CreateOptEvent(string venID, string optID, EiOptType::optType_type optType,
 		OptReasonValue optReasonValue, string eventID, unsigned int modificationNumber,
 		string requestID) :
@@ -335,22 +337,22 @@ CreateOptEvent::~CreateOptEvent()
 
 /********************************************************************************/
 
-auto_ptr<oadrPayload> CreateOptEvent::generatePayload()
+unique_ptr<oadrPayload> CreateOptEvent::generatePayload()
 {
-	EiOptType::createdDateTime_type createdDateTime(Oadr2bHelper::nowToiCalDateTime());
+	EiOptType::createdDateTime_type createdDateTime(DateTimeConverter::Time_tToDateTime(time(NULL)));
 
 	oadrCreateOptType::eiTarget_type target;
 
-	auto_ptr<oadrCreateOptType> co(new oadrCreateOptType(optID(), optType(), optReasonValue().toString(), venID(),
+	unique_ptr<oadrCreateOptType> co(new oadrCreateOptType(optID(), optType(), optReasonValue().toString(), venID(),
 			createdDateTime, requestID(), target));
 
 	co->qualifiedEventID(oadrCreateOptType::qualifiedEventID_type(m_eventID, m_modificationNumber));
 
-	auto_ptr<oadrSignedObject> oso(new oadrSignedObject());
+	unique_ptr<oadrSignedObject> oso(new oadrSignedObject());
 
-	oso->oadrCreateOpt(co);
+	oso->oadrCreateOpt(std::move(co));
 
-	auto_ptr<oadrPayload> payload(new oadrPayload(oso));
+	unique_ptr<oadrPayload> payload(new oadrPayload(std::move(oso)));
 
 	return payload;
 }

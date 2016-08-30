@@ -1,0 +1,1 @@
+valgrind --track-fds=yes --log-file=valgrind.log --leak-check=full --show-reachable=yes ./oadrtest.out

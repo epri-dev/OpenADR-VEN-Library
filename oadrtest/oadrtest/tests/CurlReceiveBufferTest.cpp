@@ -350,3 +350,21 @@ TEST(CurlReceiveBuffer, TestBuffer1) {
 
 	EXPECT_EQ("BAh7BkkiD3Nlc3Npb25faWQGOgZFRkkiJTI1OTRiMDAwYzI1YjJhNjY4MzkwMjhiOTZmZDdjYzNmBjsAVA%3D%3D--7e20313fa96bcbd9f835f1896ab0c1b86d741407; path=/; HttpOnly", cookies["_oadr_session"]);
 }
+
+/********************************************************************************/
+
+TEST(CurlReceiveBuffer, TestBuffer2) {
+	CurlReceiveBuffer buffer;
+	string content = LoadFile::loadTestInputFile("test_buffer2.txt");
+
+	map<string, string> headers;
+	map<string, string> cookies;
+	string body;
+	string version;
+	string code;
+	string description;
+
+	buffer.receive(content.c_str(), content.length());
+
+	buffer.parse(headers, cookies, body, version, code, description);
+}

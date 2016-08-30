@@ -1,0 +1,16 @@
+HTTP/1.1 404 Not Found
+Date: Tue, 09 Dec 2014 20:09:35 GMT
+Server: Apache/2.2.22 (Ubuntu)
+Vary: Accept-Encoding
+Content-Length: 288
+Content-Type: text/html; charset=iso-8859-1
+
+<!DOCTYPE HTML PUBLIC "-//IETF//DTD HTML 2.0//EN">
+<html><head>
+<title>404 Not Found</title>
+</head><body>
+<h1>Not Found</h1>
+<p>The requested URL /EiRegisterParty was not found on this server.</p>
+<hr>
+<address>Apache/2.2.22 (Ubuntu) Server at localhost Port 80</address>
+</body></html>

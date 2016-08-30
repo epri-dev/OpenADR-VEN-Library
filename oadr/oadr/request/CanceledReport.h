@@ -318,22 +318,25 @@
 #ifndef CANCELEDREPORT_H_
 #define CANCELEDREPORT_H_
 
+#include <oadrsd/2b/EiResponseType.hxx>
+#include <oadrsd/2b/oadrCanceledReportType.hxx>
+
 #include "Oadr2bRequest.h"
 
-#include <vector>
+#include <set>
 
 using namespace std;
 
 class CanceledReport: public Oadr2bRequest
 {
 private:
-	string m_venID;
-	string m_responseCode;
-	string m_responseDescription;
-	vector<string> m_pendingReportIDs;
+	set<string> m_pendingReports;
+
+protected:
+	virtual unique_ptr<oadrPayload> generatePayload();
 
 public:
-	CanceledReport(string venID, string responseCode, string responseDescription, string requestID = "", vector<string> *pendingReportIDs = NULL);
+	CanceledReport(string venID, string responseCode, string responseDescription, const set<string> &pendingReports, string requestID = "");
 	virtual ~CanceledReport();
 };
 

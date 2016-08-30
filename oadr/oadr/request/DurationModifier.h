@@ -338,9 +338,9 @@ public:
 
     string value();
 
-    static DurationModifier *SECONDS;
-    static DurationModifier *MINUTES;
-    static DurationModifier *HOURS;
+    static DurationModifier SECONDS;
+    static DurationModifier MINUTES;
+    static DurationModifier HOURS;
 };
 
 #endif /* DURATIONMODIFIER_H_ */

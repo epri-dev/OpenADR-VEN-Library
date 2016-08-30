@@ -317,11 +317,14 @@
 
 #include "CreatedReport.h"
 
-CreatedReport::CreatedReport(string venID, vector<string> *pendingReports, string responseCode, string responseDescription, string requestID) :
-	Oadr2bRequest("oadrCreatedReport", "oadrResponse", venID, responseCode, responseDescription, requestID)
+using namespace oadr2b::oadr;
+using namespace oadr2b::ei;
+using namespace payloads;
+
+CreatedReport::CreatedReport(string venID, const set<string> &pendingReports, string responseCode, string responseDescription, string requestID) :
+	Oadr2bRequest("oadrCreatedReport", "oadrResponse", venID, responseCode, responseDescription, requestID),
+	m_pendingReports(pendingReports)
 {
-		if (pendingReports != NULL)
-			m_pendingReports = *pendingReports;
 }
 
 /********************************************************************************/
@@ -330,3 +333,36 @@ CreatedReport::~CreatedReport()
 {
 }
 
+/********************************************************************************/
+
+unique_ptr<oadrPayload> CreatedReport::generatePayload()
+{
+	EiResponseType eir(responseCode(), requestID());
+
+	eir.responseDescription(responseDescription());
+
+	oadrPendingReportsType pr;
+
+	oadrPendingReportsType::reportRequestID_sequence seq;
+
+	for (auto &id : m_pendingReports)
+	{
+		seq.push_back(id);
+	}
+
+	pr.reportRequestID(seq);
+
+	oadrCreatedReportType cr(eir, pr);
+
+	cr.schemaVersion("2.0b");
+
+	cr.venID(venID());
+
+	oadrSignedObject oso;
+
+	oso.oadrCreatedReport(cr);
+
+	unique_ptr<oadrPayload> payload(new oadrPayload(oso));
+
+	return payload;
+}

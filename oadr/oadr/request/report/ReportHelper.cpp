@@ -317,6 +317,8 @@
 
 #include "ReportHelper.h"
 
+#include "../../helper/DateTimeConverter.h"
+
 ReportHelper::ReportHelper()
 {
 
@@ -329,7 +331,7 @@ ReportHelper::~ReportHelper()
 oadrReportDescriptionType ReportHelper::generateDescription(string rID, string resourceID, ReportEnumeratedType::value reportType,
 		ReadingTypeEnumeratedType::value readingType, string marketContext,
 		int minSamplingPeriod, int maxSamplingPeriod, bool onChange, DurationModifier *durationModifier,
-		auto_ptr<oadrReportDescriptionType::itemBase_type> *measuredValue)
+		oadrReportDescriptionType::itemBase_type *measuredValue)
 {
 
 	oadrReportDescriptionType reportDescription(rID, ReportEnumeratedType(reportType), ReadingTypeEnumeratedType(readingType));
@@ -379,33 +381,29 @@ oadrReportDescriptionType ReportHelper::generateDescriptionEnergyItem(string rID
 		int maxSamplingPeriod, bool onChange, DurationModifier *durationModifier, eEnergyItemType energyItemType,
 		string units, SiScaleCodeType::value siScaleCodeType, string description)
 {
-	auto_ptr<oadrReportDescriptionType::itemBase_type> base;
-
-	EnergyItemType *measuredValue;
+	unique_ptr<EnergyItemType> measuredValue;
 
 	switch (energyItemType)
 	{
 	case eEnergyApparent:
-		measuredValue = new EnergyApparentType(description, units, siScaleCodeType);
+		measuredValue = unique_ptr<EnergyItemType>(new EnergyApparentType(description, units, siScaleCodeType));
 		break;
 
 	case eEnergyReactive:
-		measuredValue = new EnergyReactiveType(description, units, siScaleCodeType);
+		measuredValue = unique_ptr<EnergyItemType>(new EnergyReactiveType(description, units, siScaleCodeType));
 		break;
 
 	case eEnergyReal:
-		measuredValue = new EnergyRealType(description, units, siScaleCodeType);
+		measuredValue = unique_ptr<EnergyItemType>(new EnergyRealType(description, units, siScaleCodeType));
 		break;
 
 	default:
-		measuredValue = new EnergyApparentType(description, units, siScaleCodeType);
+		measuredValue = unique_ptr<EnergyItemType>(new EnergyApparentType(description, units, siScaleCodeType));
 		break;
 	}
 
-	base = auto_ptr<oadrReportDescriptionType::itemBase_type>(measuredValue);
-
 	return generateDescription(rID, resourceID, reportType, readingType, marketContext, minSamplingPeriod, maxSamplingPeriod, onChange,
-			durationModifier, &base);
+			durationModifier, measuredValue.get());
 }
 
 /********************************************************************************/
@@ -416,40 +414,62 @@ oadrReportDescriptionType ReportHelper::generateDescriptionPowerItem(string rID,
 		ePowerItemType powerItemType, string units, SiScaleCodeType::value siScaleCodeType, double hertz,
 		double voltage, bool ac, string description)
 {
-	auto_ptr<oadrReportDescriptionType::itemBase_type> base;
-
-	PowerItemType *measuredValue;
-
 	PowerApparentType::powerAttributes_type attributes(hertz, voltage, ac);
+
+	unique_ptr<PowerItemType> measuredValue;
 
 	switch (powerItemType)
 	{
 	case ePowerApparent:
-		measuredValue = new PowerApparentType(description, units, siScaleCodeType, attributes);
+		measuredValue = unique_ptr<PowerItemType>(new PowerApparentType(description, units, siScaleCodeType, attributes));
 		break;
 
 	case ePowerReactive:
-		measuredValue = new PowerReactiveType(description, units, siScaleCodeType, attributes);
+		measuredValue = unique_ptr<PowerItemType>(new PowerReactiveType(description, units, siScaleCodeType, attributes));
 		break;
 
 	case ePowerReal:
-		measuredValue = new PowerRealType(description, units, siScaleCodeType, attributes);
+		measuredValue = unique_ptr<PowerItemType>(new PowerRealType(description, units, siScaleCodeType, attributes));
 		break;
 
 	default:
-		measuredValue = new PowerApparentType(description, units, siScaleCodeType, attributes);
+		measuredValue = unique_ptr<PowerItemType>(new PowerApparentType(description, units, siScaleCodeType, attributes));
 		break;
 	}
 
-	base = auto_ptr<oadrReportDescriptionType::itemBase_type>(measuredValue);
-
 	return generateDescription(rID, resourceID, reportType, readingType, marketContext, minSamplingPeriod, maxSamplingPeriod, onChange,
-			durationModifier, &base);
+			durationModifier, measuredValue.get());
 }
 
 /********************************************************************************/
 
-IntervalType ReportHelper::generateInterval(string rID, time_t dtstart, int duration, DurationModifier *durationModifier)
+oadrReportDescriptionType ReportHelper::generateDescriptionCustom(string rID, string resourceID, ReportEnumeratedType::value reportType,
+		ReadingTypeEnumeratedType::value readingType, string marketContext, int minSamplingPeriod,
+		int maxSamplingPeriod, bool onChange, DurationModifier *durationModifier, string description,
+		string units, SiScaleCodeType::value siScaleCodeType)
+{
+	BaseUnitType but(description, units, siScaleCodeType);
+
+	return generateDescription(rID, resourceID, reportType, readingType,
+			marketContext, minSamplingPeriod, maxSamplingPeriod, onChange, durationModifier, &but);
+}
+
+/********************************************************************************/
+
+oadrReportDescriptionType ReportHelper::generateDescriptionTemperature(string rID, string resourceID, ReportEnumeratedType::value reportType,
+		ReadingTypeEnumeratedType::value readingType, string marketContext, int minSamplingPeriod,
+		int maxSamplingPeriod, bool onChange, DurationModifier *durationModifier, temperatureUnitType units,
+		SiScaleCodeType::value siScaleCodeType)
+{
+	temperatureType t("temperature", units, siScaleCodeType);
+
+	return generateDescription(rID, resourceID, reportType, readingType,
+			marketContext, minSamplingPeriod, maxSamplingPeriod, onChange, durationModifier, &t);
+}
+
+/********************************************************************************/
+
+IntervalType ReportHelper::generateInterval(time_t dtstart, int duration, DurationModifier *durationModifier)
 {
 	IntervalType intervalType;
 
@@ -459,7 +479,7 @@ IntervalType ReportHelper::generateInterval(string rID, time_t dtstart, int dura
 	// s << uid;
 	// intervalType->uid(icalendar_2_0::uid(s.str()));
 
-	intervalType.dtstart(Oadr2bHelper::timetTo_dtstart(dtstart));
+	intervalType.dtstart(DateTimeConverter::Time_tToDateTime(dtstart));
 	intervalType.duration(Oadr2bHelper::generateDurationPropType(duration, durationModifier));
 
 	return intervalType;
@@ -469,11 +489,9 @@ IntervalType ReportHelper::generateInterval(string rID, time_t dtstart, int dura
 
 oadrReportPayloadType ReportHelper::generateOadrReportPayloadFloat(string rID, float value, oadrDataQualityType::value dataQuality, unsigned int confidence, unsigned int accuracy)
 {
-	auto_ptr<PayloadBaseType> payload(new PayloadFloatType(value));
+	PayloadFloatType payload(value);
 
-	auto_ptr<ReportPayloadType::rID_type> rID_ptr(new ReportPayloadType::rID_type(rID));
-
-	oadrReportPayloadType reportPayload(rID_ptr, payload);
+	oadrReportPayloadType reportPayload(rID, payload);
 
 	reportPayload.confidence(confidence);
 
@@ -488,18 +506,17 @@ oadrReportPayloadType ReportHelper::generateOadrReportPayloadFloat(string rID, f
 
 oadrReportPayloadType ReportHelper::generateOadrReportPayloadResourceStatus(string rID, bool online, bool manualOverride, oadrDataQualityType::value dataQuality, unsigned int confidence, unsigned int accuracy)
 {
-	auto_ptr<oadrPayloadResourceStatusType> payload(new oadrPayloadResourceStatusType(online, manualOverride));
+	oadrPayloadResourceStatusType payload(online, manualOverride);
 
 	// add blank load control values for now; these values will need to be exposed at some point
 	// or pass the loadControl object to this function
-	payload->oadrLoadControlState(Oadr2bHelper::generateEmptyLoadControlState());
+	payload.oadrLoadControlState(Oadr2bHelper::generateEmptyLoadControlState());
 
 	// everything below should be moved to addReportPayload
-	auto_ptr<PayloadBaseType> payloadBase(payload);
+	// PayloadBaseType payloadBase(*payload);
 
-	auto_ptr<ReportPayloadType::rID_type> rID_ptr(new ReportPayloadType::rID_type(rID));
-
-	oadrReportPayloadType reportPayload(rID_ptr, payloadBase);
+	// oadrReportPayloadType reportPayload(rID, payloadBase);
+	oadrReportPayloadType reportPayload(rID, payload);
 
 	reportPayload.confidence(confidence);
 	reportPayload.accuracy(accuracy);
@@ -512,12 +529,12 @@ oadrReportPayloadType ReportHelper::generateOadrReportPayloadResourceStatus(stri
 /********************************************************************************/
 
 oadrReportType ReportHelper::generateReportDescription(ReportName *reportName, int duration, DurationModifier *durationModifier,
-		string reportSpecifierID, time_t createDateTimeUTC, oadrReportType::oadrReportDescription_sequence sequence)
+		string reportSpecifierID, time_t createDateTimeUTC, oadrReportType::oadrReportDescription_sequence &sequence)
 {
 	if (createDateTimeUTC == 0)
 		createDateTimeUTC = time(NULL);
 
-	oadrReportType reportType("0", reportSpecifierID, Oadr2bHelper::timetToiCalDateTime(createDateTimeUTC));
+	oadrReportType reportType("0", reportSpecifierID, DateTimeConverter::Time_tToDateTime(createDateTimeUTC));
 
 	reportType.duration(Oadr2bHelper::generateDurationPropType(duration, durationModifier));
 
@@ -531,15 +548,15 @@ oadrReportType ReportHelper::generateReportDescription(ReportName *reportName, i
 
 /********************************************************************************/
 
-oadrReportType ReportHelper::generateReport(ReportName *reportName, int duration, DurationModifier *durationModifier,
-		string reportSpecifierID, string reportRequestID, time_t dtstartUTC, time_t createdDateTimeUTC, intervals::interval_sequence sequence)
+oadrReportType ReportHelper::generateReport(ReportName *reportName, string reportSpecifierID, string reportRequestID,
+		time_t createdDateTimeUTC, intervals::interval_sequence &sequence)
 {
-	oadrReportType reportType(reportRequestID, reportSpecifierID, Oadr2bHelper::timetToiCalDateTime(dtstartUTC));
-
 	if (createdDateTimeUTC == 0)
 		createdDateTimeUTC = time(NULL);
 
-	reportType.createdDateTime(Oadr2bHelper::timetToiCalDateTime(createdDateTimeUTC));
+	oadrReportType reportType(reportRequestID, reportSpecifierID, DateTimeConverter::Time_tToDateTime(createdDateTimeUTC));
+
+	reportType.dtstart(sequence.front().dtstart().get());
 
 	reportType.reportName(reportName->name());
 

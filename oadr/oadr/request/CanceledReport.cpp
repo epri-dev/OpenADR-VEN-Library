@@ -317,13 +317,16 @@
 
 #include "CanceledReport.h"
 
-CanceledReport::CanceledReport(string venID, string responseCode, string responseDescription, string requestID, vector<string> *pendingReportIDs) :
-	Oadr2bRequest("oadrCanceledReport", "oadrReport", venID, requestID),
-	m_responseCode(responseCode),
-	m_responseDescription(responseDescription)
+using namespace oadr2b::oadr;
+using namespace oadr2b::ei;
+using namespace payloads;
+
+/********************************************************************************/
+
+CanceledReport::CanceledReport(string venID, string responseCode, string responseDescription, const set<string> &pendingReportIDs, string requestID) :
+	Oadr2bRequest("oadrCanceledReport", "oadrReport", venID, responseCode, responseDescription, requestID),
+	m_pendingReports(pendingReportIDs)
 {
-	if (pendingReportIDs != NULL)
-		m_pendingReportIDs = *pendingReportIDs;
 }
 
 /********************************************************************************/
@@ -332,3 +335,36 @@ CanceledReport::~CanceledReport()
 {
 }
 
+/********************************************************************************/
+
+unique_ptr<oadrPayload> CanceledReport::generatePayload()
+{
+	EiResponseType eir(responseCode(), requestID());
+
+	eir.responseDescription(responseDescription());
+
+	oadrPendingReportsType pr;
+
+	oadrPendingReportsType::reportRequestID_sequence seq;
+
+	for (auto &id : m_pendingReports)
+	{
+		seq.push_back(id);
+	}
+
+	pr.reportRequestID(seq);
+
+	oadrCanceledReportType cr(eir, pr);
+
+	cr.schemaVersion("2.0b");
+
+	cr.venID(venID());
+
+	oadrSignedObject oso;
+
+	oso.oadrCanceledReport(cr);
+
+	unique_ptr<oadrPayload> payload(new oadrPayload(oso));
+
+	return payload;
+}

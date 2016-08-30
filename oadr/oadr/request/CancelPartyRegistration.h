@@ -328,7 +328,7 @@ private:
 	string m_registrationID;
 
 protected:
-	virtual auto_ptr<oadrPayload> generatePayload();
+	virtual unique_ptr<oadrPayload> generatePayload();
 
 public:
 	CancelPartyRegistration(string venID, string registrationID, string requestID = "");

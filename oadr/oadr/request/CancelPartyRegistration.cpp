@@ -331,19 +331,19 @@ CancelPartyRegistration::~CancelPartyRegistration()
 
 /********************************************************************************/
 
-auto_ptr<oadrPayload> CancelPartyRegistration::generatePayload()
+unique_ptr<oadrPayload> CancelPartyRegistration::generatePayload()
 {
-	auto_ptr<oadrCancelPartyRegistrationType> cpr(new oadrCancelPartyRegistrationType(requestID(), m_registrationID));
+	oadrCancelPartyRegistrationType cpr(requestID(), m_registrationID);
 
-	cpr->schemaVersion("2.0b");
+	cpr.schemaVersion("2.0b");
 
-	cpr->venID(venID());
+	cpr.venID(venID());
 
-	auto_ptr<oadrSignedObject> oso(new oadrSignedObject());
+	oadrSignedObject oso;
 
-	oso->oadrCancelPartyRegistration(cpr);
+	oso.oadrCancelPartyRegistration(cpr);
 
-	auto_ptr<oadrPayload> payload(new oadrPayload(oso));
+	unique_ptr<oadrPayload> payload(new oadrPayload(oso));
 
 	return payload;
 }

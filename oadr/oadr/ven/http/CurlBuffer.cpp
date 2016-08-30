@@ -344,7 +344,7 @@ size_t CurlBuffer::numBytes()
 
 /********************************************************************************/
 
-string CurlBuffer::content()
+string &CurlBuffer::content()
 {
 	return m_content;
 }

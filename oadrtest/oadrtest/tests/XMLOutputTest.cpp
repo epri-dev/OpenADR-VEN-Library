@@ -329,7 +329,7 @@
 #include "../helper/LoadFile.h"
 
 /********************************************************************************/
-
+/*
 TEST(XMLOutput, GenerateRequestEvent1) {
 
 	RequestEvent re("venid", "requestID", 22);
@@ -341,9 +341,9 @@ TEST(XMLOutput, GenerateRequestEvent1) {
 
 	EXPECT_EQ(expectedOutput, output);
 }
-
+*/
 /********************************************************************************/
-
+/*
 TEST(XMLOutput, CreateOptSchedule) {
 
 	// 2013-12-30T16:19:58 (UTC)
@@ -377,11 +377,11 @@ TEST(XMLOutput, CreateOptSchedule) {
 	EXPECT_EQ(expectedOutput, output);
 
 }
-
+*/
 /********************************************************************************/
-
+/*
 TEST(XMLOutput, Currency) {
-	auto_ptr<currencyType> ct(new currencyType(oadr2b::oadr::currencyItemDescriptionType::currencyPerKW,
+	unique_ptr<currencyType> ct(new currencyType(oadr2b::oadr::currencyItemDescriptionType::currencyPerKW,
 			::ISO42173A_2010_04_07::ISO3AlphaCurrencyCodeContentType::USD,
 			 ::siscale::SiScaleCodeType::none));
 
@@ -393,6 +393,7 @@ TEST(XMLOutput, Currency) {
 
 	::currency(ss, *ct.get(), map);
 
-	cout << ss.str() << endl;
+	// cout << ss.str() << endl;
 }
 
+*/

@@ -330,7 +330,7 @@ RegisteredReport::~RegisteredReport()
 
 /********************************************************************************/
 
-auto_ptr<oadrPayload> RegisteredReport::generatePayload()
+unique_ptr<oadrPayload> RegisteredReport::generatePayload()
 {
 	oadrRegisteredReportType::eiResponse_type eir(responseCode(), requestID());
 
@@ -347,7 +347,7 @@ auto_ptr<oadrPayload> RegisteredReport::generatePayload()
 
 	oso.oadrRegisteredReport(request);
 
-	auto_ptr<oadrPayload> payload(new oadrPayload(oso));
+	unique_ptr<oadrPayload> payload(new oadrPayload(oso));
 
 	return payload;
 }

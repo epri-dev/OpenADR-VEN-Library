@@ -317,7 +317,7 @@
 
 #include "UpdateReport.h"
 
-UpdateReport::UpdateReport(string venID, string requestID, oadrUpdateReportType::oadrReport_sequence sequence,
+UpdateReport::UpdateReport(string venID, string requestID, oadrUpdateReportType::oadrReport_sequence &sequence,
 		time_t dtstart, string reportRequestID, time_t createdDateTime) :
 		 Oadr2bRequest("oadrUpdateReport", "oadrUpdatedReport", venID, requestID),
 		 m_sequence(sequence),
@@ -335,9 +335,9 @@ UpdateReport::~UpdateReport()
 
 /********************************************************************************/
 
-auto_ptr<oadrPayload> UpdateReport::generatePayload()
+unique_ptr<oadrPayload> UpdateReport::generatePayload()
 {
-	auto_ptr<oadrUpdateReportType> request( new oadrUpdateReportType(requestID()));
+	unique_ptr<oadrUpdateReportType> request( new oadrUpdateReportType(requestID()));
 
 	request->schemaVersion("2.0b");
 
@@ -346,11 +346,11 @@ auto_ptr<oadrPayload> UpdateReport::generatePayload()
 	request->oadrReport(m_sequence);
 
 	// generate the oadrPayload
-	auto_ptr<oadrSignedObject> oso(new oadrSignedObject());
+	unique_ptr<oadrSignedObject> oso(new oadrSignedObject());
 
-	oso->oadrUpdateReport(request);
+	oso->oadrUpdateReport(std::move(request));
 
-	auto_ptr<oadrPayload> payload(new oadrPayload(oso));
+	unique_ptr<oadrPayload> payload(new oadrPayload(std::move(oso)));
 
 	return payload;
 }

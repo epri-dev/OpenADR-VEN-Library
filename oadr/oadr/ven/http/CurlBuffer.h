@@ -334,7 +334,7 @@ public:
 	const char* contentBuffer();
 	size_t numBytes();
 
-	string content();
+	string &content();
 
 	void clear();
 };

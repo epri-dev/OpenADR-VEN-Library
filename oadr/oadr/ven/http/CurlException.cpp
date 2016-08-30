@@ -333,7 +333,7 @@ CurlException::~CurlException()  throw()
 
 const char* CurlException::what() const throw()
 {
-	return m_message;
+	return m_message.c_str();
 }
 
 /********************************************************************************/

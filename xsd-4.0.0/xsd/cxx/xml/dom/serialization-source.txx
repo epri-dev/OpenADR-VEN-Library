@@ -1,6 +1,5 @@
 // file      : xsd/cxx/xml/dom/serialization-source.txx
-// author    : Boris Kolpackov <boris@codesynthesis.com>
-// copyright : Copyright (c) 2005-2011 Code Synthesis Tools CC
+// copyright : Copyright (c) 2005-2014 Code Synthesis Tools CC
 // license   : GNU GPL v2 + exceptions; see accompanying LICENSE file
 
 #include <xercesc/util/XMLUni.hpp>     // xercesc::fg*
@@ -106,15 +105,10 @@ namespace xsd
           return *e;
         }
 
-
-        //
-        //
         template <typename C>
-        XSD_DOM_AUTO_PTR<xercesc::DOMDocument>
-        serialize (const std::basic_string<C>& el,
-                   const std::basic_string<C>& ns,
-                   const namespace_infomap<C>& map,
-                   unsigned long)
+        void
+        add_namespaces (xercesc::DOMElement& el,
+                        const namespace_infomap<C>& map)
         {
           using namespace xercesc;
 
@@ -123,45 +117,6 @@ namespace xsd
           typedef typename infomap::const_iterator infomap_iterator;
 
           C colon (':'), space (' ');
-
-          string prefix;
-
-          if (!ns.empty ())
-          {
-            infomap_iterator i (map.begin ()), e (map.end ());
-
-            for ( ;i != e; ++i)
-            {
-              if (i->second.name == ns)
-              {
-                prefix = i->first;
-                break;
-              }
-            }
-
-            // Since this is the first namespace in document we don't
-            // need to worry about conflicts.
-            //
-            if (i == e)
-              prefix = xml::bits::first_prefix<C> ();
-          }
-
-          const XMLCh ls[] = {xercesc::chLatin_L,
-                              xercesc::chLatin_S,
-                              xercesc::chNull};
-
-          DOMImplementation* impl (
-            DOMImplementationRegistry::getDOMImplementation (ls));
-
-          XSD_DOM_AUTO_PTR<DOMDocument> doc (
-            impl->createDocument (
-              (ns.empty () ? 0 : xml::string (ns).c_str ()),
-              xml::string ((prefix.empty ()
-                            ? el
-                            : prefix + colon + el)).c_str (),
-              0));
-
-          DOMElement* root (doc->getDocumentElement ());
 
           // Check if we need to provide xsi mapping.
           //
@@ -204,14 +159,14 @@ namespace xsd
               // Empty prefix.
               //
               if (!i->second.name.empty ())
-                root->setAttributeNS (
+                el.setAttributeNS (
                   xercesc::XMLUni::fgXMLNSURIName,
                   xml::string (xmlns_prefix).c_str (),
                   xml::string (i->second.name).c_str ());
             }
             else
             {
-              root->setAttributeNS (
+              el.setAttributeNS (
                 xercesc::XMLUni::fgXMLNSURIName,
                 xml::string (xmlns_prefix + colon + i->first).c_str (),
                 xml::string (i->second.name).c_str ());
@@ -223,7 +178,7 @@ namespace xsd
           //
           if (xsi)
             xsi_prefix = dom::prefix (xml::bits::xsi_namespace<C> (),
-                                      *root,
+                                      el,
                                       xml::bits::xsi_prefix<C> ());
 
           // Create xsi:schemaLocation and xsi:noNamespaceSchemaLocation
@@ -255,7 +210,7 @@ namespace xsd
 
           if (!schema_location.empty ())
           {
-            root->setAttributeNS (
+            el.setAttributeNS (
               xercesc::SchemaSymbols::fgURI_XSI,
               xml::string (xsi_prefix + colon +
                            xml::bits::schema_location<C> ()).c_str (),
@@ -264,13 +219,68 @@ namespace xsd
 
           if (!no_namespace_schema_location.empty ())
           {
-            root->setAttributeNS (
+            el.setAttributeNS (
               xercesc::SchemaSymbols::fgURI_XSI,
               xml::string (
                 xsi_prefix + colon +
                 xml::bits::no_namespace_schema_location<C> ()).c_str (),
               xml::string (no_namespace_schema_location).c_str ());
           }
+        }
+
+        //
+        //
+        template <typename C>
+        XSD_DOM_AUTO_PTR<xercesc::DOMDocument>
+        serialize (const std::basic_string<C>& el,
+                   const std::basic_string<C>& ns,
+                   const namespace_infomap<C>& map,
+                   unsigned long)
+        {
+          using namespace xercesc;
+
+          typedef std::basic_string<C> string;
+          typedef namespace_infomap<C> infomap;
+          typedef typename infomap::const_iterator infomap_iterator;
+
+          string prefix;
+
+          if (!ns.empty ())
+          {
+            infomap_iterator i (map.begin ()), e (map.end ());
+
+            for ( ;i != e; ++i)
+            {
+              if (i->second.name == ns)
+              {
+                prefix = i->first;
+                break;
+              }
+            }
+
+            // Since this is the first namespace in document we don't
+            // need to worry about conflicts.
+            //
+            if (i == e)
+              prefix = xml::bits::first_prefix<C> ();
+          }
+
+          const XMLCh ls[] = {xercesc::chLatin_L,
+                              xercesc::chLatin_S,
+                              xercesc::chNull};
+
+          DOMImplementation* impl (
+            DOMImplementationRegistry::getDOMImplementation (ls));
+
+          XSD_DOM_AUTO_PTR<DOMDocument> doc (
+            impl->createDocument (
+              (ns.empty () ? 0 : xml::string (ns).c_str ()),
+              xml::string ((prefix.empty ()
+                            ? el
+                            : prefix + C (':') + el)).c_str (),
+              0));
+
+          add_namespaces (*doc->getDocumentElement (), map);
 
           return doc;
         }
@@ -310,7 +320,14 @@ namespace xsd
 
           if (!(flags & dont_pretty_print) &&
               conf->canSetParameter (XMLUni::fgDOMWRTFormatPrettyPrint, true))
+          {
             conf->setParameter (XMLUni::fgDOMWRTFormatPrettyPrint, true);
+
+            // Don't add extra new lines between first-level elements.
+            //
+            if (conf->canSetParameter (XMLUni::fgDOMWRTXercesPrettyPrint, true))
+              conf->setParameter (XMLUni::fgDOMWRTXercesPrettyPrint, false);
+          }
 
           // See if we need to write XML declaration.
           //

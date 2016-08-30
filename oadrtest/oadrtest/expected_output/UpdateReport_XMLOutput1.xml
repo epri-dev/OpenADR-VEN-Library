@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no" ?>
+<p1:oadrPayload xmlns:p1="http://openadr.org/oadr-2.0b/2012/07">
+  <p1:oadrSignedObject>
+    <p1:oadrUpdateReport xmlns:p3="http://docs.oasis-open.org/ns/energyinterop/201110" p3:schemaVersion="2.0b" xmlns:p2="http://docs.oasis-open.org/ns/energyinterop/201110/payloads">
+      <p2:requestID>requestID</p2:requestID>
+      <p1:oadrReport xmlns:p3="urn:ietf:params:xml:ns:icalendar-2.0" xmlns:p4="urn:ietf:params:xml:ns:icalendar-2.0:stream" xmlns:p5="http://docs.oasis-open.org/ns/energyinterop/201110">
+        <p3:dtstart>
+          <p3:date-time>2015-07-13T22:59:00Z</p3:date-time>
+        </p3:dtstart>
+        <p4:intervals xmlns:p5="http://docs.oasis-open.org/ns/energyinterop/201110">
+          <p5:interval>
+            <p3:dtstart>
+              <p3:date-time>2015-07-13T22:59:00Z</p3:date-time>
+            </p3:dtstart>
+            <p3:duration>
+              <p3:duration>PT10S</p3:duration>
+            </p3:duration>
+            <p1:oadrReportPayload>
+              <p5:rID>rid</p5:rID>
+              <p5:confidence>1</p5:confidence>
+              <p5:accuracy>1</p5:accuracy>
+              <p5:payloadFloat>
+                <p5:value>102.2</p5:value>
+              </p5:payloadFloat>
+              <p1:oadrDataQuality>Quality Good - Non Specific</p1:oadrDataQuality>
+            </p1:oadrReportPayload>
+            <p1:oadrReportPayload>
+              <p5:rID>rid2</p5:rID>
+              <p5:confidence>1</p5:confidence>
+              <p5:accuracy>1</p5:accuracy>
+              <p1:oadrPayloadResourceStatus>
+                <p1:oadrOnline>true</p1:oadrOnline>
+                <p1:oadrManualOverride>false</p1:oadrManualOverride>
+                <p1:oadrLoadControlState>
+                  <p1:oadrCapacity>
+                    <p1:oadrMin>0</p1:oadrMin>
+                    <p1:oadrMax>0</p1:oadrMax>
+                    <p1:oadrCurrent>0</p1:oadrCurrent>
+                    <p1:oadrNormal>0</p1:oadrNormal>
+                  </p1:oadrCapacity>
+                  <p1:oadrLevelOffset>
+                    <p1:oadrMin>0</p1:oadrMin>
+                    <p1:oadrMax>0</p1:oadrMax>
+                    <p1:oadrCurrent>0</p1:oadrCurrent>
+                    <p1:oadrNormal>0</p1:oadrNormal>
+                  </p1:oadrLevelOffset>
+                  <p1:oadrPercentOffset>
+                    <p1:oadrMin>0</p1:oadrMin>
+                    <p1:oadrMax>0</p1:oadrMax>
+                    <p1:oadrCurrent>0</p1:oadrCurrent>
+                    <p1:oadrNormal>0</p1:oadrNormal>
+                  </p1:oadrPercentOffset>
+                  <p1:oadrSetPoint>
+                    <p1:oadrMin>0</p1:oadrMin>
+                    <p1:oadrMax>0</p1:oadrMax>
+                    <p1:oadrCurrent>0</p1:oadrCurrent>
+                    <p1:oadrNormal>0</p1:oadrNormal>
+                  </p1:oadrSetPoint>
+                </p1:oadrLoadControlState>
+              </p1:oadrPayloadResourceStatus>
+              <p1:oadrDataQuality>Quality Good - Non Specific</p1:oadrDataQuality>
+            </p1:oadrReportPayload>
+          </p5:interval>
+        </p4:intervals>
+        <p5:reportRequestID>reportRequestID</p5:reportRequestID>
+        <p5:reportSpecifierID>reportSpecifierID</p5:reportSpecifierID>
+        <p5:reportName>TELEMETRY_USAGE</p5:reportName>
+        <p5:createdDateTime>2015-07-13T22:59:00Z</p5:createdDateTime>
+      </p1:oadrReport>
+      <p3:venID>venID</p3:venID>
+    </p1:oadrUpdateReport>
+  </p1:oadrSignedObject>
+</p1:oadrPayload>

@@ -1,6 +1,5 @@
 // file      : xsd/cxx/xml/string.hxx
-// author    : Boris Kolpackov <boris@codesynthesis.com>
-// copyright : Copyright (c) 2005-2011 Code Synthesis Tools CC
+// copyright : Copyright (c) 2005-2014 Code Synthesis Tools CC
 // license   : GNU GPL v2 + exceptions; see accompanying LICENSE file
 
 #ifndef XSD_CXX_XML_STRING_HXX
@@ -57,21 +56,16 @@ namespace xsd
       public :
         template <typename C>
         string (const std::basic_string<C>& s)
-            : s_ (transcode_to_xmlch<C> (s))
-        {
-        }
+            : s_ (transcode_to_xmlch<C> (s)) {}
 
         template <typename C>
-        string (const C* s)
-            : s_ (transcode_to_xmlch<C> (s))
-        {
-        }
+        string (const C* s): s_ (transcode_to_xmlch<C> (s)) {}
 
         const XMLCh*
-        c_str () const
-        {
-          return s_.get ();
-        }
+        c_str () const {return s_.get ();}
+
+        XMLCh*
+        release () {return s_.release ();}
 
       private:
         string (const string&);

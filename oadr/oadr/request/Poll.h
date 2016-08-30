@@ -328,7 +328,7 @@ private:
 	string m_venID;
 
 protected:
-	virtual auto_ptr<oadrPayload> generatePayload();
+	virtual unique_ptr<oadrPayload> generatePayload();
 
 public:
 	Poll(string venID);

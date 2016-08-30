@@ -332,14 +332,16 @@ public:
 
 	virtual void setParameters(string clientCertificatePath, string clientPrivateKeyPath, string certificateAuthorityBundlePath, bool verifyCertificate, string sslCipherList, long sslVersion) = 0;
 
-	virtual string getRequestBody() = 0;
-	virtual string getResponseBody() = 0;
+	virtual string &getRequestBody() = 0;
+	virtual string &getResponseBody() = 0;
 
-	virtual string getResponseCode() = 0;
-	virtual string getResponseMessage() = 0;
+	virtual string &getResponseCode() = 0;
+	virtual string &getResponseMessage() = 0;
 
 	virtual time_t getResponseTime() = 0;
-	virtual string getServerDate() = 0;
+	virtual string &getServerDate() = 0;
+
+	virtual void setTimeouts(long connectTimeout, long requestTimeout) {};
 };
 
 #endif /* IHTTP_H_ */

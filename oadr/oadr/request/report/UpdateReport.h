@@ -321,7 +321,6 @@
 #include <oadrsd/2b/oadrUpdateReportType.hxx>
 
 #include "../Oadr2bRequest.h"
-#include "ReportWrapperList.h"
 
 #include <oadrsd/2b/oadrReportType.hxx>
 
@@ -335,10 +334,10 @@ private:
 	time_t m_createdDateTime;
 
 protected:
-	auto_ptr<oadrPayload> generatePayload();
+	unique_ptr<oadrPayload> generatePayload();
 
 public:
-	UpdateReport(string venID, string requestID, oadrUpdateReportType::oadrReport_sequence sequence, time_t dtstart, string reportRequestID, time_t createdDateTime = 0);
+	UpdateReport(string venID, string requestID, oadrUpdateReportType::oadrReport_sequence &sequence, time_t dtstart, string reportRequestID, time_t createdDateTime = 0);
 	virtual ~UpdateReport();
 };
 

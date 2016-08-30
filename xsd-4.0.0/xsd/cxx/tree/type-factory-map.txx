@@ -1,6 +1,5 @@
 // file      : xsd/cxx/tree/type-factory-map.txx
-// author    : Boris Kolpackov <boris@codesynthesis.com>
-// copyright : Copyright (c) 2005-2011 Code Synthesis Tools CC
+// copyright : Copyright (c) 2005-2014 Code Synthesis Tools CC
 // license   : GNU GPL v2 + exceptions; see accompanying LICENSE file
 
 #include <xercesc/validators/schema/SchemaSymbols.hpp>
@@ -38,7 +37,7 @@ namespace xsd
           &factory_impl<type>,
           false);
 
-        typedef simple_type<type> simple_type;
+        typedef simple_type<C, type> simple_type;
         register_type (
           qualified_name (bits::any_simple_type<C> (), xsd),
           &factory_impl<simple_type>,

@@ -318,8 +318,13 @@
 #ifndef LOADFILE_H_
 #define LOADFILE_H_
 
+#include <oadrsd/2b/oadr_20b.hxx>
+
 #include <string>
 
+using namespace oadr2b::oadr;
+using namespace oadr2b::ei;
+using namespace payloads;
 using namespace std;
 
 class LoadFile
@@ -335,6 +340,8 @@ public:
 
 	static string loadExpectedOutputFile(string fileName);
 	static string loadTestInputFile(string fileName);
+
+	static unique_ptr<oadrPayload> loadPayload(string fileName);
 };
 
 #endif /* LOADFILE_H_ */

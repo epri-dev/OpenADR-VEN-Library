@@ -329,7 +329,7 @@ private:
 	unsigned int m_modificationNumber;
 
 protected:
-	virtual auto_ptr<oadrPayload> generatePayload();
+	virtual unique_ptr<oadrPayload> generatePayload();
 
 public:
 	CreateOptEvent(string venID, string optID, EiOptType::optType_type optType,

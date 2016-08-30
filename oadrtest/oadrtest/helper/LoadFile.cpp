@@ -335,7 +335,12 @@ LoadFile::~LoadFile()
 
 string LoadFile::loadFile(string fileName)
 {
-	std::ifstream file(fileName.c_str());
+	std::ifstream file(fileName.c_str(), ios::binary | ios::out);
+
+	if (file.fail())
+	{
+		throw std::runtime_error("invalid file: " + fileName);
+	}
 
 	std::string fileContents((std::istreambuf_iterator<char>(file)),
 					 std::istreambuf_iterator<char>());
@@ -349,12 +354,27 @@ string LoadFile::loadFile(string fileName)
 
 string LoadFile::loadExpectedOutputFile(string fileName)
 {
-	return loadFile("../oadrtest/expected_output/" + fileName);
+	return loadFile("xml/oadrtest/expected_output/" + fileName);
 }
 
 /********************************************************************************/
 
 string LoadFile::loadTestInputFile(string fileName)
 {
-	return loadFile("../oadrtest/test_input/" + fileName);
+	return loadFile("xml/oadrtest/test_input/" + fileName);
 }
+
+/********************************************************************************/
+
+unique_ptr<oadrPayload> LoadFile::loadPayload(string fileName)
+{
+	string xml = loadFile("xml/oadrtest/test_input/payload/" + fileName);
+
+	istringstream iss(xml);
+
+	unique_ptr<oadrPayload> payload(oadrPayload_(iss, xsd::cxx::tree::flags::keep_dom | xsd::cxx::tree::flags::dont_validate | xml_schema::flags::dont_initialize));
+
+	return payload;
+}
+
+

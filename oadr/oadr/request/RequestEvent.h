@@ -343,7 +343,7 @@ private:
 	string m_requestID;
 
 protected:
-	virtual auto_ptr<oadrPayload> generatePayload();
+	virtual unique_ptr<oadrPayload> generatePayload();
 
 public:
 	RequestEvent(string venID, string requestID = "", unsigned int replyLimit = 0);

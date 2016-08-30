@@ -350,6 +350,8 @@ HttpCurl::HttpCurl()
 		}
 	}
 
+	m_curlInitialized = true;
+
 	// init curl
 	// how do we get the error code when initialiation failed?
 	if ((m_curl = curl_easy_init()) == NULL)
@@ -598,6 +600,14 @@ bool HttpCurl::post(string url, string content)
 		throw ex;
 	}
 
+	// clear the HTTP parameters
+	m_headers.clear();
+	m_cookies.clear();
+	m_responseBody.clear();
+	m_httpVersion.clear();
+	m_httpResponseCode.clear();
+	m_httpResponseMessage.clear();
+
 	m_receiveBuffer.parse(m_headers, m_cookies, m_responseBody, m_httpVersion, m_httpResponseCode, m_httpResponseMessage);
 
 	return true;
@@ -617,28 +627,28 @@ void HttpCurl::setParameters(string clientCertificatePath, string clientPrivateK
 
 /********************************************************************************/
 
-string HttpCurl::getRequestBody()
+string &HttpCurl::getRequestBody()
 {
 	return m_sendBuffer.content();
 }
 
 /********************************************************************************/
 
-string HttpCurl::getResponseBody()
+string &HttpCurl::getResponseBody()
 {
 	return m_responseBody;
 }
 
 /********************************************************************************/
 
-string HttpCurl::getResponseCode()
+string &HttpCurl::getResponseCode()
 {
 	return m_httpResponseCode;
 }
 
 /********************************************************************************/
 
-string HttpCurl::getResponseMessage()
+string &HttpCurl::getResponseMessage()
 {
 	return m_httpResponseMessage;
 }
@@ -652,7 +662,26 @@ time_t HttpCurl::getResponseTime()
 
 /********************************************************************************/
 
-string HttpCurl::getServerDate()
+string &HttpCurl::getServerDate()
 {
 	return m_headers["Date"];
+}
+
+/********************************************************************************/
+
+void HttpCurl::setTimeouts(long connectTimeout, long requestTimeout)
+{
+	CURLcode result;
+
+	if ((result = curl_easy_setopt(m_curl, CURLOPT_CONNECTTIMEOUT, &connectTimeout)) != 0)
+	{
+		CurlException ex(result, m_message);
+		throw ex;
+	}
+
+	if ((result = curl_easy_setopt(m_curl, CURLOPT_TIMEOUT, &requestTimeout)) != 0)
+	{
+		CurlException ex(result, m_message);
+		throw ex;
+	}
 }

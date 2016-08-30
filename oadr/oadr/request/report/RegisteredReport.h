@@ -330,7 +330,7 @@ class RegisteredReport: public Oadr2bRequest
 private:
 
 protected:
-	virtual auto_ptr<oadrPayload> generatePayload();
+	virtual unique_ptr<oadrPayload> generatePayload();
 
 public:
 	// TODO: change oadrReportRequestType to oadrReportRequestType_sequence

@@ -316,6 +316,7 @@
 //
 
 #include "CreateOptSchedule.h"
+#include "../../helper/DateTimeConverter.h"
 
 CreateOptSchedule::CreateOptSchedule(string venID, OptSchedule &optSchedule, string requestID) :
 	CreateOpt(venID, optSchedule.optID(), optSchedule.optType(), optSchedule.optReasonValue(), requestID),
@@ -339,14 +340,14 @@ void CreateOptSchedule::createdDateTime(time_t createdDateTime)
 
 /********************************************************************************/
 
-auto_ptr<oadrPayload> CreateOptSchedule::generatePayload()
+unique_ptr<oadrPayload> CreateOptSchedule::generatePayload()
 {
-	icalendar_2_0::DateTimeType icalCreatedDateTime = (m_createdDateTime == 0 ? Oadr2bHelper::nowToiCalDateTime() : Oadr2bHelper::timetToiCalDateTime(m_createdDateTime));
+	icalendar_2_0::DateTimeType icalCreatedDateTime = (m_createdDateTime == 0 ? DateTimeConverter::Time_tToDateTime(time(NULL)) : DateTimeConverter::Time_tToDateTime(m_createdDateTime));
 	EiOptType::createdDateTime_type createdDateTime(icalCreatedDateTime);
 
 	oadrCreateOptType::eiTarget_type target;
 
-	auto_ptr<oadrCreateOptType> co(new oadrCreateOptType(optID(), optType(), optReasonValue().toString(), venID(),
+	unique_ptr<oadrCreateOptType> co(new oadrCreateOptType(optID(), optType(), optReasonValue().toString(), venID(),
 			createdDateTime, requestID(), target));
 
 	EiOptType::marketContext_type mc(m_optSchedule.marketContext());
@@ -369,11 +370,11 @@ auto_ptr<oadrPayload> CreateOptSchedule::generatePayload()
 		co->eiTarget(eitt);
 	}
 
-	auto_ptr<oadrSignedObject> oso(new oadrSignedObject());
+	unique_ptr<oadrSignedObject> oso(new oadrSignedObject());
 
-	oso->oadrCreateOpt(co);
+	oso->oadrCreateOpt(std::move(co));
 
-	auto_ptr<oadrPayload> payload(new oadrPayload(oso));
+	unique_ptr<oadrPayload> payload(new oadrPayload(std::move(oso)));
 
 	return payload;
 }

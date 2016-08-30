@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<ns4:oadrPayload xmlns="http://www.w3.org/2000/09/xmldsig#" xmlns:ns2="http://docs.oasis-open.org/ns/emix/2011/06/power" xmlns:ns3="http://docs.oasis-open.org/ns/emix/2011/06/siscale" xmlns:ns4="http://openadr.org/oadr-2.0b/2012/07" xmlns:ns5="http://www.w3.org/2005/Atom" xmlns:ns6="http://www.opengis.net/gml/3.2" xmlns:ns7="http://docs.oasis-open.org/ns/emix/2011/06" xmlns:ns8="http://www.w3.org/2009/xmldsig11#" xmlns:ns9="http://openadr.org/oadr-2.0b/2012/07/xmldsig-properties" xmlns:ns10="urn:ietf:params:xml:ns:icalendar-2.0" xmlns:ns11="http://docs.oasis-open.org/ns/energyinterop/201110" xmlns:ns12="urn:ietf:params:xml:ns:icalendar-2.0:stream" xmlns:ns13="http://docs.oasis-open.org/ns/energyinterop/201110/payloads" xmlns:ns14="urn:un:unece:uncefact:codelist:standard:5:ISO42173A:2010-04-07">
+    <ns4:oadrSignedObject>
+        <ns4:oadrCreatedPartyRegistration ns11:schemaVersion="2.0b">
+            <ns11:eiResponse>
+                <ns11:responseCode>200</ns11:responseCode>
+                <ns11:responseDescription>OK</ns11:responseDescription>
+                <ns13:requestID>4C805D0094</ns13:requestID>
+            </ns11:eiResponse>
+            <ns11:registrationID>752e4cc6c5413baa1a80</ns11:registrationID>
+            <ns11:venID>edac8fec7527cb960967</ns11:venID>
+            <ns11:vtnID>EPRI_VTN</ns11:vtnID>
+            <ns4:oadrProfiles>
+                <ns4:oadrProfile>
+                    <ns4:oadrProfileName>2.0a</ns4:oadrProfileName>
+                    <ns4:oadrTransports>
+                        <ns4:oadrTransport>
+                            <ns4:oadrTransportName>simpleHttp</ns4:oadrTransportName>
+                        </ns4:oadrTransport>
+                        <ns4:oadrTransport>
+                            <ns4:oadrTransportName>xmpp</ns4:oadrTransportName>
+                        </ns4:oadrTransport>
+                    </ns4:oadrTransports>
+                </ns4:oadrProfile>
+                <ns4:oadrProfile>
+                    <ns4:oadrProfileName>2.0b</ns4:oadrProfileName>
+                    <ns4:oadrTransports>
+                        <ns4:oadrTransport>
+                            <ns4:oadrTransportName>simpleHttp</ns4:oadrTransportName>
+                        </ns4:oadrTransport>
+                        <ns4:oadrTransport>
+                            <ns4:oadrTransportName>xmpp</ns4:oadrTransportName>
+                        </ns4:oadrTransport>
+                    </ns4:oadrTransports>
+                </ns4:oadrProfile>
+            </ns4:oadrProfiles>
+            <ns4:oadrRequestedOadrPollFreq>
+                <ns10:duration>PT10S</ns10:duration>
+            </ns4:oadrRequestedOadrPollFreq>
+        </ns4:oadrCreatedPartyRegistration>
+    </ns4:oadrSignedObject>
+</ns4:oadrPayload>

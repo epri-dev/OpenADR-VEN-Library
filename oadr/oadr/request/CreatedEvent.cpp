@@ -317,9 +317,9 @@
 
 #include "CreatedEvent.h"
 
-CreatedEvent::CreatedEvent(string venID, string responseCode, string responseDescription, EventResponses &responses, string requestID) :
+CreatedEvent::CreatedEvent(string venID, string responseCode, string responseDescription, eventResponses::eventResponse_sequence &ers, string requestID) :
 	Oadr2bRequest("oadrCreatedEvent", "oadrResponse", venID, responseCode, responseDescription, requestID),
-	m_eventResponses(responses)
+	m_eventResponses(ers)
 {
 
 }
@@ -332,29 +332,33 @@ CreatedEvent::~CreatedEvent()
 
 /********************************************************************************/
 
-auto_ptr<oadrPayload> CreatedEvent::generatePayload()
+unique_ptr<oadrPayload> CreatedEvent::generatePayload()
 {
-	auto_ptr<EiResponseType> eir(new EiResponseType(responseCode(), requestID()));
+	EiResponseType eir(responseCode(), requestID());
 
-	eir->responseDescription(responseDescription());
+	eir.responseDescription(responseDescription());
 
-	auto_ptr<eiCreatedEvent> eice(new eiCreatedEvent(eir, venID()));
+	eiCreatedEvent eice(eir, venID());
 
-	eice->eventResponses(m_eventResponses.createEventResponses());
+	eventResponses ers;
+
+	ers.eventResponse(m_eventResponses);
+
+	eice.eventResponses(ers);
 
 	// if there are CreatedEvent objects, the eiResponse requestID must be empty
-	if (eice->eventResponses()->eventResponse().size() != 0)
-		eice->eiResponse().requestID("");
+	if (eice.eventResponses()->eventResponse().size() != 0)
+		eice.eiResponse().requestID("");
 
-	auto_ptr<oadrCreatedEventType> ce(new oadrCreatedEventType(eice));
+	oadrCreatedEventType ce(eice);
 
-	ce->schemaVersion("2.0b");
+	ce.schemaVersion("2.0b");
 
-	auto_ptr<oadrSignedObject> oso(new oadrSignedObject());
+	oadrSignedObject oso;
 
-	oso->oadrCreatedEvent(ce);
+	oso.oadrCreatedEvent(ce);
 
-	auto_ptr<oadrPayload> payload(new oadrPayload(oso));
+	unique_ptr<oadrPayload> payload(new oadrPayload(oso));
 
 	return payload;
 }

@@ -341,7 +341,7 @@ CreatePartyRegistration::~CreatePartyRegistration()
 
 /********************************************************************************/
 
-auto_ptr<oadrPayload> CreatePartyRegistration::generatePayload()
+unique_ptr<oadrPayload> CreatePartyRegistration::generatePayload()
 {
 	oadrCreatePartyRegistrationType cpr(requestID(), m_profileType,
 			m_transportType, m_reportOnly, m_xmlSignature);
@@ -353,11 +353,17 @@ auto_ptr<oadrPayload> CreatePartyRegistration::generatePayload()
 	if (m_venName != "")
 		cpr.oadrVenName(m_venName);
 
+	if (venID() != "")
+		cpr.venID(venID());
+
+	if (m_registrationID != "")
+		cpr.registrationID(m_registrationID);
+
 	oadrSignedObject oso;
 
 	oso.oadrCreatePartyRegistration(cpr);
 
-	auto_ptr<oadrPayload> payload(new oadrPayload(oso));
+	unique_ptr<oadrPayload> payload(new oadrPayload(oso));
 
 	return payload;
 }

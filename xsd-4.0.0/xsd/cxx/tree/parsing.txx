@@ -1,6 +1,5 @@
 // file      : xsd/cxx/tree/parsing.txx
-// author    : Boris Kolpackov <boris@codesynthesis.com>
-// copyright : Copyright (c) 2005-2011 Code Synthesis Tools CC
+// copyright : Copyright (c) 2005-2014 Code Synthesis Tools CC
 // license   : GNU GPL v2 + exceptions; see accompanying LICENSE file
 
 #include <string>
@@ -37,6 +36,9 @@ namespace xsd
       _type (const xercesc::DOMElement& e, flags f, container* c)
           : container_ (c)
       {
+        if (f & flags::extract_content)
+          content_.reset (new dom_content_type (e));
+
         if (f & flags::keep_dom)
           dom_info_ = dom_info_factory::create (e, *this, c == 0);
       }
@@ -45,6 +47,8 @@ namespace xsd
       _type (const xercesc::DOMAttr& a, flags f, container* c)
           : container_ (c)
       {
+        // anyType cannot be an attribute type so no content extraction.
+
         if (f & flags::keep_dom)
           dom_info_ = dom_info_factory::create (a, *this);
       }
@@ -57,33 +61,41 @@ namespace xsd
              container* c)
           : container_ (c) // List elements don't have associated DOM nodes.
       {
+        // anyType cannot be a list element type so no content extraction.
       }
 
       // simple_type
       //
-      template <typename B>
-      inline simple_type<B>::
+      template <typename C, typename B>
+      inline simple_type<C, B>::
       simple_type (const xercesc::DOMElement& e, flags f, container* c)
-          : B (e, f, c)
+          : B (e, (f & ~flags::extract_content), c)
       {
+        if (f & flags::extract_content)
+          this->content_.reset (
+            new text_content_type (tree::text_content<C> (e)));
       }
 
-      template <typename B>
-      inline simple_type<B>::
+      template <typename C, typename B>
+      inline simple_type<C, B>::
       simple_type (const xercesc::DOMAttr& a, flags f, container* c)
-          : B (a, f, c)
+          : B (a, (f & ~flags::extract_content), c)
       {
+        if (f & flags::extract_content)
+          this->content_.reset (new text_content_type (
+                            xml::transcode<C> (a.getValue ())));
       }
 
-      template <typename B>
-      template <typename C>
-      inline simple_type<B>::
+      template <typename C, typename B>
+      inline simple_type<C, B>::
       simple_type (const std::basic_string<C>& s,
                    const xercesc::DOMElement* e,
                    flags f,
                    container* c)
-          : B (s, e, f, c)
+          : B (s, e, (f & ~flags::extract_content), c)
       {
+        if (f & flags::extract_content)
+          this->content_.reset (new text_content_type (s));
       }
 
       // fundamental_base
@@ -162,7 +174,7 @@ namespace xsd
       }
 
       // Individual items of the list have no DOM association. Therefore
-      // I clear keep_dom from flags.
+      // we clear keep_dom from flags.
       //
 
       template <typename T, typename C, schema_type::value ST>
@@ -170,7 +182,7 @@ namespace xsd
       list (const xercesc::DOMElement& e, flags f, container* c)
           : sequence<T> (c)
       {
-        init (text_content<C> (e), &e, f & ~flags::keep_dom);
+        init (tree::text_content<C> (e), &e, f & ~flags::keep_dom);
       }
 
       template <typename T, typename C, schema_type::value ST>
@@ -204,7 +216,6 @@ namespace xsd
           return;
 
         using std::basic_string;
-        typedef typename sequence<T>::ptr ptr;
         typedef typename basic_string<C>::size_type size_type;
 
         const C* data (s.c_str ());
@@ -219,13 +230,12 @@ namespace xsd
 
           if (j != basic_string<C>::npos)
           {
-            ptr r (
-              new T (basic_string<C> (data + i, j - i),
-                     parent,
-                     f,
-                     this->container_));
-
-            this->v_.push_back (r);
+            this->push_back (
+              traits<T, C, ST>::create (
+                basic_string<C> (data + i, j - i),
+                parent,
+                f,
+                this->container_));
 
             i = bits::find_ns (data, size, j);
           }
@@ -233,13 +243,12 @@ namespace xsd
           {
             // Last element.
             //
-            ptr r (
-              new T (basic_string<C> (data + i, size - i),
-                     parent,
-                     f,
-                     this->container_));
-
-            this->v_.push_back (r);
+            this->push_back (
+              traits<T, C, ST>::create (
+                basic_string<C> (data + i, size - i),
+                parent,
+                f,
+                this->container_));
 
             break;
           }
@@ -251,7 +260,7 @@ namespace xsd
       list (const xercesc::DOMElement& e, flags, container* c)
           : sequence<T> (c)
       {
-        init (text_content<C> (e), &e);
+        init (tree::text_content<C> (e), &e);
       }
 
       template <typename T, typename C, schema_type::value ST>
@@ -325,7 +334,7 @@ namespace xsd
       string<C, B>::
       string (const xercesc::DOMElement& e, flags f, container* c)
           : B (e, f, c),
-            base_type (text_content<C> (e))
+            base_type (tree::text_content<C> (e))
       {
       }
 
@@ -692,7 +701,7 @@ namespace xsd
       uri<C, B>::
       uri (const xercesc::DOMElement& e, flags f, container* c)
           : B (e, f, c),
-            base_type (trim (text_content<C> (e)))
+            base_type (trim (tree::text_content<C> (e)))
       {
       }
 
@@ -722,7 +731,7 @@ namespace xsd
       qname (const xercesc::DOMElement& e, flags f, container* c)
           : B (e, f, c)
       {
-        std::basic_string<C> v (trim (text_content<C> (e)));
+        std::basic_string<C> v (trim (tree::text_content<C> (e)));
         ns_ = resolve (v, &e);
         name_ = xml::uq_name (v);
       }
@@ -793,7 +802,7 @@ namespace xsd
       {
         // This implementation is not optimal.
         //
-        std::basic_string<C> str (trim (text_content<C> (e)));
+        std::basic_string<C> str (trim (tree::text_content<C> (e)));
         decode (xml::string (str).c_str ());
       }
 
@@ -828,7 +837,7 @@ namespace xsd
       {
         // This implementation is not optimal.
         //
-        std::basic_string<C> str (trim (text_content<C> (e)));
+        std::basic_string<C> str (trim (tree::text_content<C> (e)));
         decode (xml::string (str).c_str ());
       }
 

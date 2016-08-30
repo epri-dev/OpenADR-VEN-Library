@@ -317,10 +317,10 @@
 
 #include "ReportName.h"
 
-ReportName *ReportName::HISTORY_USAGE = new ReportName("HISTORY_USAGE");
-ReportName *ReportName::HISTORY_GREENBUTTON = new ReportName("HISTORY_GREENBUTTON");
-ReportName *ReportName::TELEMETRY_USAGE = new ReportName("TELEMETRY_USAGE");
-ReportName *ReportName::TELEMETRY_STATUS = new ReportName("TELEMETRY_STATUS");
+ReportName ReportName::HISTORY_USAGE("HISTORY_USAGE");
+ReportName ReportName::HISTORY_GREENBUTTON("HISTORY_GREENBUTTON");
+ReportName ReportName::TELEMETRY_USAGE("TELEMETRY_USAGE");
+ReportName ReportName::TELEMETRY_STATUS("TELEMETRY_STATUS");
 
 /********************************************************************************/
 

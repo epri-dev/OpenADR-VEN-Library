@@ -375,14 +375,16 @@ public:
 
 	void setParameters(string clientCertificatePath, string clientPrivateKeyPath, string certificateAuthorityBundlePath, bool verifyCertificate = true, string sslCipherList = "DEFAULT", long sslVersion = CURL_SSLVERSION_DEFAULT);
 
-	string getRequestBody();
-	string getResponseBody();
+	string &getRequestBody();
+	string &getResponseBody();
 
-	string getResponseCode();
-	string getResponseMessage();
+	string &getResponseCode();
+	string &getResponseMessage();
 
 	time_t getResponseTime();
-	string getServerDate();
+	string &getServerDate();
+
+	virtual void setTimeouts(long connectTimeout, long requestTimeout);
 };
 
 #endif /* HTTPCURL_H_ */

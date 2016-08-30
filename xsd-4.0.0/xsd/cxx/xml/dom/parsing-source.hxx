@@ -1,6 +1,5 @@
 // file      : xsd/cxx/xml/dom/parsing-source.hxx
-// author    : Boris Kolpackov <boris@codesynthesis.com>
-// copyright : Copyright (c) 2005-2011 Code Synthesis Tools CC
+// copyright : Copyright (c) 2005-2014 Code Synthesis Tools CC
 // license   : GNU GPL v2 + exceptions; see accompanying LICENSE file
 
 #ifndef XSD_CXX_XML_DOM_PARSING_SOURCE_HXX
@@ -31,30 +30,47 @@ namespace xsd
     {
       namespace dom
       {
-        // Parser state object. Can be used for parsing element, attributes,
-        // or both.
+        // Parser state object. Can be used for parsing elements (and
+        // optionally text), attributes, or both.
         //
         template <typename C>
         class parser
         {
         public:
-          parser (const xercesc::DOMElement& e, bool ep, bool ap);
+          parser (const xercesc::DOMElement& e, bool ep, bool tp, bool ap);
 
+          // Content parsing.
+          //
           bool
-          more_elements ()
+          more_content ()
           {
-            return next_element_ != 0;
+            return next_content_ != 0;
           }
 
           const xercesc::DOMElement&
           cur_element ()
           {
-            return *static_cast<const xercesc::DOMElement*> (next_element_);
+            return *static_cast<const xercesc::DOMElement*> (next_content_);
+          }
+
+          const xercesc::DOMText&
+          cur_text ()
+          {
+            return *static_cast<const xercesc::DOMText*> (next_content_);
+          }
+
+          bool
+          cur_is_text ()
+          {
+            return next_content_->getNodeType () !=
+              xercesc::DOMNode::ELEMENT_NODE;
           }
 
           void
-          next_element ();
+          next_content (bool text);
 
+          // Attribute parsing.
+          //
           bool
           more_attributes ()
           {
@@ -87,7 +103,7 @@ namespace xsd
 
         private:
           const xercesc::DOMElement& element_;
-          const xercesc::DOMNode* next_element_;
+          const xercesc::DOMNode* next_content_;
 
           const xercesc::DOMNamedNodeMap* a_;
           XMLSize_t ai_; // Index of the next DOMAttr.

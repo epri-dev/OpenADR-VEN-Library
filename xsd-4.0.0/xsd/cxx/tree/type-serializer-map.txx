@@ -1,6 +1,5 @@
 // file      : xsd/cxx/tree/type-serializer-map.txx
-// author    : Boris Kolpackov <boris@codesynthesis.com>
-// copyright : Copyright (c) 2005-2011 Code Synthesis Tools CC
+// copyright : Copyright (c) 2005-2014 Code Synthesis Tools CC
 // license   : GNU GPL v2 + exceptions; see accompanying LICENSE file
 
 #include <xercesc/util/XMLUni.hpp>
@@ -11,8 +10,6 @@
 
 #include <xsd/cxx/tree/types.hxx>
 #include <xsd/cxx/tree/bits/literals.hxx>
-
-#include <iostream>
 
 namespace xsd
 {
@@ -39,7 +36,7 @@ namespace xsd
           &serializer_impl<type>,
           false);
 
-        typedef simple_type<type> simple_type;
+        typedef simple_type<C, type> simple_type;
         register_type (
           typeid (simple_type),
           qualified_name (bits::any_simple_type<C> (), xsd),

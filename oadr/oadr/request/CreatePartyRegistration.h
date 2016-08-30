@@ -336,7 +336,7 @@ private:
 	bool m_httpPullModel;
 
 protected:
-	virtual auto_ptr<oadrPayload> generatePayload();
+	virtual unique_ptr<oadrPayload> generatePayload();
 
 public:
 	CreatePartyRegistration(string venID, string requestID,

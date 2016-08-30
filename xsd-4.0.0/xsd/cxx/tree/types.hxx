@@ -1,6 +1,5 @@
 // file      : xsd/cxx/tree/types.hxx
-// author    : Boris Kolpackov <boris@codesynthesis.com>
-// copyright : Copyright (c) 2005-2011 Code Synthesis Tools CC
+// copyright : Copyright (c) 2005-2014 Code Synthesis Tools CC
 // license   : GNU GPL v2 + exceptions; see accompanying LICENSE file
 
 /**
@@ -272,6 +271,29 @@ namespace xsd
         }
       };
 
+      /**
+       * @brief %string comparison operator.
+       *
+       * @return True if the strings are equal, false otherwise.
+       */
+      template <typename C, typename B>
+      inline bool
+      operator== (const string<C, B>& a, const string<C, B>& b)
+      {
+        return static_cast<const std::basic_string<C>&> (a) == b;
+      }
+
+      /**
+       * @brief %string comparison operator.
+       *
+       * @return True if the strings are not equal, false otherwise.
+       */
+      template <typename C, typename B>
+      inline bool
+      operator!= (const string<C, B>& a, const string<C, B>& b)
+      {
+        return !(a == b);
+      }
 
       /**
        * @brief Class corresponding to the XML Schema normalizedString
@@ -1120,6 +1142,31 @@ namespace xsd
         //@}
       };
 
+      /**
+       * @brief %nmtokens comparison operator.
+       *
+       * @return True if the lists of nmtokens are equal, false otherwise.
+       */
+      template <typename C, typename B, typename nmtoken>
+      inline bool
+      operator== (const nmtokens<C, B, nmtoken>& a,
+                  const nmtokens<C, B, nmtoken>& b)
+      {
+        return static_cast<const list<nmtoken, C>&> (a) == b;
+      }
+
+      /**
+       * @brief %nmtokens comparison operator.
+       *
+       * @return True if the lists of nmtokens are not equal, false otherwise.
+       */
+      template <typename C, typename B, typename nmtoken>
+      inline bool
+      operator!= (const nmtokens<C, B, nmtoken>& a,
+                  const nmtokens<C, B, nmtoken>& b)
+      {
+        return !(a == b);
+      }
 
       /**
        * @brief Class corresponding to the XML Schema Name built-in
@@ -2576,6 +2623,29 @@ namespace xsd
         //@}
       };
 
+      /**
+       * @brief %idrefs comparison operator.
+       *
+       * @return True if the lists of idrefs are equal, false otherwise.
+       */
+      template <typename C, typename B, typename idref>
+      inline bool
+      operator== (const idrefs<C, B, idref>& a, const idrefs<C, B, idref>& b)
+      {
+        return static_cast<const list<idref, C>&> (a) == b;
+      }
+
+      /**
+       * @brief %idrefs comparison operator.
+       *
+       * @return True if the lists of idrefs are not equal, false otherwise.
+       */
+      template <typename C, typename B, typename idref>
+      inline bool
+      operator!= (const idrefs<C, B, idref>& a, const idrefs<C, B, idref>& b)
+      {
+        return !(a == b);
+      }
 
       /**
        * @brief Class corresponding to the XML Schema anyURI built-in
@@ -2812,6 +2882,29 @@ namespace xsd
         friend class qname;
       };
 
+      /**
+       * @brief %uri comparison operator.
+       *
+       * @return True if the uris are equal, false otherwise.
+       */
+      template <typename C, typename B>
+      inline bool
+      operator== (const uri<C, B>& a, const uri<C, B>& b)
+      {
+        return static_cast<const std::basic_string<C>&> (a) == b;
+      }
+
+      /**
+       * @brief %uri comparison operator.
+       *
+       * @return True if the uris are not equal, false otherwise.
+       */
+      template <typename C, typename B>
+      inline bool
+      operator!= (const uri<C, B>& a, const uri<C, B>& b)
+      {
+        return !(a == b);
+      }
 
       /**
        * @brief Class corresponding to the XML Schema QName built-in
@@ -3212,6 +3305,29 @@ namespace xsd
         decode (const XMLCh*);
       };
 
+      /**
+       * @brief %base64_binary comparison operator.
+       *
+       * @return True if the binaries are equal, false otherwise.
+       */
+      template <typename C, typename B>
+      inline bool
+      operator== (const base64_binary<C, B>& a, const base64_binary<C, B>& b)
+      {
+        return static_cast<const buffer<C>&> (a) == b;
+      }
+
+      /**
+       * @brief %base64_binary comparison operator.
+       *
+       * @return True if the binaries are not equal, false otherwise.
+       */
+      template <typename C, typename B>
+      inline bool
+      operator!= (const base64_binary<C, B>& a, const base64_binary<C, B>& b)
+      {
+        return !(a == b);
+      }
 
       /**
        * @brief Class corresponding to the XML Schema hexBinary
@@ -3405,6 +3521,29 @@ namespace xsd
         decode (const XMLCh*);
       };
 
+      /**
+       * @brief %hex_binary comparison operator.
+       *
+       * @return True if the binaries are equal, false otherwise.
+       */
+      template <typename C, typename B>
+      inline bool
+      operator== (const hex_binary<C, B>& a, const hex_binary<C, B>& b)
+      {
+        return static_cast<const buffer<C>&> (a) == b;
+      }
+
+      /**
+       * @brief %hex_binary comparison operator.
+       *
+       * @return True if the binaries are not equal, false otherwise.
+       */
+      template <typename C, typename B>
+      inline bool
+      operator!= (const hex_binary<C, B>& a, const hex_binary<C, B>& b)
+      {
+        return !(a == b);
+      }
 
       /**
        * @brief Class corresponding to the XML Schema ENTITY built-in
@@ -3769,6 +3908,32 @@ namespace xsd
                   container* c = 0);
         //@}
       };
+
+      /**
+       * @brief %entities comparison operator.
+       *
+       * @return True if the lists of entities are equal, false otherwise.
+       */
+      template <typename C, typename B, typename entity>
+      inline bool
+      operator== (const entities<C, B, entity>& a,
+                  const entities<C, B, entity>& b)
+      {
+        return static_cast<const list<entity, C>&> (a) == b;
+      }
+
+      /**
+       * @brief %entities comparison operator.
+       *
+       * @return True if the lists of entities are not equal, false otherwise.
+       */
+      template <typename C, typename B, typename entity>
+      inline bool
+      operator!= (const entities<C, B, entity>& a,
+                  const entities<C, B, entity>& b)
+      {
+        return !(a == b);
+      }
     }
   }
 }

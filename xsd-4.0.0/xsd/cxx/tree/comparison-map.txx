@@ -1,6 +1,5 @@
 // file      : xsd/cxx/tree/comparison-map.txx
-// author    : Boris Kolpackov <boris@codesynthesis.com>
-// copyright : Copyright (c) 2005-2011 Code Synthesis Tools CC
+// copyright : Copyright (c) 2005-2014 Code Synthesis Tools CC
 // license   : GNU GPL v2 + exceptions; see accompanying LICENSE file
 
 #include <xsd/cxx/tree/types.hxx>
@@ -20,18 +19,17 @@ namespace xsd
         // anyType and anySimpleType.
         //
 
-        //register_type (
-        //  typeid (type),
-        //  &comparator_impl<type>,
-        //  false);
+        register_type (
+          typeid (type),
+          &comparator_impl<type>,
+          false);
 
-        typedef simple_type<type> simple_type;
+        typedef simple_type<C, type> simple_type;
 
-        //register_type (
-        //  typeid (simple_type),
-        //  &comparator_impl<simple_type>,
-        //  false);
-
+        register_type (
+          typeid (simple_type),
+          &comparator_impl<simple_type>,
+          false);
 
         // Strings
         //

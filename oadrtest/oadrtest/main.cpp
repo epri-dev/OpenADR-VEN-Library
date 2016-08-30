@@ -371,11 +371,21 @@ TEST_F(FooTest, DoesXyz) {
 }  // namespace
 */
 
+#include <xercesc/util/PlatformUtils.hpp>
+
+using namespace xercesc_3_1;
+
 int main(int argc, char **argv)
 {
+	XMLPlatformUtils::Initialize();
+
 	::testing::GTEST_FLAG(filter) = "-VEN2bTestSet.*:CurlHTTPTest.*";
 
 	::testing::InitGoogleTest(&argc, argv);
 
-	return RUN_ALL_TESTS();
+	int ret = RUN_ALL_TESTS();
+
+	XMLPlatformUtils::Terminate();
+
+	return ret;
 }

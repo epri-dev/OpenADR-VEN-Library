@@ -332,17 +332,17 @@ CancelOptSchedule::~CancelOptSchedule()
 
 /********************************************************************************/
 
-auto_ptr<oadrPayload> CancelOptSchedule::generatePayload()
+unique_ptr<oadrPayload> CancelOptSchedule::generatePayload()
 {
-	auto_ptr<oadrCancelOptType> co(new oadrCancelOptType(requestID(), m_optID, venID()));
+	unique_ptr<oadrCancelOptType> co(new oadrCancelOptType(requestID(), m_optID, venID()));
 
 	co->schemaVersion("2.0b");
 
-	auto_ptr<oadrSignedObject> oso(new oadrSignedObject());
+	unique_ptr<oadrSignedObject> oso(new oadrSignedObject());
 
-	oso->oadrCancelOpt(co);
+	oso->oadrCancelOpt(std::move(co));
 
-	auto_ptr<oadrPayload> payload(new oadrPayload(oso));
+	unique_ptr<oadrPayload> payload(new oadrPayload(std::move(oso)));
 
 	return payload;
 }

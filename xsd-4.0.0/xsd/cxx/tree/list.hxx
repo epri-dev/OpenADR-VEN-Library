@@ -1,6 +1,5 @@
 // file      : xsd/cxx/tree/list.hxx
-// author    : Boris Kolpackov <boris@codesynthesis.com>
-// copyright : Copyright (c) 2005-2011 Code Synthesis Tools CC
+// copyright : Copyright (c) 2005-2014 Code Synthesis Tools CC
 // license   : GNU GPL v2 + exceptions; see accompanying LICENSE file
 
 #ifndef XSD_CXX_TREE_LIST_HXX
@@ -11,7 +10,7 @@
 #include <xercesc/dom/DOMAttr.hpp>
 #include <xercesc/dom/DOMElement.hpp>
 
-#include <xsd/cxx/tree/elements.hxx> // tree::istream
+#include <xsd/cxx/tree/elements.hxx>
 #include <xsd/cxx/tree/istream-fwd.hxx> // tree::istream
 #include <xsd/cxx/tree/containers.hxx>  // fundamental_p, sequence
 

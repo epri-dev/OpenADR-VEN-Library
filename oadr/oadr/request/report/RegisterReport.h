@@ -320,13 +320,7 @@
 
 #include <oadrsd/2b/oadrRegisterReportType.hxx>
 
-#include <vector>
-
 #include "../Oadr2bRequest.h"
-
-#include "ReportWrapperList.h"
-
-#include <algorithm>
 
 class RegisterReport: public Oadr2bRequest
 {
@@ -334,7 +328,7 @@ private:
 	oadrUpdateReportType::oadrReport_sequence m_sequence;
 
 protected:
-	auto_ptr<oadrPayload> generatePayload();
+	unique_ptr<oadrPayload> generatePayload();
 
 public:
 	RegisterReport(string venID, string requestID, oadrRegisterReportType::oadrReport_sequence sequence);

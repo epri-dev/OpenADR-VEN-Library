@@ -319,6 +319,8 @@
 
 #include <oadr/request/RequestEvent.h>
 
+#include <oadr/request/Oadr2bHelper.h>
+
 #include <oadr/ven/VEN2b.h>
 #include <oadr/ven/http/HttpCurl.h>
 
@@ -353,10 +355,10 @@ class VEN2bTestSet : public ::testing::Test
 protected:
 	VEN2b ven;
 
-	auto_ptr<QueryRegistration> m_queryRegistration;
+	unique_ptr<QueryRegistration> m_queryRegistration;
 
 	VEN2bTestSet() :
-		ven(new HttpCurl(), VTN_URL, VEN_NAME)
+		ven(unique_ptr<IHttp>(new HttpCurl()), VTN_URL, VEN_NAME)
 	{
 
 	}
@@ -374,9 +376,9 @@ protected:
 		m_queryRegistration = ven.queryRegistration();
 	}
 
-	auto_ptr<CreatePartyRegistration> registerVEN()
+	unique_ptr<CreatePartyRegistration> registerVEN()
 	{
-		auto_ptr<CreatePartyRegistration> cpr = ven.createPartyRegistration(oadrProfileType(oadrProfileType::cxx_2_0b),
+		unique_ptr<CreatePartyRegistration> cpr = ven.createPartyRegistration(oadrProfileType(oadrProfileType::cxx_2_0b),
 				oadrTransportType(oadrTransportType::simpleHttp), "", false, false, true);
 
 		return cpr;
@@ -390,34 +392,34 @@ protected:
 			registerVEN();
 	}
 
-	auto_ptr<CreateOptSchedule> createOptSchedule_001()
+	unique_ptr<CreateOptSchedule> createOptSchedule_001()
 	{
 		// market context (parameter 3) must match one of the configured market context in the test set properties file
 		OptSchedule os(EiOptType::optType_type::optIn, OptReasonValue(OptReasonEnumeratedType::mustRun), "http://MarketContext1", "resource1", "optid");
 
 		// current time + 1 day, 4 hour duration
-		os.addAvailable(time(NULL) + 24 * 60 * 60, 4, DurationModifier::HOURS);
+		os.addAvailable(time(NULL) + 24 * 60 * 60, 4, &DurationModifier::HOURS);
 
 		// current time + 3 days, 4 8 duration
-		os.addAvailable(time(NULL) + 3 * (24 * 60 * 60), 8, DurationModifier::HOURS);
+		os.addAvailable(time(NULL) + 3 * (24 * 60 * 60), 8, &DurationModifier::HOURS);
 
-		auto_ptr<CreateOptSchedule> cos = ven.createOptSchedule(os);
+		unique_ptr<CreateOptSchedule> cos = ven.createOptSchedule(os);
 
 		return cos;
 	}
 
-	auto_ptr<CreateOptSchedule> createOptSchedule_002()
+	unique_ptr<CreateOptSchedule> createOptSchedule_002()
 	{
 		// market context (parameter 3) must match one of the configured market context in the test set properties file
 		OptSchedule os(EiOptType::optType_type::optOut, OptReasonValue(OptReasonEnumeratedType::mustRun), "http://MarketContext1", "resource1", "optid");
 
 		// current time + 2 days, 4 hour duration
-		os.addAvailable(time(NULL) + 2 * (24 * 60 * 60), 4, DurationModifier::HOURS);
+		os.addAvailable(time(NULL) + 2 * (24 * 60 * 60), 4, &DurationModifier::HOURS);
 
 		// current time + 4 days, 8 hour duration
-		os.addAvailable(time(NULL) + 4 * (24 * 60 * 60), 8, DurationModifier::HOURS);
+		os.addAvailable(time(NULL) + 4 * (24 * 60 * 60), 8, &DurationModifier::HOURS);
 
-		auto_ptr<CreateOptSchedule> cos = ven.createOptSchedule(os);
+		unique_ptr<CreateOptSchedule> cos = ven.createOptSchedule(os);
 
 		return cos;
 	}
@@ -451,7 +453,7 @@ TEST_F(VEN2bTestSet, N1_0010_TH_VTN_1) {
  */
 TEST_F(VEN2bTestSet, N1_0020_TH_VTN_1) {
 
-	auto_ptr<CreatePartyRegistration> cpr = registerVEN();
+	unique_ptr<CreatePartyRegistration> cpr = registerVEN();
 
 	oadrPayload *response;
 	ASSERT_TRUE((response = cpr->response()) != NULL);
@@ -467,12 +469,12 @@ TEST_F(VEN2bTestSet, N1_0020_TH_VTN_1) {
 	ASSERT_EQ("200", ocpr->eiResponse().responseCode());
 
 	// VTN should send an empty RegisterReport message
-	auto_ptr<Poll> poll = ven.poll();
+	unique_ptr<Poll> poll = ven.poll();
 	ASSERT_TRUE((response = poll->response()) != NULL);
 	ASSERT_TRUE(response->oadrSignedObject().oadrRegisterReport().present());
 
 	// respond with registeredReport
-	auto_ptr<RegisteredReport> registeredReport = ven.registeredReport(response->oadrSignedObject().oadrRegisterReport()->requestID(), "200", "OK");
+	unique_ptr<RegisteredReport> registeredReport = ven.registeredReport(response->oadrSignedObject().oadrRegisterReport()->requestID(), "200", "OK");
 
 	// VTN should respond with oadrResponse, 200
 	ASSERT_TRUE((response = registeredReport->response()) != NULL);
@@ -491,7 +493,7 @@ TEST_F(VEN2bTestSet, N1_0030_TH_VTN_1) {
 
 	queryAndRegister();
 
-	auto_ptr<CancelPartyRegistration> cpr = ven.cancelPartyRegistration();
+	unique_ptr<CancelPartyRegistration> cpr = ven.cancelPartyRegistration();
 
 	oadrPayload *response = cpr->response();
 
@@ -508,7 +510,7 @@ TEST_F(VEN2bTestSet, E1_1010_TH_VTN_1) {
 
 	queryAndRegister();
 
-	auto_ptr<RequestEvent> de = ven.requestEvent();
+	unique_ptr<RequestEvent> de = ven.requestEvent();
 
 	oadrPayload *response = de->response();
 
@@ -532,7 +534,7 @@ TEST_F(VEN2bTestSet, E1_1020_TH_VTN_1) {
 
 	queryAndRegister();
 
-	auto_ptr<RequestEvent> de = ven.requestEvent();
+	unique_ptr<RequestEvent> de = ven.requestEvent();
 
 	oadrPayload *response = de->response();
 
@@ -543,16 +545,20 @@ TEST_F(VEN2bTestSet, E1_1020_TH_VTN_1) {
 
 	ASSERT_TRUE(ode->oadrEvent().size() > 0);
 
-	EventResponses er;
 	oadrDistributeEventType::oadrEvent_iterator itr;
+
+	eventResponses::eventResponse_sequence ers;
 
 	for (itr = ode->oadrEvent().begin(); itr != ode->oadrEvent().end(); itr++)
 	{
-		er.addEventResponse("200", "OK", itr->eiEvent().eventDescriptor().eventID(), itr->eiEvent().eventDescriptor().modificationNumber(),
-				OptTypeType::optIn, ode->requestID());
+		//er.addEventResponse("200", "OK", itr->eiEvent().eventDescriptor().eventID(), itr->eiEvent().eventDescriptor().modificationNumber(),
+		//		OptTypeType::optIn, ode->requestID());
+
+		Oadr2bHelper::appendEventResponse(ers, "200", "OK", itr->eiEvent().eventDescriptor().eventID(),
+				itr->eiEvent().eventDescriptor().modificationNumber(), OptTypeType::optIn, ode->requestID());
 	}
 
-	auto_ptr<CreatedEvent> ce = ven.createdEvent("200", "OK", er);
+	unique_ptr<CreatedEvent> ce = ven.createdEvent("200", "OK", ers);
 
 	response = ce->response();
 
@@ -570,7 +576,7 @@ TEST_F(VEN2bTestSet, P1_2010_TH_VTN_1) {
 
 	queryAndRegister();
 
-	auto_ptr<CreateOptSchedule> cos = createOptSchedule_001();
+	unique_ptr<CreateOptSchedule> cos = createOptSchedule_001();
 
 	oadrPayload *response = cos->response();
 
@@ -588,12 +594,12 @@ TEST_F(VEN2bTestSet, P1_2020_TH_VTN_1) {
 
 	queryAndRegister();
 
-	auto_ptr<CreateOptSchedule> cos = createOptSchedule_001();
+	unique_ptr<CreateOptSchedule> cos = createOptSchedule_001();
 
 	/*
 	 * cancel the schedule
 	 */
-	auto_ptr<CancelOptSchedule> cancelOs = ven.cancelOptSchedule(cos->optSchedule().optID());
+	unique_ptr<CancelOptSchedule> cancelOs = ven.cancelOptSchedule(cos->optSchedule().optID());
 
 	oadrPayload *response = cancelOs->response();
 
@@ -614,7 +620,7 @@ TEST_F(VEN2bTestSet, P1_2030_TH_VTN_1) {
 	/*
 	 * create an opt schedule
 	 */
-	auto_ptr<CreateOptSchedule> cos = createOptSchedule_001();
+	unique_ptr<CreateOptSchedule> cos = createOptSchedule_001();
 
 	oadrPayload *response = cos->response();
 

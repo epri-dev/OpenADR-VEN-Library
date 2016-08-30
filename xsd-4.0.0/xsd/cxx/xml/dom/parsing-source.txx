@@ -1,6 +1,5 @@
 // file      : xsd/cxx/xml/dom/parsing-source.txx
-// author    : Boris Kolpackov <boris@codesynthesis.com>
-// copyright : Copyright (c) 2005-2011 Code Synthesis Tools CC
+// copyright : Copyright (c) 2005-2014 Code Synthesis Tools CC
 // license   : GNU GPL v2 + exceptions; see accompanying LICENSE file
 
 #include <xercesc/dom/DOMLSParser.hpp>
@@ -30,9 +29,9 @@ namespace xsd
         //
         template <typename C>
         parser<C>::
-        parser (const xercesc::DOMElement& e, bool ep, bool ap)
+        parser (const xercesc::DOMElement& e, bool ep, bool tp, bool ap)
             : element_ (e),
-              next_element_ (0),
+              next_content_ (0),
               a_ (0),
               ai_ (0)
         {
@@ -40,10 +39,21 @@ namespace xsd
 
           if (ep)
           {
-            for (next_element_ = e.getFirstChild ();
-                 next_element_ != 0 &&
-                   next_element_->getNodeType () != DOMNode::ELEMENT_NODE;
-                 next_element_ = next_element_->getNextSibling ()) /*noop*/;
+            for (next_content_ = e.getFirstChild ();;
+                 next_content_ = next_content_->getNextSibling ())
+            {
+              if (next_content_ == 0)
+                break;
+
+              DOMNode::NodeType t (next_content_->getNodeType ());
+
+              if (t == DOMNode::ELEMENT_NODE)
+                break;
+
+              if (tp && (t == DOMNode::TEXT_NODE ||
+                         t == DOMNode::CDATA_SECTION_NODE))
+                break;
+            }
           }
 
           if (ap)
@@ -55,14 +65,25 @@ namespace xsd
 
         template <typename C>
         void parser<C>::
-        next_element ()
+        next_content (bool tp)
         {
           using xercesc::DOMNode;
 
-          for (next_element_ = next_element_->getNextSibling ();
-               next_element_ != 0 &&
-                 next_element_->getNodeType () != DOMNode::ELEMENT_NODE;
-               next_element_ = next_element_->getNextSibling ())/*noop*/;
+          for (next_content_ = next_content_->getNextSibling ();;
+               next_content_ = next_content_->getNextSibling ())
+          {
+            if (next_content_ == 0)
+              break;
+
+            DOMNode::NodeType t (next_content_->getNodeType ());
+
+            if (t == DOMNode::ELEMENT_NODE)
+              break;
+
+            if (tp && (t == DOMNode::TEXT_NODE ||
+                       t == DOMNode::CDATA_SECTION_NODE))
+              break;
+          }
         }
 
         // parse()

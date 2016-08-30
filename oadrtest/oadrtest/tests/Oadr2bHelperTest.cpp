@@ -323,16 +323,10 @@
 
 using namespace std;
 
-TEST(OADR2bHelper, timetToiCalDateTime){
+//
+// The helper functions in OADR2bHelper are so simple, it may not make sense to write tests for them
+//
 
-	time_t t_now = 1388420398;
-	// tm tm_now;
-
-	//gmtime_r(&t_now, &tm_now);
-	//cout << t_now << endl;
-
-	icalendar_2_0::DateTimeType dtt = Oadr2bHelper::timetToiCalDateTime(t_now);
-
-	ASSERT_EQ(2013, dtt.year());
-	ASSERT_EQ(12, dtt.month());
+TEST(OADR2bHelper, GenerateDurationValueType)
+{
 }

@@ -326,14 +326,11 @@ using namespace std;
 class RandomHex
 {
 private:
-	static RandomHex *m_instance;
 	static char m_hexDigits[];
 
 public:
 	RandomHex();
 	virtual ~RandomHex();
-
-	static RandomHex *instance();
 
 	string generateRandomHex(int length = 10);
 

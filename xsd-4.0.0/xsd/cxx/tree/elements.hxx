@@ -1,6 +1,5 @@
 // file      : xsd/cxx/tree/elements.hxx
-// author    : Boris Kolpackov <boris@codesynthesis.com>
-// copyright : Copyright (c) 2005-2011 Code Synthesis Tools CC
+// copyright : Copyright (c) 2005-2014 Code Synthesis Tools CC
 // license   : GNU GPL v2 + exceptions; see accompanying LICENSE file
 
 /**
@@ -22,6 +21,7 @@
 #include <map>
 #include <string>
 #include <memory>  // std::auto_ptr/unique_ptr
+#include <cstddef> // std::size_t
 #include <istream>
 #include <sstream>
 #include <cassert>
@@ -40,10 +40,12 @@
 
 #include <xsd/cxx/xml/elements.hxx> // xml::properties
 #include <xsd/cxx/xml/dom/auto-ptr.hxx> // dom::auto_ptr/unique_ptr
+#include <xsd/cxx/xml/dom/wildcard-source.hxx> // dom::create_document()
 
 #include <xsd/cxx/tree/facet.hxx>
 #include <xsd/cxx/tree/exceptions.hxx>
 #include <xsd/cxx/tree/istream-fwd.hxx>
+#include <xsd/cxx/tree/containers-wildcard.hxx>
 
 #if _XERCES_VERSION < 30000
 #  error Xerces-C++ 2-series is not supported
@@ -99,6 +101,12 @@ namespace xsd
          * parser.
          */
         static const unsigned long dont_validate = 0x00000400UL;
+
+        /**
+         * @brief Extract XML content for anyType or anySimpleType.
+         * Normally you don't need to specify this flag explicitly.
+         */
+        static const unsigned long extract_content = 0x00000800UL;
 
         /**
          * @brief Do not initialize the Xerces-C++ runtime.
@@ -191,7 +199,6 @@ namespace xsd
         unsigned long x_;
       };
 
-
       // Parsing properties. Refer to xsd/cxx/xml/elements.hxx for XML-
       // related properties.
       //
@@ -199,6 +206,44 @@ namespace xsd
       class properties: public xml::properties<C>
       {
       };
+
+      /**
+       * @brief Content order sequence entry.
+       *
+       * @nosubgrouping
+       */
+      struct content_order
+      {
+        /**
+         * @brief Initialize an instance with passed id and index.
+         *
+         * @param id Content id.
+         * @param index Content index in the corresponding sequence.
+         */
+        content_order (std::size_t id, std::size_t index = 0)
+            : id (id), index (index)
+        {
+        }
+
+        /**
+         * @brief Content id.
+         */
+        std::size_t id;
+
+        /**
+         * @brief Content index.
+         */
+        std::size_t index;
+      };
+
+      bool
+      operator== (const content_order&, const content_order&);
+
+      bool
+      operator!= (const content_order&, const content_order&);
+
+      bool
+      operator< (const content_order&, const content_order&);
 
       //@cond
 
@@ -293,9 +338,14 @@ namespace xsd
         _type ();
 
         /**
-         * @brief Create an instance from a string.
+         * @brief Create an instance from a C string.
          *
          * @param s A string to initialize the instance with.
+         *
+         * Note that this constructor ignores the string and creates an
+         * empty anyType instance. In particular, it will not convert the
+         * string into DOM content. The purpose of such a strange constructor
+         * is to allow statically-initialized default values of anyType type.
          */
         template <typename C>
         _type (const C* s);
@@ -350,7 +400,9 @@ namespace xsd
          * @param c A pointer to the object that will contain the new
          * instance.
          */
-        _type (const xercesc::DOMElement& e, flags f = 0, container* c = 0);
+        _type (const xercesc::DOMElement& e,
+               flags f = flags::extract_content,
+               container* c = 0);
 
         /**
          * @brief Create an instance from a DOM Attribute.
@@ -390,6 +442,11 @@ namespace xsd
         {
           if (this != &x)
           {
+            if (x.content_.get () == 0)
+              content_.reset ();
+            else
+              content_ = x.content_->clone ();
+
             // Drop DOM association.
             //
             dom_info_.reset ();
@@ -397,6 +454,135 @@ namespace xsd
 
           return *this;
         }
+
+        // anyType content API.
+        //
+      public:
+        typedef element_optional dom_content_optional;
+
+        /**
+         * @brief Return a read-only (constant) reference to the anyType
+         * DOM content.
+         *
+         * @return A constant reference to the optional container.
+         *
+         * The DOM content is returned as an optional element container,
+         * the same container as used for optional element wildcards.
+         */
+        const dom_content_optional&
+        dom_content () const;
+
+        /**
+         * @brief Return a read-write reference to the anyType DOM content.
+         *
+         * @return A reference to the optional container.
+         *
+         * The DOM content is returned as an optional element container,
+         * the same container as used for optional element wildcards.
+         */
+        dom_content_optional&
+        dom_content ();
+
+        /**
+         * @brief Set the anyType DOM content.
+         *
+         * @param e A new element to set.
+         *
+         * This function makes a copy of its argument and sets it as the
+         * new DOM content.
+         */
+        void
+        dom_content (const xercesc::DOMElement& e);
+
+        /**
+         * @brief Set the anyType DOM content.
+         *
+         * @param e A new element to use.
+         *
+         * This function will use the passed element directly instead
+         * of making a copy. For this to work the element should belong
+         * to the DOM document associated with this anyType instance.
+         *
+         * @see dom_content_document
+         */
+        void
+        dom_content (xercesc::DOMElement* e);
+
+        /**
+         * @brief Set the anyType DOM content.
+         *
+         * @param d An optional container with the new element to set.
+         *
+         * If the element is present in @a d then this function makes a
+         * copy of this element and sets it as the new wildcard content.
+         * Otherwise the element container is set the 'not present' state.
+         */
+        void
+        dom_content (const dom_content_optional& d);
+
+        /**
+         * @brief Return a read-only (constant) reference to the DOM
+         * document associated with this anyType instance.
+         *
+         * @return A constant reference to the DOM document.
+         *
+         * The DOM document returned by this function is used to store
+         * the raw XML content corresponding to the anyType instance.
+         */
+        const xercesc::DOMDocument&
+        dom_content_document () const;
+
+        /**
+         * @brief Return a read-write reference to the DOM document
+         * associated with this anyType instance.
+         *
+         * @return A reference to the DOM document.
+         *
+         * The DOM document returned by this function is used to store
+         * the raw XML content corresponding to the anyType instance.
+         */
+        xercesc::DOMDocument&
+        dom_content_document ();
+
+        /**
+         * @brief Check for absence of DOM (anyType) and text (anySimpleType)
+         * content.
+         *
+         * @return True if there is no content and false otherwise.
+         *
+         * This is an optimization function that allows us to check for the
+         * lack of content without actually creating its empty representation
+         * (that is, empty DOM document for DOM or empty string for text).
+         */
+        bool
+        null_content () const;
+
+        //
+        //
+      public:
+        /**
+         * @brief Comparison operator. It uses DOM (anyType) or text
+         * (anySimpleType) content if present. If the content is missing
+         * then the types are assumed unequal.
+         *
+         * @return True if the instances are equal, false otherwise.
+         */
+        friend bool
+        operator== (const type& x, const type& y)
+        {
+          return x.content_.get () != 0 &&
+            x.content_->compare (y.content_.get ());
+        }
+
+        /**
+         * @brief Comparison operator. It uses DOM (anyType) or text
+         * (anySimpleType) content if present. If the content is missing
+         * then the types are assumed unequal.
+         *
+         * @return True if the instances are not equal, false otherwise.
+         */
+        friend bool
+        operator!= (const type& x, const type& y) {return !(x == y);}
 
         // Container API.
         //
@@ -567,7 +753,7 @@ namespace xsd
          * @brief Exception indicating that a DOM node cannot be associated
          * with an object model node.
          */
-        class bad_dom_node_type: public std::exception //@@ Inherit exception.
+        class bad_dom_node_type: public std::exception //@@ Inherit exception<C>.
         {
         public:
           /**
@@ -657,7 +843,7 @@ namespace xsd
           }
         }
 
-        //@@ Does not inherit from exception.
+        //@@ Does not inherit from exception<C>.
         //
         struct not_registered: std::exception
         {
@@ -701,13 +887,9 @@ namespace xsd
         struct dom_info
         {
           virtual
-          ~dom_info ()
-          {
-          }
+          ~dom_info () {}
 
-          dom_info ()
-          {
-          }
+          dom_info () {}
 
           virtual XSD_AUTO_PTR<dom_info>
           clone (type& tree_node, container*) const = 0;
@@ -717,11 +899,8 @@ namespace xsd
 
         private:
           dom_info (const dom_info&);
-
-          dom_info&
-          operator= (const dom_info&);
+          dom_info& operator= (const dom_info&);
         };
-
 
         struct dom_element_info: public dom_info
         {
@@ -957,20 +1136,75 @@ namespace xsd
 
         XSD_AUTO_PTR<map> map_;
 
+        // anyType and anySimpleType content.
+        //
+      protected:
+
+        //@cond
+
+        struct content_type
+        {
+          virtual
+          ~content_type () {}
+
+          content_type () {}
+
+          virtual XSD_AUTO_PTR<content_type>
+          clone () const = 0;
+
+          virtual bool
+          compare (const content_type*) const = 0;
+
+        private:
+          content_type (const content_type&);
+          content_type& operator= (const content_type&);
+        };
+
+        struct dom_content_type: content_type
+        {
+          dom_content_type ()
+              : doc (xml::dom::create_document<char> ()), dom (*doc) {}
+
+          explicit
+          dom_content_type (const xercesc::DOMElement& e)
+              : doc (xml::dom::create_document<char> ()), dom (e, *doc) {}
+
+          explicit
+          dom_content_type (xercesc::DOMElement* e)
+              : doc (xml::dom::create_document<char> ()), dom (e, *doc) {}
+
+          explicit
+          dom_content_type (const dom_content_optional& d)
+              : doc (xml::dom::create_document<char> ()), dom (d, *doc) {}
+
+          virtual XSD_AUTO_PTR<content_type>
+          clone () const
+          {
+            return XSD_AUTO_PTR<content_type> (new dom_content_type (dom));
+          }
+
+          virtual bool
+          compare (const content_type* c) const
+          {
+            if (const dom_content_type* dc =
+                dynamic_cast<const dom_content_type*> (c))
+              return dom == dc->dom;
+
+            return false;
+          }
+
+        public:
+          XSD_DOM_AUTO_PTR<xercesc::DOMDocument> doc;
+          dom_content_optional dom;
+        };
+
+        //@endcond
+
+        mutable XSD_AUTO_PTR<content_type> content_;
+
       private:
         container* container_;
       };
-
-      inline _type::
-      _type (const type& x, flags f, container* c)
-          : container_ (c)
-      {
-        if (x.dom_info_.get () != 0 && (f & flags::keep_dom))
-        {
-          dom_info_ = x.dom_info_->clone (*this, c);
-        }
-      }
-
 
       /**
        * @brief Class corresponding to the XML Schema anySimpleType built-in
@@ -978,7 +1212,7 @@ namespace xsd
        *
        * @nosubgrouping
        */
-      template <typename B>
+      template <typename C, typename B>
       class simple_type: public B
       {
       public:
@@ -993,12 +1227,18 @@ namespace xsd
         simple_type ();
 
         /**
+         * @brief Create an instance from a C string.
+         *
+         * @param s A string to initialize the instance with.
+         */
+        simple_type (const C* s);
+
+        /**
          * @brief Create an instance from a string.
          *
          * @param s A string to initialize the instance with.
          */
-        template <typename C>
-        simple_type (const C* s);
+        simple_type (const std::basic_string<C>& s);
 
       public:
         /**
@@ -1037,7 +1277,9 @@ namespace xsd
          * instance.
          */
         template <typename S>
-        simple_type (istream<S>& s, flags f = 0, container* c = 0);
+        simple_type (istream<S>& s,
+                     flags f = flags::extract_content,
+                     container* c = 0);
 
         /**
          * @brief Create an instance from a DOM element.
@@ -1048,7 +1290,7 @@ namespace xsd
          * instance.
          */
         simple_type (const xercesc::DOMElement& e,
-                     flags f = 0,
+                     flags f = flags::extract_content,
                      container* c = 0);
 
         /**
@@ -1060,7 +1302,7 @@ namespace xsd
          * instance.
          */
         simple_type (const xercesc::DOMAttr& a,
-                     flags f = 0,
+                     flags f = flags::extract_content,
                      container* c = 0);
 
         /**
@@ -1072,12 +1314,82 @@ namespace xsd
          * @param c A pointer to the object that will contain the new
          * instance.
          */
-        template <typename C>
         simple_type (const std::basic_string<C>& s,
                      const xercesc::DOMElement* e,
-                     flags f = 0,
+                     flags f = flags::extract_content,
                      container* c = 0);
         //@}
+
+        // anySimpleType content API.
+        //
+      public:
+        /**
+         * @brief Return a read-only (constant) reference to the anySimpleType
+         * text content.
+         *
+         * @return A constant reference to the text string.
+         */
+        const std::basic_string<C>&
+        text_content () const;
+
+        /**
+         * @brief Return a read-write reference to the anySimpleType text
+         * content.
+         *
+         * @return A reference to the text string.
+         */
+        std::basic_string<C>&
+        text_content ();
+
+        /**
+         * @brief Set the anySimpleType text content.
+         *
+         * @param e A new text string to set.
+         */
+        void
+        text_content (const std::basic_string<C>& t);
+
+      protected:
+        //@cond
+
+        typedef typename B::content_type content_type;
+
+        struct text_content_type: content_type
+        {
+          text_content_type () {}
+
+          explicit
+          text_content_type (const std::basic_string<C>& t): text (t) {}
+
+          explicit
+          text_content_type (const C* t): text (t) {}
+
+          virtual XSD_AUTO_PTR<content_type>
+          clone () const
+          {
+            return XSD_AUTO_PTR<content_type> (new text_content_type (text));
+          }
+
+          virtual bool
+          compare (const content_type* c) const
+          {
+            if (const text_content_type* tc =
+                dynamic_cast<const text_content_type*> (c))
+              return text == tc->text;
+
+            return false;
+          }
+
+        public:
+          // It would have been more elegant to store text content as DOMText.
+          // However, that would require Xerces-C++ initialization. Also
+          // having a separate DOMDocument for each text node seems like
+          // an overkill.
+          //
+          std::basic_string<C> text;
+        };
+
+        //@endcond
       };
 
 
@@ -1196,8 +1508,57 @@ namespace xsd
         {
           return XSD_AUTO_PTR<T> (new T (s, e, f, c));
         }
+
+        // For now for istream we only go through traits for non-
+        // fundamental types.
+        //
+        template <typename S>
+        static XSD_AUTO_PTR<T>
+        create (istream<S>& s, flags f, container* c)
+        {
+          return XSD_AUTO_PTR<T> (new T (s, f, c));
+        }
       };
 
+      template <typename B,
+                typename C,
+                schema_type::value ST>
+      struct traits<simple_type<C, B>, C, ST>
+      {
+        typedef simple_type<C, B> type;
+
+        static XSD_AUTO_PTR<type>
+        create (const xercesc::DOMElement& e, flags f, container* c)
+        {
+          return XSD_AUTO_PTR<type> (
+            new type (e, f | flags::extract_content, c));
+        }
+
+        static XSD_AUTO_PTR<type>
+        create (const xercesc::DOMAttr& a, flags f, container* c)
+        {
+          return XSD_AUTO_PTR<type> (
+            new type (a, f | flags::extract_content, c));
+        }
+
+        static XSD_AUTO_PTR<type>
+        create (const std::basic_string<C>& s,
+                const xercesc::DOMElement* e,
+                flags f,
+                container* c)
+        {
+          return XSD_AUTO_PTR<type> (
+            new type (s, e, f | flags::extract_content, c));
+        }
+
+        template <typename S>
+        static XSD_AUTO_PTR<type>
+        create (istream<S>& s, flags f, container* c)
+        {
+          return XSD_AUTO_PTR<type> (
+            new type (s, f | flags::extract_content, c));
+        }
+      };
       //@endcond
 
 

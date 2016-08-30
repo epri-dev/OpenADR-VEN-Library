@@ -318,19 +318,25 @@
 #ifndef CREATEDREPORT_H_
 #define CREATEDREPORT_H_
 
+#include <oadrsd/2b/EiResponseType.hxx>
+#include <oadrsd/2b/oadrCreatedReportType.hxx>
+
 #include "Oadr2bRequest.h"
 
-#include <vector>
+#include <set>
 
 using namespace std;
 
 class CreatedReport: public Oadr2bRequest
 {
 private:
-	vector<string> m_pendingReports;
+	set<string> m_pendingReports;
+
+protected:
+	virtual unique_ptr<oadrPayload> generatePayload();
 
 public:
-	CreatedReport(string venID, vector<string> *pendingReports, string responseCode = "200", string responseDescription = "OK", string requestID = "");
+	CreatedReport(string venID, const set<string> &pendingReports, string responseCode = "200", string responseDescription = "OK", string requestID = "");
 	virtual ~CreatedReport();
 };
 

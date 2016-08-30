@@ -330,7 +330,7 @@ QueryRegistration::~QueryRegistration()
 
 /********************************************************************************/
 
-auto_ptr<oadrPayload> QueryRegistration::generatePayload()
+unique_ptr<oadrPayload> QueryRegistration::generatePayload()
 {
 	oadrQueryRegistrationType request(requestID());
 
@@ -340,7 +340,7 @@ auto_ptr<oadrPayload> QueryRegistration::generatePayload()
 
 	oso.oadrQueryRegistration(request);
 
-	auto_ptr<oadrPayload> payload(new oadrPayload(oso));
+	unique_ptr<oadrPayload> payload(new oadrPayload(oso));
 
 	return payload;
 }

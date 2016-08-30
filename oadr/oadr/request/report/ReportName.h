@@ -334,10 +334,10 @@ public:
 	string name();
 	string metaDataName();
 
-	static ReportName *HISTORY_USAGE;
-	static ReportName *HISTORY_GREENBUTTON;
-	static ReportName *TELEMETRY_USAGE;
-	static ReportName *TELEMETRY_STATUS;
+	static ReportName HISTORY_USAGE;
+	static ReportName HISTORY_GREENBUTTON;
+	static ReportName TELEMETRY_USAGE;
+	static ReportName TELEMETRY_STATUS;
 };
 
 #endif /* REPORTNAME_H_ */

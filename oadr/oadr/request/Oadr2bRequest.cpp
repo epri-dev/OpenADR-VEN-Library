@@ -322,7 +322,7 @@ Oadr2bRequest::Oadr2bRequest(string requestType, string responseType, string req
 	m_requestType = requestType;
 	m_responseType = responseType;
 
-	m_requestID = (requestID != "" ? requestID : RandomHex::instance()->generateRandomHex());
+	m_requestID = (requestID != "" ? requestID : m_randomHex.generateRandomHex());
 }
 
 /********************************************************************************/
@@ -334,7 +334,7 @@ Oadr2bRequest::Oadr2bRequest(string requestType, string responseType, string ven
 
 	m_venID = venID;
 
-	m_requestID = (requestID != "" ? requestID : RandomHex::instance()->generateRandomHex());
+	m_requestID = (requestID != "" ? requestID : m_randomHex.generateRandomHex());
 }
 
 /********************************************************************************/
@@ -349,7 +349,7 @@ Oadr2bRequest::Oadr2bRequest(string requestType, string responseType, string ven
 	m_responseCode = responseCode;
 	m_responseDescription = responseDescription;
 
-	m_requestID = (requestID != "" ? requestID : RandomHex::instance()->generateRandomHex());
+	m_requestID = (requestID != "" ? requestID : m_randomHex.generateRandomHex());
 }
 
 /********************************************************************************/
@@ -360,7 +360,7 @@ Oadr2bRequest::~Oadr2bRequest()
 
 /********************************************************************************/
 
-string Oadr2bRequest::serializePayload(auto_ptr<oadrPayload> payload)
+string Oadr2bRequest::serializePayload(oadrPayload *payload)
 {
 	xml_schema::namespace_infomap map;
 	stringstream ss;
@@ -368,7 +368,9 @@ string Oadr2bRequest::serializePayload(auto_ptr<oadrPayload> payload)
 	map[""].name = "";
 	map[""].schema = "";
 
-	oadrPayload_(ss, *payload, map);
+	::xml_schema::flags f = xml_schema::flags::dont_initialize;
+
+	oadrPayload_(ss, *payload, map, "", f);
 
 	return ss.str();
 }
@@ -388,9 +390,9 @@ void Oadr2bRequest::setHttpFields(string requestBody, string responseBody, strin
 
 		// TODO: not currently validating the XML; need to figure out
 		// how to specify the location
-		auto_ptr<oadrPayload> response(oadrPayload_(iss, xsd::cxx::tree::flags::keep_dom | xsd::cxx::tree::flags::dont_validate));
+		unique_ptr<oadrPayload> response(oadrPayload_(iss, xsd::cxx::tree::flags::keep_dom | xsd::cxx::tree::flags::dont_validate | xml_schema::flags::dont_initialize));
 
-		m_response = response;
+		m_response = std::move(response);
 	}
 }
 
@@ -455,7 +457,7 @@ string Oadr2bRequest::generateRequestXML()
 {
 	m_request = generatePayload();
 
-	return serializePayload(m_request);
+	return serializePayload(m_request.get());
 }
 
 /********************************************************************************/

@@ -1,6 +1,5 @@
 // file      : xsd/cxx/xml/dom/serialization-source.hxx
-// author    : Boris Kolpackov <boris@codesynthesis.com>
-// copyright : Copyright (c) 2005-2011 Code Synthesis Tools CC
+// copyright : Copyright (c) 2005-2014 Code Synthesis Tools CC
 // license   : GNU GPL v2 + exceptions; see accompanying LICENSE file
 
 #ifndef XSD_CXX_XML_DOM_SERIALIZATION_SOURCE_HXX
@@ -46,6 +45,12 @@ namespace xsd
         template <typename C>
         xercesc::DOMElement&
         create_element (const C* name, const C* ns, xercesc::DOMElement&);
+
+        // Add namespace declarations and schema locations.
+        //
+        template <typename C>
+        void
+        add_namespaces (xercesc::DOMElement&, const namespace_infomap<C>&);
 
         // Serialization flags.
         //

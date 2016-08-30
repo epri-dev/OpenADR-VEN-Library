@@ -317,7 +317,6 @@
 
 #include "RandomHex.h"
 
-RandomHex *RandomHex::m_instance = NULL;
 char RandomHex::m_hexDigits[] = "0123456789ABCDEF";
 
 
@@ -330,16 +329,6 @@ RandomHex::RandomHex()
 
 RandomHex::~RandomHex()
 {
-}
-
-/********************************************************************************/
-
-RandomHex *RandomHex::instance()
-{
-	if (m_instance == NULL)
-		m_instance = new RandomHex();
-
-	return m_instance;
 }
 
 /********************************************************************************/

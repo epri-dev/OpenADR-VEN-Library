@@ -352,7 +352,7 @@
 #include "../helper/ISO8601Duration.h"
 
 using namespace std;
-using namespace xercesc_3_1;
+using namespace XERCES_CPP_NAMESPACE;
 
 class VEN2b
 {

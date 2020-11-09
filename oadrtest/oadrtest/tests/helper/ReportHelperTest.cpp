@@ -59,7 +59,7 @@ using namespace xml_schema;
 
 using namespace oadr2b::oadr;
 
-using namespace xercesc_3_1;
+using namespace XERCES_CPP_NAMESPACE;
 
 /********************************************************************************/
 

@@ -373,7 +373,7 @@ TEST_F(FooTest, DoesXyz) {
 
 #include <xercesc/util/PlatformUtils.hpp>
 
-using namespace xercesc_3_1;
+using namespace XERCES_CPP_NAMESPACE;
 
 int main(int argc, char **argv)
 {

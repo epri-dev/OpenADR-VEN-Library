@@ -322,7 +322,7 @@
 #include <oadr/request/Oadr2bRequest.h>
 #include <xercesc/util/PlatformUtils.hpp>
 
-using namespace xercesc_3_1;
+using namespace XERCES_CPP_NAMESPACE;
 
 TEST(RegisteredReports, LOAD_REGISTERED_REPORTS)
 {

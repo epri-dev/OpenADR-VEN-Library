@@ -673,13 +673,13 @@ void HttpCurl::setTimeouts(long connectTimeout, long requestTimeout)
 {
 	CURLcode result;
 
-	if ((result = curl_easy_setopt(m_curl, CURLOPT_CONNECTTIMEOUT, &connectTimeout)) != 0)
+	if ((result = curl_easy_setopt(m_curl, CURLOPT_CONNECTTIMEOUT, connectTimeout)) != 0)
 	{
 		CurlException ex(result, m_message);
 		throw ex;
 	}
 
-	if ((result = curl_easy_setopt(m_curl, CURLOPT_TIMEOUT, &requestTimeout)) != 0)
+	if ((result = curl_easy_setopt(m_curl, CURLOPT_TIMEOUT, requestTimeout)) != 0)
 	{
 		CurlException ex(result, m_message);
 		throw ex;

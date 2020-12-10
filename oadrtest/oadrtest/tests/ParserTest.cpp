@@ -332,7 +332,7 @@
 
 using namespace oadr2b::oadr;
 
-using namespace xercesc_3_1;
+using namespace XERCES_CPP_NAMESPACE;
 
 using namespace xsd::cxx::tree;
 

@@ -184,7 +184,15 @@ void VENManager::requestEvents()
 {
 	unique_ptr<RequestEvent> request = m_ven->requestEvent();
 
-	m_eventManager->manageEvents(request->response()->oadrSignedObject().oadrDistributeEvent().get());
+	auto& distributedEvent = request->response()->oadrSignedObject().oadrDistributeEvent();
+	if (distributedEvent.present())
+	{
+		m_eventManager->manageEvents(distributedEvent.get());
+	}
+	else
+	{
+		// TODO: throw an exception or send response with non-200 code
+	}
 }
 
 /********************************************************************************/

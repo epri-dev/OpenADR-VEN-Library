@@ -202,6 +202,40 @@ namespace oadr2b
   }
 }
 
+#include <ostream>
+
+#include <xsd/cxx/tree/std-ostream-map.hxx>
+
+namespace _xsd
+{
+  static
+  const ::xsd::cxx::tree::std_ostream_plate< 0, char >
+  std_ostream_plate_init;
+}
+
+namespace oadr2b
+{
+  namespace oadr
+  {
+    ::std::ostream&
+    operator<< (::std::ostream& o, const oadrReportPayloadType& i)
+    {
+      o << static_cast< const ::oadr2b::ei::ReportPayloadType& > (i);
+
+      if (i.oadrDataQuality ())
+      {
+        o << ::std::endl << "oadrDataQuality: " << *i.oadrDataQuality ();
+      }
+
+      return o;
+    }
+
+    static
+    const ::xsd::cxx::tree::std_ostream_initializer< 0, char, oadrReportPayloadType >
+    _xsd_oadrReportPayloadType_std_ostream_init;
+  }
+}
+
 #include <istream>
 #include <xsd/cxx/xml/sax/std-input-source.hxx>
 #include <xsd/cxx/tree/error-handler.hxx>

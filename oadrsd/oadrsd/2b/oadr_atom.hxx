@@ -98,6 +98,8 @@
 #include <xsd/cxx/tree/serialization/double.hxx>
 #include <xsd/cxx/tree/serialization/decimal.hxx>
 
+#include <xsd/cxx/tree/std-ostream-operators.hxx>
+
 namespace xml_schema
 {
   // anyType and anySimpleType.
@@ -306,6 +308,12 @@ namespace Atom
 #include "dateTimeType1.hxx"
 
 #include "type.hxx"
+
+namespace Atom
+{
+}
+
+#include <iosfwd>
 
 namespace Atom
 {

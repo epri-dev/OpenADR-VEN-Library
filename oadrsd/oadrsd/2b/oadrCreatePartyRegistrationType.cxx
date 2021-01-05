@@ -664,6 +664,70 @@ namespace oadr2b
   }
 }
 
+#include <ostream>
+
+#include <xsd/cxx/tree/std-ostream-map.hxx>
+
+namespace _xsd
+{
+  static
+  const ::xsd::cxx::tree::std_ostream_plate< 0, char >
+  std_ostream_plate_init;
+}
+
+namespace oadr2b
+{
+  namespace oadr
+  {
+    ::std::ostream&
+    operator<< (::std::ostream& o, const oadrCreatePartyRegistrationType& i)
+    {
+      o << ::std::endl << "requestID: " << i.requestID ();
+      {
+        ::xsd::cxx::tree::std_ostream_map< char >& om (
+          ::xsd::cxx::tree::std_ostream_map_instance< 0, char > ());
+
+        if (i.registrationID ())
+        {
+          o << ::std::endl << "registrationID: ";
+          om.insert (o, *i.registrationID ());
+        }
+      }
+
+      if (i.venID ())
+      {
+        o << ::std::endl << "venID: " << *i.venID ();
+      }
+
+      o << ::std::endl << "oadrProfileName: " << i.oadrProfileName ();
+      o << ::std::endl << "oadrTransportName: " << i.oadrTransportName ();
+      if (i.oadrTransportAddress ())
+      {
+        o << ::std::endl << "oadrTransportAddress: " << *i.oadrTransportAddress ();
+      }
+
+      o << ::std::endl << "oadrReportOnly: " << i.oadrReportOnly ();
+      o << ::std::endl << "oadrXmlSignature: " << i.oadrXmlSignature ();
+      if (i.oadrVenName ())
+      {
+        o << ::std::endl << "oadrVenName: " << *i.oadrVenName ();
+      }
+
+      if (i.oadrHttpPullModel ())
+      {
+        o << ::std::endl << "oadrHttpPullModel: " << *i.oadrHttpPullModel ();
+      }
+
+      if (i.schemaVersion ())
+      {
+        o << ::std::endl << "schemaVersion: " << *i.schemaVersion ();
+      }
+
+      return o;
+    }
+  }
+}
+
 #include <istream>
 #include <xsd/cxx/xml/sax/std-input-source.hxx>
 #include <xsd/cxx/tree/error-handler.hxx>

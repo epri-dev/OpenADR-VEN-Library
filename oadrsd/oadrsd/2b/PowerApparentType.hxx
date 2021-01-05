@@ -98,6 +98,8 @@
 #include <xsd/cxx/tree/serialization/double.hxx>
 #include <xsd/cxx/tree/serialization/decimal.hxx>
 
+#include <xsd/cxx/tree/std-ostream-operators.hxx>
+
 namespace xml_schema
 {
   // anyType and anySimpleType.
@@ -308,6 +310,14 @@ namespace power
     virtual 
     ~PowerApparentType ();
   };
+}
+
+#include <iosfwd>
+
+namespace power
+{
+  ::std::ostream&
+  operator<< (::std::ostream&, const PowerApparentType&);
 }
 
 #include <iosfwd>

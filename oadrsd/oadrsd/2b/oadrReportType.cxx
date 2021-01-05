@@ -419,6 +419,51 @@ namespace oadr2b
   }
 }
 
+#include <ostream>
+
+#include <xsd/cxx/tree/std-ostream-map.hxx>
+
+namespace _xsd
+{
+  static
+  const ::xsd::cxx::tree::std_ostream_plate< 0, char >
+  std_ostream_plate_init;
+}
+
+namespace oadr2b
+{
+  namespace oadr
+  {
+    ::std::ostream&
+    operator<< (::std::ostream& o, const oadrReportType& i)
+    {
+      o << static_cast< const ::stream::StreamBaseType& > (i);
+
+      if (i.eiReportID ())
+      {
+        o << ::std::endl << "eiReportID: " << *i.eiReportID ();
+      }
+
+      for (oadrReportType::oadrReportDescription_const_iterator
+           b (i.oadrReportDescription ().begin ()), e (i.oadrReportDescription ().end ());
+           b != e; ++b)
+      {
+        o << ::std::endl << "oadrReportDescription: " << *b;
+      }
+
+      o << ::std::endl << "reportRequestID: " << i.reportRequestID ();
+      o << ::std::endl << "reportSpecifierID: " << i.reportSpecifierID ();
+      if (i.reportName ())
+      {
+        o << ::std::endl << "reportName: " << *i.reportName ();
+      }
+
+      o << ::std::endl << "createdDateTime: " << i.createdDateTime ();
+      return o;
+    }
+  }
+}
+
 #include <istream>
 #include <xsd/cxx/xml/sax/std-input-source.hxx>
 #include <xsd/cxx/tree/error-handler.hxx>

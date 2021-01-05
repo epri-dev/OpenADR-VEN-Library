@@ -98,6 +98,8 @@
 #include <xsd/cxx/tree/serialization/double.hxx>
 #include <xsd/cxx/tree/serialization/decimal.hxx>
 
+#include <xsd/cxx/tree/std-ostream-operators.hxx>
+
 namespace xml_schema
 {
   // anyType and anySimpleType.
@@ -513,6 +515,17 @@ namespace ISO42173A_2010_04_07
     static const char* const _xsd_ISO3AlphaCurrencyCodeContentType_literals_[184];
     static const value _xsd_ISO3AlphaCurrencyCodeContentType_indexes_[184];
   };
+}
+
+#include <iosfwd>
+
+namespace ISO42173A_2010_04_07
+{
+  ::std::ostream&
+  operator<< (::std::ostream&, ISO3AlphaCurrencyCodeContentType::value);
+
+  ::std::ostream&
+  operator<< (::std::ostream&, const ISO3AlphaCurrencyCodeContentType&);
 }
 
 #include <iosfwd>

@@ -437,6 +437,48 @@ namespace icalendar_2_0
   }
 }
 
+#include <ostream>
+
+#include <xsd/cxx/tree/std-ostream-map.hxx>
+
+namespace _xsd
+{
+  static
+  const ::xsd::cxx::tree::std_ostream_plate< 0, char >
+  std_ostream_plate_init;
+}
+
+namespace icalendar_2_0
+{
+  ::std::ostream&
+  operator<< (::std::ostream& o, const properties& i)
+  {
+    o << ::std::endl << "dtstart: " << i.dtstart ();
+    o << ::std::endl << "duration: " << i.duration ();
+    if (i.tolerance ())
+    {
+      o << ::std::endl << "tolerance: " << *i.tolerance ();
+    }
+
+    if (i.x_eiNotification ())
+    {
+      o << ::std::endl << "x-eiNotification: " << *i.x_eiNotification ();
+    }
+
+    if (i.x_eiRampUp ())
+    {
+      o << ::std::endl << "x-eiRampUp: " << *i.x_eiRampUp ();
+    }
+
+    if (i.x_eiRecovery ())
+    {
+      o << ::std::endl << "x-eiRecovery: " << *i.x_eiRecovery ();
+    }
+
+    return o;
+  }
+}
+
 #include <istream>
 #include <xsd/cxx/xml/sax/std-input-source.hxx>
 #include <xsd/cxx/tree/error-handler.hxx>

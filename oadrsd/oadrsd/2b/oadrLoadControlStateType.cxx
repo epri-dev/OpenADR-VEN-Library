@@ -327,6 +327,49 @@ namespace oadr2b
   }
 }
 
+#include <ostream>
+
+#include <xsd/cxx/tree/std-ostream-map.hxx>
+
+namespace _xsd
+{
+  static
+  const ::xsd::cxx::tree::std_ostream_plate< 0, char >
+  std_ostream_plate_init;
+}
+
+namespace oadr2b
+{
+  namespace oadr
+  {
+    ::std::ostream&
+    operator<< (::std::ostream& o, const oadrLoadControlStateType& i)
+    {
+      if (i.oadrCapacity ())
+      {
+        o << ::std::endl << "oadrCapacity: " << *i.oadrCapacity ();
+      }
+
+      if (i.oadrLevelOffset ())
+      {
+        o << ::std::endl << "oadrLevelOffset: " << *i.oadrLevelOffset ();
+      }
+
+      if (i.oadrPercentOffset ())
+      {
+        o << ::std::endl << "oadrPercentOffset: " << *i.oadrPercentOffset ();
+      }
+
+      if (i.oadrSetPoint ())
+      {
+        o << ::std::endl << "oadrSetPoint: " << *i.oadrSetPoint ();
+      }
+
+      return o;
+    }
+  }
+}
+
 #include <istream>
 #include <xsd/cxx/xml/sax/std-input-source.hxx>
 #include <xsd/cxx/tree/error-handler.hxx>

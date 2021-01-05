@@ -548,6 +548,63 @@ namespace oadr2b
   }
 }
 
+#include <ostream>
+
+#include <xsd/cxx/tree/std-ostream-map.hxx>
+
+namespace _xsd
+{
+  static
+  const ::xsd::cxx::tree::std_ostream_plate< 0, char >
+  std_ostream_plate_init;
+}
+
+namespace oadr2b
+{
+  namespace oadr
+  {
+    ::std::ostream&
+    operator<< (::std::ostream& o, const oadrReportDescriptionType& i)
+    {
+      o << ::std::endl << "rID: " << i.rID ();
+      if (i.reportSubject ())
+      {
+        o << ::std::endl << "reportSubject: " << *i.reportSubject ();
+      }
+
+      if (i.reportDataSource ())
+      {
+        o << ::std::endl << "reportDataSource: " << *i.reportDataSource ();
+      }
+
+      o << ::std::endl << "reportType: " << i.reportType ();
+      {
+        ::xsd::cxx::tree::std_ostream_map< char >& om (
+          ::xsd::cxx::tree::std_ostream_map_instance< 0, char > ());
+
+        if (i.itemBase ())
+        {
+          o << ::std::endl << "itemBase: ";
+          om.insert (o, *i.itemBase ());
+        }
+      }
+
+      o << ::std::endl << "readingType: " << i.readingType ();
+      if (i.marketContext ())
+      {
+        o << ::std::endl << "marketContext: " << *i.marketContext ();
+      }
+
+      if (i.oadrSamplingRate ())
+      {
+        o << ::std::endl << "oadrSamplingRate: " << *i.oadrSamplingRate ();
+      }
+
+      return o;
+    }
+  }
+}
+
 #include <istream>
 #include <xsd/cxx/xml/sax/std-input-source.hxx>
 #include <xsd/cxx/tree/error-handler.hxx>

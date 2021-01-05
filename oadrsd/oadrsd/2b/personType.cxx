@@ -317,6 +317,57 @@ namespace Atom
   }
 }
 
+#include <ostream>
+
+#include <xsd/cxx/tree/std-ostream-map.hxx>
+
+namespace _xsd
+{
+  static
+  const ::xsd::cxx::tree::std_ostream_plate< 0, char >
+  std_ostream_plate_init;
+}
+
+namespace Atom
+{
+  ::std::ostream&
+  operator<< (::std::ostream& o, const personType& i)
+  {
+    for (personType::name_const_iterator
+         b (i.name ().begin ()), e (i.name ().end ());
+         b != e; ++b)
+    {
+      o << ::std::endl << "name: " << *b;
+    }
+
+    for (personType::uri_const_iterator
+         b (i.uri ().begin ()), e (i.uri ().end ());
+         b != e; ++b)
+    {
+      o << ::std::endl << "uri: " << *b;
+    }
+
+    for (personType::email_const_iterator
+         b (i.email ().begin ()), e (i.email ().end ());
+         b != e; ++b)
+    {
+      o << ::std::endl << "email: " << *b;
+    }
+
+    if (i.base ())
+    {
+      o << ::std::endl << "base: " << *i.base ();
+    }
+
+    if (i.lang ())
+    {
+      o << ::std::endl << "lang: " << *i.lang ();
+    }
+
+    return o;
+  }
+}
+
 #include <istream>
 #include <xsd/cxx/xml/sax/std-input-source.hxx>
 #include <xsd/cxx/tree/error-handler.hxx>

@@ -578,6 +578,120 @@ namespace oadr2b
   }
 }
 
+#include <ostream>
+
+#include <xsd/cxx/tree/std-ostream-map.hxx>
+
+namespace _xsd
+{
+  static
+  const ::xsd::cxx::tree::std_ostream_plate< 0, char >
+  std_ostream_plate_init;
+}
+
+namespace oadr2b
+{
+  namespace ei
+  {
+    ::std::ostream&
+    operator<< (::std::ostream& o, const EiTargetType& i)
+    {
+      for (EiTargetType::aggregatedPnode_const_iterator
+           b (i.aggregatedPnode ().begin ()), e (i.aggregatedPnode ().end ());
+           b != e; ++b)
+      {
+        o << ::std::endl << "aggregatedPnode: " << *b;
+      }
+
+      for (EiTargetType::endDeviceAsset_const_iterator
+           b (i.endDeviceAsset ().begin ()), e (i.endDeviceAsset ().end ());
+           b != e; ++b)
+      {
+        o << ::std::endl << "endDeviceAsset: " << *b;
+      }
+
+      for (EiTargetType::meterAsset_const_iterator
+           b (i.meterAsset ().begin ()), e (i.meterAsset ().end ());
+           b != e; ++b)
+      {
+        o << ::std::endl << "meterAsset: " << *b;
+      }
+
+      for (EiTargetType::pnode_const_iterator
+           b (i.pnode ().begin ()), e (i.pnode ().end ());
+           b != e; ++b)
+      {
+        o << ::std::endl << "pnode: " << *b;
+      }
+
+      for (EiTargetType::serviceArea_const_iterator
+           b (i.serviceArea ().begin ()), e (i.serviceArea ().end ());
+           b != e; ++b)
+      {
+        o << ::std::endl << "serviceArea: " << *b;
+      }
+
+      for (EiTargetType::serviceDeliveryPoint_const_iterator
+           b (i.serviceDeliveryPoint ().begin ()), e (i.serviceDeliveryPoint ().end ());
+           b != e; ++b)
+      {
+        o << ::std::endl << "serviceDeliveryPoint: " << *b;
+      }
+
+      for (EiTargetType::serviceLocation_const_iterator
+           b (i.serviceLocation ().begin ()), e (i.serviceLocation ().end ());
+           b != e; ++b)
+      {
+        o << ::std::endl << "serviceLocation: " << *b;
+      }
+
+      for (EiTargetType::transportInterface_const_iterator
+           b (i.transportInterface ().begin ()), e (i.transportInterface ().end ());
+           b != e; ++b)
+      {
+        o << ::std::endl << "transportInterface: " << *b;
+      }
+
+      for (EiTargetType::groupID_const_iterator
+           b (i.groupID ().begin ()), e (i.groupID ().end ());
+           b != e; ++b)
+      {
+        o << ::std::endl << "groupID: " << *b;
+      }
+
+      for (EiTargetType::groupName_const_iterator
+           b (i.groupName ().begin ()), e (i.groupName ().end ());
+           b != e; ++b)
+      {
+        o << ::std::endl << "groupName: " << *b;
+      }
+
+      for (EiTargetType::resourceID_const_iterator
+           b (i.resourceID ().begin ()), e (i.resourceID ().end ());
+           b != e; ++b)
+      {
+        o << ::std::endl << "resourceID: " << *b;
+      }
+
+      for (EiTargetType::venID_const_iterator
+           b (i.venID ().begin ()), e (i.venID ().end ());
+           b != e; ++b)
+      {
+        o << ::std::endl << "venID: " << *b;
+      }
+
+      for (EiTargetType::partyID_const_iterator
+           b (i.partyID ().begin ()), e (i.partyID ().end ());
+           b != e; ++b)
+      {
+        o << ::std::endl << "partyID: " << *b;
+      }
+
+      return o;
+    }
+  }
+}
+
 #include <istream>
 #include <xsd/cxx/xml/sax/std-input-source.hxx>
 #include <xsd/cxx/tree/error-handler.hxx>

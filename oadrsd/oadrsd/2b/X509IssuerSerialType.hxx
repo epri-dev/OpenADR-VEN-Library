@@ -98,6 +98,8 @@
 #include <xsd/cxx/tree/serialization/double.hxx>
 #include <xsd/cxx/tree/serialization/decimal.hxx>
 
+#include <xsd/cxx/tree/std-ostream-operators.hxx>
+
 namespace xml_schema
 {
   // anyType and anySimpleType.
@@ -349,6 +351,17 @@ namespace oadr2b
       ::xsd::cxx::tree::one< X509IssuerName_type > X509IssuerName_;
       ::xsd::cxx::tree::one< X509SerialNumber_type > X509SerialNumber_;
     };
+  }
+}
+
+#include <iosfwd>
+
+namespace oadr2b
+{
+  namespace sig
+  {
+    ::std::ostream&
+    operator<< (::std::ostream&, const X509IssuerSerialType&);
   }
 }
 

@@ -98,6 +98,8 @@
 #include <xsd/cxx/tree/serialization/double.hxx>
 #include <xsd/cxx/tree/serialization/decimal.hxx>
 
+#include <xsd/cxx/tree/std-ostream-operators.hxx>
+
 namespace xml_schema
 {
   // anyType and anySimpleType.
@@ -274,6 +276,12 @@ namespace siscale
 #include <xsd/cxx/xml/dom/parsing-header.hxx>
 
 #include "SiScaleCodeType.hxx"
+
+namespace siscale
+{
+}
+
+#include <iosfwd>
 
 namespace siscale
 {

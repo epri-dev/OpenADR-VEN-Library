@@ -98,6 +98,8 @@
 #include <xsd/cxx/tree/serialization/double.hxx>
 #include <xsd/cxx/tree/serialization/decimal.hxx>
 
+#include <xsd/cxx/tree/std-ostream-operators.hxx>
+
 namespace xml_schema
 {
   // anyType and anySimpleType.
@@ -503,6 +505,17 @@ namespace oadr2b
       MgmtData_sequence MgmtData_;
       Id_optional Id_;
     };
+  }
+}
+
+#include <iosfwd>
+
+namespace oadr2b
+{
+  namespace sig
+  {
+    ::std::ostream&
+    operator<< (::std::ostream&, const KeyInfoType&);
   }
 }
 

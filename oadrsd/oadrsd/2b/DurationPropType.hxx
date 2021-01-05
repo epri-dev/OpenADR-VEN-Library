@@ -98,6 +98,8 @@
 #include <xsd/cxx/tree/serialization/double.hxx>
 #include <xsd/cxx/tree/serialization/decimal.hxx>
 
+#include <xsd/cxx/tree/std-ostream-operators.hxx>
+
 namespace xml_schema
 {
   // anyType and anySimpleType.
@@ -333,6 +335,14 @@ namespace icalendar_2_0
     protected:
     ::xsd::cxx::tree::one< duration_type > duration_;
   };
+}
+
+#include <iosfwd>
+
+namespace icalendar_2_0
+{
+  ::std::ostream&
+  operator<< (::std::ostream&, const DurationPropType&);
 }
 
 #include <iosfwd>

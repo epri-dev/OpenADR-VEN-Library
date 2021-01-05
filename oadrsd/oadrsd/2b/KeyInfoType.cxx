@@ -421,6 +421,83 @@ namespace oadr2b
   }
 }
 
+#include <ostream>
+
+#include <xsd/cxx/tree/std-ostream-map.hxx>
+
+namespace _xsd
+{
+  static
+  const ::xsd::cxx::tree::std_ostream_plate< 0, char >
+  std_ostream_plate_init;
+}
+
+namespace oadr2b
+{
+  namespace sig
+  {
+    ::std::ostream&
+    operator<< (::std::ostream& o, const KeyInfoType& i)
+    {
+      for (KeyInfoType::KeyName_const_iterator
+           b (i.KeyName ().begin ()), e (i.KeyName ().end ());
+           b != e; ++b)
+      {
+        o << ::std::endl << "KeyName: " << *b;
+      }
+
+      for (KeyInfoType::KeyValue_const_iterator
+           b (i.KeyValue ().begin ()), e (i.KeyValue ().end ());
+           b != e; ++b)
+      {
+        o << ::std::endl << "KeyValue: " << *b;
+      }
+
+      for (KeyInfoType::RetrievalMethod_const_iterator
+           b (i.RetrievalMethod ().begin ()), e (i.RetrievalMethod ().end ());
+           b != e; ++b)
+      {
+        o << ::std::endl << "RetrievalMethod: " << *b;
+      }
+
+      for (KeyInfoType::X509Data_const_iterator
+           b (i.X509Data ().begin ()), e (i.X509Data ().end ());
+           b != e; ++b)
+      {
+        o << ::std::endl << "X509Data: " << *b;
+      }
+
+      for (KeyInfoType::PGPData_const_iterator
+           b (i.PGPData ().begin ()), e (i.PGPData ().end ());
+           b != e; ++b)
+      {
+        o << ::std::endl << "PGPData: " << *b;
+      }
+
+      for (KeyInfoType::SPKIData_const_iterator
+           b (i.SPKIData ().begin ()), e (i.SPKIData ().end ());
+           b != e; ++b)
+      {
+        o << ::std::endl << "SPKIData: " << *b;
+      }
+
+      for (KeyInfoType::MgmtData_const_iterator
+           b (i.MgmtData ().begin ()), e (i.MgmtData ().end ());
+           b != e; ++b)
+      {
+        o << ::std::endl << "MgmtData: " << *b;
+      }
+
+      if (i.Id ())
+      {
+        o << ::std::endl << "Id: " << *i.Id ();
+      }
+
+      return o;
+    }
+  }
+}
+
 #include <istream>
 #include <xsd/cxx/xml/sax/std-input-source.hxx>
 #include <xsd/cxx/tree/error-handler.hxx>

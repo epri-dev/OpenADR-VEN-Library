@@ -290,6 +290,45 @@ namespace oadr2b
   }
 }
 
+#include <ostream>
+
+#include <xsd/cxx/tree/std-ostream-map.hxx>
+
+namespace _xsd
+{
+  static
+  const ::xsd::cxx::tree::std_ostream_plate< 0, char >
+  std_ostream_plate_init;
+}
+
+namespace oadr2b
+{
+  namespace oadr
+  {
+    ::std::ostream&
+    operator<< (::std::ostream& o, const oadrLoadControlStateTypeType& i)
+    {
+      if (i.oadrMin ())
+      {
+        o << ::std::endl << "oadrMin: " << *i.oadrMin ();
+      }
+
+      if (i.oadrMax ())
+      {
+        o << ::std::endl << "oadrMax: " << *i.oadrMax ();
+      }
+
+      o << ::std::endl << "oadrCurrent: " << i.oadrCurrent ();
+      if (i.oadrNormal ())
+      {
+        o << ::std::endl << "oadrNormal: " << *i.oadrNormal ();
+      }
+
+      return o;
+    }
+  }
+}
+
 #include <istream>
 #include <xsd/cxx/xml/sax/std-input-source.hxx>
 #include <xsd/cxx/tree/error-handler.hxx>

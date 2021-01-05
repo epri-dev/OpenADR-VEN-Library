@@ -400,6 +400,38 @@ namespace oadr2b
   }
 }
 
+#include <ostream>
+
+#include <xsd/cxx/tree/std-ostream-map.hxx>
+
+namespace _xsd
+{
+  static
+  const ::xsd::cxx::tree::std_ostream_plate< 0, char >
+  std_ostream_plate_init;
+}
+
+namespace oadr2b
+{
+  namespace ei
+  {
+    ::std::ostream&
+    operator<< (::std::ostream& o, const eventResponse& i)
+    {
+      o << ::std::endl << "responseCode: " << i.responseCode ();
+      if (i.responseDescription ())
+      {
+        o << ::std::endl << "responseDescription: " << *i.responseDescription ();
+      }
+
+      o << ::std::endl << "requestID: " << i.requestID ();
+      o << ::std::endl << "qualifiedEventID: " << i.qualifiedEventID ();
+      o << ::std::endl << "optType: " << i.optType ();
+      return o;
+    }
+  }
+}
+
 #include <istream>
 #include <xsd/cxx/xml/sax/std-input-source.hxx>
 #include <xsd/cxx/tree/error-handler.hxx>

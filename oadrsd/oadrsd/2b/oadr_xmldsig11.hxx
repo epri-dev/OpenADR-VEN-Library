@@ -98,6 +98,8 @@
 #include <xsd/cxx/tree/serialization/double.hxx>
 #include <xsd/cxx/tree/serialization/decimal.hxx>
 
+#include <xsd/cxx/tree/std-ostream-operators.hxx>
+
 namespace xml_schema
 {
   // anyType and anySimpleType.
@@ -305,6 +307,15 @@ namespace oadr2b
 #include "KeyInfoReferenceType.hxx"
 
 #include "X509DigestType.hxx"
+
+namespace oadr2b
+{
+  namespace dsig11
+  {
+  }
+}
+
+#include <iosfwd>
 
 namespace oadr2b
 {

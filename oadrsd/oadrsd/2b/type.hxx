@@ -98,6 +98,8 @@
 #include <xsd/cxx/tree/serialization/double.hxx>
 #include <xsd/cxx/tree/serialization/decimal.hxx>
 
+#include <xsd/cxx/tree/std-ostream-operators.hxx>
+
 namespace xml_schema
 {
   // anyType and anySimpleType.
@@ -332,6 +334,17 @@ namespace Atom
     static const char* const _xsd_type_literals_[3];
     static const value _xsd_type_indexes_[3];
   };
+}
+
+#include <iosfwd>
+
+namespace Atom
+{
+  ::std::ostream&
+  operator<< (::std::ostream&, type::value);
+
+  ::std::ostream&
+  operator<< (::std::ostream&, const type&);
 }
 
 #include <iosfwd>

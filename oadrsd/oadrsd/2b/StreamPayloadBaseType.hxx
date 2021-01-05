@@ -98,6 +98,8 @@
 #include <xsd/cxx/tree/serialization/double.hxx>
 #include <xsd/cxx/tree/serialization/decimal.hxx>
 
+#include <xsd/cxx/tree/std-ostream-operators.hxx>
+
 namespace xml_schema
 {
   // anyType and anySimpleType.
@@ -307,6 +309,14 @@ namespace stream
     virtual 
     ~StreamPayloadBaseType ();
   };
+}
+
+#include <iosfwd>
+
+namespace stream
+{
+  ::std::ostream&
+  operator<< (::std::ostream&, const StreamPayloadBaseType&);
 }
 
 #include <iosfwd>

@@ -219,6 +219,37 @@ namespace oadr2b
   }
 }
 
+#include <ostream>
+
+#include <xsd/cxx/tree/std-ostream-map.hxx>
+
+namespace _xsd
+{
+  static
+  const ::xsd::cxx::tree::std_ostream_plate< 0, char >
+  std_ostream_plate_init;
+}
+
+namespace oadr2b
+{
+  namespace oadr
+  {
+    ::std::ostream&
+    operator<< (::std::ostream& o, const oadrService& i)
+    {
+      o << ::std::endl << "oadrServiceName: " << i.oadrServiceName ();
+      for (oadrService::oadrInfo_const_iterator
+           b (i.oadrInfo ().begin ()), e (i.oadrInfo ().end ());
+           b != e; ++b)
+      {
+        o << ::std::endl << "oadrInfo: " << *b;
+      }
+
+      return o;
+    }
+  }
+}
+
 #include <istream>
 #include <xsd/cxx/xml/sax/std-input-source.hxx>
 #include <xsd/cxx/tree/error-handler.hxx>

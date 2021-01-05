@@ -98,6 +98,8 @@
 #include <xsd/cxx/tree/serialization/double.hxx>
 #include <xsd/cxx/tree/serialization/decimal.hxx>
 
+#include <xsd/cxx/tree/std-ostream-operators.hxx>
+
 namespace xml_schema
 {
   // anyType and anySimpleType.
@@ -517,6 +519,17 @@ namespace oadr2b
       ::xsd::cxx::tree::one< createdDateTime_type > createdDateTime_;
       schemaVersion_optional schemaVersion_;
     };
+  }
+}
+
+#include <iosfwd>
+
+namespace oadr2b
+{
+  namespace ei
+  {
+    ::std::ostream&
+    operator<< (::std::ostream&, const EiOptType&);
   }
 }
 

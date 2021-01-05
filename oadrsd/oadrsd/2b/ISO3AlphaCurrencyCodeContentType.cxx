@@ -535,6 +535,32 @@ namespace ISO42173A_2010_04_07
   };
 }
 
+#include <ostream>
+
+#include <xsd/cxx/tree/std-ostream-map.hxx>
+
+namespace _xsd
+{
+  static
+  const ::xsd::cxx::tree::std_ostream_plate< 0, char >
+  std_ostream_plate_init;
+}
+
+namespace ISO42173A_2010_04_07
+{
+  ::std::ostream&
+  operator<< (::std::ostream& o, ISO3AlphaCurrencyCodeContentType::value i)
+  {
+    return o << ISO3AlphaCurrencyCodeContentType::_xsd_ISO3AlphaCurrencyCodeContentType_literals_[i];
+  }
+
+  ::std::ostream&
+  operator<< (::std::ostream& o, const ISO3AlphaCurrencyCodeContentType& i)
+  {
+    return o << static_cast< const ::xml_schema::token& > (i);
+  }
+}
+
 #include <istream>
 #include <xsd/cxx/xml/sax/std-input-source.hxx>
 #include <xsd/cxx/tree/error-handler.hxx>

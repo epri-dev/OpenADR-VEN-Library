@@ -98,6 +98,8 @@
 #include <xsd/cxx/tree/serialization/double.hxx>
 #include <xsd/cxx/tree/serialization/decimal.hxx>
 
+#include <xsd/cxx/tree/std-ostream-operators.hxx>
+
 namespace xml_schema
 {
   // anyType and anySimpleType.
@@ -336,6 +338,20 @@ namespace oadr2b
       static const char* const _xsd_oadrProfileType_literals_[2];
       static const value _xsd_oadrProfileType_indexes_[2];
     };
+  }
+}
+
+#include <iosfwd>
+
+namespace oadr2b
+{
+  namespace oadr
+  {
+    ::std::ostream&
+    operator<< (::std::ostream&, oadrProfileType::value);
+
+    ::std::ostream&
+    operator<< (::std::ostream&, const oadrProfileType&);
   }
 }
 

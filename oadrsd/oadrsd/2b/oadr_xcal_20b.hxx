@@ -98,6 +98,8 @@
 #include <xsd/cxx/tree/serialization/double.hxx>
 #include <xsd/cxx/tree/serialization/decimal.hxx>
 
+#include <xsd/cxx/tree/std-ostream-operators.hxx>
+
 namespace xml_schema
 {
   // anyType and anySimpleType.
@@ -300,6 +302,12 @@ namespace icalendar_2_0
 #include "tolerance.hxx"
 
 #include "tolerate.hxx"
+
+namespace icalendar_2_0
+{
+}
+
+#include <iosfwd>
 
 namespace icalendar_2_0
 {

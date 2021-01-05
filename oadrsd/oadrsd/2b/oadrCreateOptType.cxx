@@ -363,6 +363,43 @@ namespace oadr2b
   }
 }
 
+#include <ostream>
+
+#include <xsd/cxx/tree/std-ostream-map.hxx>
+
+namespace _xsd
+{
+  static
+  const ::xsd::cxx::tree::std_ostream_plate< 0, char >
+  std_ostream_plate_init;
+}
+
+namespace oadr2b
+{
+  namespace oadr
+  {
+    ::std::ostream&
+    operator<< (::std::ostream& o, const oadrCreateOptType& i)
+    {
+      o << static_cast< const ::oadr2b::ei::EiOptType& > (i);
+
+      o << ::std::endl << "requestID: " << i.requestID ();
+      if (i.qualifiedEventID ())
+      {
+        o << ::std::endl << "qualifiedEventID: " << *i.qualifiedEventID ();
+      }
+
+      o << ::std::endl << "eiTarget: " << i.eiTarget ();
+      if (i.oadrDeviceClass ())
+      {
+        o << ::std::endl << "oadrDeviceClass: " << *i.oadrDeviceClass ();
+      }
+
+      return o;
+    }
+  }
+}
+
 #include <istream>
 #include <xsd/cxx/xml/sax/std-input-source.hxx>
 #include <xsd/cxx/tree/error-handler.hxx>

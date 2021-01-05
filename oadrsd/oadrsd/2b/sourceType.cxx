@@ -628,6 +628,120 @@ namespace Atom
   }
 }
 
+#include <ostream>
+
+#include <xsd/cxx/tree/std-ostream-map.hxx>
+
+namespace _xsd
+{
+  static
+  const ::xsd::cxx::tree::std_ostream_plate< 0, char >
+  std_ostream_plate_init;
+}
+
+namespace Atom
+{
+  ::std::ostream&
+  operator<< (::std::ostream& o, const sourceType& i)
+  {
+    for (sourceType::author_const_iterator
+         b (i.author ().begin ()), e (i.author ().end ());
+         b != e; ++b)
+    {
+      o << ::std::endl << "author: " << *b;
+    }
+
+    for (sourceType::category_const_iterator
+         b (i.category ().begin ()), e (i.category ().end ());
+         b != e; ++b)
+    {
+      o << ::std::endl << "category: " << *b;
+    }
+
+    for (sourceType::contributor_const_iterator
+         b (i.contributor ().begin ()), e (i.contributor ().end ());
+         b != e; ++b)
+    {
+      o << ::std::endl << "contributor: " << *b;
+    }
+
+    for (sourceType::generator_const_iterator
+         b (i.generator ().begin ()), e (i.generator ().end ());
+         b != e; ++b)
+    {
+      o << ::std::endl << "generator: " << *b;
+    }
+
+    for (sourceType::icon_const_iterator
+         b (i.icon ().begin ()), e (i.icon ().end ());
+         b != e; ++b)
+    {
+      o << ::std::endl << "icon: " << *b;
+    }
+
+    for (sourceType::id_const_iterator
+         b (i.id ().begin ()), e (i.id ().end ());
+         b != e; ++b)
+    {
+      o << ::std::endl << "id: " << *b;
+    }
+
+    for (sourceType::link_const_iterator
+         b (i.link ().begin ()), e (i.link ().end ());
+         b != e; ++b)
+    {
+      o << ::std::endl << "link: " << *b;
+    }
+
+    for (sourceType::logo_const_iterator
+         b (i.logo ().begin ()), e (i.logo ().end ());
+         b != e; ++b)
+    {
+      o << ::std::endl << "logo: " << *b;
+    }
+
+    for (sourceType::rights_const_iterator
+         b (i.rights ().begin ()), e (i.rights ().end ());
+         b != e; ++b)
+    {
+      o << ::std::endl << "rights: " << *b;
+    }
+
+    for (sourceType::subtitle_const_iterator
+         b (i.subtitle ().begin ()), e (i.subtitle ().end ());
+         b != e; ++b)
+    {
+      o << ::std::endl << "subtitle: " << *b;
+    }
+
+    for (sourceType::title_const_iterator
+         b (i.title ().begin ()), e (i.title ().end ());
+         b != e; ++b)
+    {
+      o << ::std::endl << "title: " << *b;
+    }
+
+    for (sourceType::updated_const_iterator
+         b (i.updated ().begin ()), e (i.updated ().end ());
+         b != e; ++b)
+    {
+      o << ::std::endl << "updated: " << *b;
+    }
+
+    if (i.base ())
+    {
+      o << ::std::endl << "base: " << *i.base ();
+    }
+
+    if (i.lang ())
+    {
+      o << ::std::endl << "lang: " << *i.lang ();
+    }
+
+    return o;
+  }
+}
+
 #include <istream>
 #include <xsd/cxx/xml/sax/std-input-source.hxx>
 #include <xsd/cxx/tree/error-handler.hxx>

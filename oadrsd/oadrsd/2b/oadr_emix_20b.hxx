@@ -98,6 +98,8 @@
 #include <xsd/cxx/tree/serialization/double.hxx>
 #include <xsd/cxx/tree/serialization/decimal.hxx>
 
+#include <xsd/cxx/tree/std-ostream-operators.hxx>
+
 namespace xml_schema
 {
   // anyType and anySimpleType.
@@ -283,6 +285,15 @@ namespace oadr2b
 #include "ServiceAreaType.hxx"
 
 #include "ItemBaseType.hxx"
+
+namespace oadr2b
+{
+  namespace emix
+  {
+  }
+}
+
+#include <iosfwd>
 
 namespace oadr2b
 {

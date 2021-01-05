@@ -1330,6 +1330,149 @@ namespace oadr2b
   }
 }
 
+#include <ostream>
+
+#include <xsd/cxx/tree/std-ostream-map.hxx>
+
+namespace _xsd
+{
+  static
+  const ::xsd::cxx::tree::std_ostream_plate< 0, char >
+  std_ostream_plate_init;
+}
+
+namespace oadr2b
+{
+  namespace oadr
+  {
+    ::std::ostream&
+    operator<< (::std::ostream& o, const oadrSignedObject& i)
+    {
+      if (i.oadrDistributeEvent ())
+      {
+        o << ::std::endl << "oadrDistributeEvent: " << *i.oadrDistributeEvent ();
+      }
+
+      if (i.oadrCreatedEvent ())
+      {
+        o << ::std::endl << "oadrCreatedEvent: " << *i.oadrCreatedEvent ();
+      }
+
+      if (i.oadrRequestEvent ())
+      {
+        o << ::std::endl << "oadrRequestEvent: " << *i.oadrRequestEvent ();
+      }
+
+      if (i.oadrResponse ())
+      {
+        o << ::std::endl << "oadrResponse: " << *i.oadrResponse ();
+      }
+
+      if (i.oadrCancelOpt ())
+      {
+        o << ::std::endl << "oadrCancelOpt: " << *i.oadrCancelOpt ();
+      }
+
+      if (i.oadrCanceledOpt ())
+      {
+        o << ::std::endl << "oadrCanceledOpt: " << *i.oadrCanceledOpt ();
+      }
+
+      if (i.oadrCreateOpt ())
+      {
+        o << ::std::endl << "oadrCreateOpt: " << *i.oadrCreateOpt ();
+      }
+
+      if (i.oadrCreatedOpt ())
+      {
+        o << ::std::endl << "oadrCreatedOpt: " << *i.oadrCreatedOpt ();
+      }
+
+      if (i.oadrCancelReport ())
+      {
+        o << ::std::endl << "oadrCancelReport: " << *i.oadrCancelReport ();
+      }
+
+      if (i.oadrCanceledReport ())
+      {
+        o << ::std::endl << "oadrCanceledReport: " << *i.oadrCanceledReport ();
+      }
+
+      if (i.oadrCreateReport ())
+      {
+        o << ::std::endl << "oadrCreateReport: " << *i.oadrCreateReport ();
+      }
+
+      if (i.oadrCreatedReport ())
+      {
+        o << ::std::endl << "oadrCreatedReport: " << *i.oadrCreatedReport ();
+      }
+
+      if (i.oadrRegisterReport ())
+      {
+        o << ::std::endl << "oadrRegisterReport: " << *i.oadrRegisterReport ();
+      }
+
+      if (i.oadrRegisteredReport ())
+      {
+        o << ::std::endl << "oadrRegisteredReport: " << *i.oadrRegisteredReport ();
+      }
+
+      if (i.oadrUpdateReport ())
+      {
+        o << ::std::endl << "oadrUpdateReport: " << *i.oadrUpdateReport ();
+      }
+
+      if (i.oadrUpdatedReport ())
+      {
+        o << ::std::endl << "oadrUpdatedReport: " << *i.oadrUpdatedReport ();
+      }
+
+      if (i.oadrCancelPartyRegistration ())
+      {
+        o << ::std::endl << "oadrCancelPartyRegistration: " << *i.oadrCancelPartyRegistration ();
+      }
+
+      if (i.oadrCanceledPartyRegistration ())
+      {
+        o << ::std::endl << "oadrCanceledPartyRegistration: " << *i.oadrCanceledPartyRegistration ();
+      }
+
+      if (i.oadrCreatePartyRegistration ())
+      {
+        o << ::std::endl << "oadrCreatePartyRegistration: " << *i.oadrCreatePartyRegistration ();
+      }
+
+      if (i.oadrCreatedPartyRegistration ())
+      {
+        o << ::std::endl << "oadrCreatedPartyRegistration: " << *i.oadrCreatedPartyRegistration ();
+      }
+
+      if (i.oadrRequestReregistration ())
+      {
+        o << ::std::endl << "oadrRequestReregistration: " << *i.oadrRequestReregistration ();
+      }
+
+      if (i.oadrQueryRegistration ())
+      {
+        o << ::std::endl << "oadrQueryRegistration: " << *i.oadrQueryRegistration ();
+      }
+
+      if (i.oadrPoll ())
+      {
+        o << ::std::endl << "oadrPoll: " << *i.oadrPoll ();
+      }
+
+      if (i.Id ())
+      {
+        o << ::std::endl << "Id: " << *i.Id ();
+      }
+
+      return o;
+    }
+  }
+}
+
 #include <istream>
 #include <xsd/cxx/xml/sax/std-input-source.hxx>
 #include <xsd/cxx/tree/error-handler.hxx>

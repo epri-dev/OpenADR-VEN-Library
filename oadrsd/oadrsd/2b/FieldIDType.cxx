@@ -333,6 +333,49 @@ namespace oadr2b
   }
 }
 
+#include <ostream>
+
+#include <xsd/cxx/tree/std-ostream-map.hxx>
+
+namespace _xsd
+{
+  static
+  const ::xsd::cxx::tree::std_ostream_plate< 0, char >
+  std_ostream_plate_init;
+}
+
+namespace oadr2b
+{
+  namespace dsig11
+  {
+    ::std::ostream&
+    operator<< (::std::ostream& o, const FieldIDType& i)
+    {
+      if (i.Prime ())
+      {
+        o << ::std::endl << "Prime: " << *i.Prime ();
+      }
+
+      if (i.TnB ())
+      {
+        o << ::std::endl << "TnB: " << *i.TnB ();
+      }
+
+      if (i.PnB ())
+      {
+        o << ::std::endl << "PnB: " << *i.PnB ();
+      }
+
+      if (i.GnB ())
+      {
+        o << ::std::endl << "GnB: " << *i.GnB ();
+      }
+
+      return o;
+    }
+  }
+}
+
 #include <istream>
 #include <xsd/cxx/xml/sax/std-input-source.hxx>
 #include <xsd/cxx/tree/error-handler.hxx>

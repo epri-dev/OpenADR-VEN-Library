@@ -260,6 +260,44 @@ namespace oadr2b
   }
 }
 
+#include <ostream>
+
+#include <xsd/cxx/tree/std-ostream-map.hxx>
+
+namespace _xsd
+{
+  static
+  const ::xsd::cxx::tree::std_ostream_plate< 0, char >
+  std_ostream_plate_init;
+}
+
+namespace oadr2b
+{
+  namespace sig
+  {
+    ::std::ostream&
+    operator<< (::std::ostream& o, const ObjectType& i)
+    {
+      if (i.Id ())
+      {
+        o << ::std::endl << "Id: " << *i.Id ();
+      }
+
+      if (i.MimeType ())
+      {
+        o << ::std::endl << "MimeType: " << *i.MimeType ();
+      }
+
+      if (i.Encoding ())
+      {
+        o << ::std::endl << "Encoding: " << *i.Encoding ();
+      }
+
+      return o;
+    }
+  }
+}
+
 #include <istream>
 #include <xsd/cxx/xml/sax/std-input-source.hxx>
 #include <xsd/cxx/tree/error-handler.hxx>

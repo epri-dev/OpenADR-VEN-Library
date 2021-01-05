@@ -270,6 +270,42 @@ namespace oadr2b
   }
 }
 
+#include <ostream>
+
+#include <xsd/cxx/tree/std-ostream-map.hxx>
+
+namespace _xsd
+{
+  static
+  const ::xsd::cxx::tree::std_ostream_plate< 0, char >
+  std_ostream_plate_init;
+}
+
+namespace oadr2b
+{
+  namespace oadr
+  {
+    ::std::ostream&
+    operator<< (::std::ostream& o, const oadrPayloadResourceStatusType& i)
+    {
+      o << static_cast< const ::oadr2b::ei::PayloadBaseType& > (i);
+
+      o << ::std::endl << "oadrOnline: " << i.oadrOnline ();
+      o << ::std::endl << "oadrManualOverride: " << i.oadrManualOverride ();
+      if (i.oadrLoadControlState ())
+      {
+        o << ::std::endl << "oadrLoadControlState: " << *i.oadrLoadControlState ();
+      }
+
+      return o;
+    }
+
+    static
+    const ::xsd::cxx::tree::std_ostream_initializer< 0, char, oadrPayloadResourceStatusType >
+    _xsd_oadrPayloadResourceStatusType_std_ostream_init;
+  }
+}
+
 #include <istream>
 #include <xsd/cxx/xml/sax/std-input-source.hxx>
 #include <xsd/cxx/tree/error-handler.hxx>

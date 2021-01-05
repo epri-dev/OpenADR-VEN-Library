@@ -98,6 +98,8 @@
 #include <xsd/cxx/tree/serialization/double.hxx>
 #include <xsd/cxx/tree/serialization/decimal.hxx>
 
+#include <xsd/cxx/tree/std-ostream-operators.hxx>
+
 namespace xml_schema
 {
   // anyType and anySimpleType.
@@ -382,6 +384,17 @@ namespace oadr2b
       responseDescription_optional responseDescription_;
       ::xsd::cxx::tree::one< requestID_type > requestID_;
     };
+  }
+}
+
+#include <iosfwd>
+
+namespace oadr2b
+{
+  namespace ei
+  {
+    ::std::ostream&
+    operator<< (::std::ostream&, const EiResponseType&);
   }
 }
 

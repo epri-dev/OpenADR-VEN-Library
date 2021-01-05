@@ -98,6 +98,8 @@
 #include <xsd/cxx/tree/serialization/double.hxx>
 #include <xsd/cxx/tree/serialization/decimal.hxx>
 
+#include <xsd/cxx/tree/std-ostream-operators.hxx>
+
 namespace xml_schema
 {
   // anyType and anySimpleType.
@@ -338,6 +340,14 @@ namespace power
     protected:
     ::xsd::cxx::tree::one< FeatureCollection_type > FeatureCollection_;
   };
+}
+
+#include <iosfwd>
+
+namespace power
+{
+  ::std::ostream&
+  operator<< (::std::ostream&, const ServiceLocationType&);
 }
 
 #include <iosfwd>

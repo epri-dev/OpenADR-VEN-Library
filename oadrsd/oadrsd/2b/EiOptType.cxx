@@ -537,6 +537,49 @@ namespace oadr2b
   }
 }
 
+#include <ostream>
+
+#include <xsd/cxx/tree/std-ostream-map.hxx>
+
+namespace _xsd
+{
+  static
+  const ::xsd::cxx::tree::std_ostream_plate< 0, char >
+  std_ostream_plate_init;
+}
+
+namespace oadr2b
+{
+  namespace ei
+  {
+    ::std::ostream&
+    operator<< (::std::ostream& o, const EiOptType& i)
+    {
+      o << ::std::endl << "optID: " << i.optID ();
+      o << ::std::endl << "optType: " << i.optType ();
+      o << ::std::endl << "optReason: " << i.optReason ();
+      if (i.marketContext ())
+      {
+        o << ::std::endl << "marketContext: " << *i.marketContext ();
+      }
+
+      o << ::std::endl << "venID: " << i.venID ();
+      if (i.vavailability ())
+      {
+        o << ::std::endl << "vavailability: " << *i.vavailability ();
+      }
+
+      o << ::std::endl << "createdDateTime: " << i.createdDateTime ();
+      if (i.schemaVersion ())
+      {
+        o << ::std::endl << "schemaVersion: " << *i.schemaVersion ();
+      }
+
+      return o;
+    }
+  }
+}
+
 #include <istream>
 #include <xsd/cxx/xml/sax/std-input-source.hxx>
 #include <xsd/cxx/tree/error-handler.hxx>

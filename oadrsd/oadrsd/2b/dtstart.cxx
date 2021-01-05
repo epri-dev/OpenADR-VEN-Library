@@ -178,6 +178,27 @@ namespace icalendar_2_0
   }
 }
 
+#include <ostream>
+
+#include <xsd/cxx/tree/std-ostream-map.hxx>
+
+namespace _xsd
+{
+  static
+  const ::xsd::cxx::tree::std_ostream_plate< 0, char >
+  std_ostream_plate_init;
+}
+
+namespace icalendar_2_0
+{
+  ::std::ostream&
+  operator<< (::std::ostream& o, const dtstart& i)
+  {
+    o << ::std::endl << "date-time: " << i.date_time ();
+    return o;
+  }
+}
+
 #include <istream>
 #include <xsd/cxx/xml/sax/std-input-source.hxx>
 #include <xsd/cxx/tree/error-handler.hxx>

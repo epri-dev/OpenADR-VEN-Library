@@ -98,6 +98,8 @@
 #include <xsd/cxx/tree/serialization/double.hxx>
 #include <xsd/cxx/tree/serialization/decimal.hxx>
 
+#include <xsd/cxx/tree/std-ostream-operators.hxx>
+
 namespace xml_schema
 {
   // anyType and anySimpleType.
@@ -336,6 +338,20 @@ namespace oadr2b
       static const char* const _xsd_OptTypeType_literals_[2];
       static const value _xsd_OptTypeType_indexes_[2];
     };
+  }
+}
+
+#include <iosfwd>
+
+namespace oadr2b
+{
+  namespace ei
+  {
+    ::std::ostream&
+    operator<< (::std::ostream&, OptTypeType::value);
+
+    ::std::ostream&
+    operator<< (::std::ostream&, const OptTypeType&);
   }
 }
 

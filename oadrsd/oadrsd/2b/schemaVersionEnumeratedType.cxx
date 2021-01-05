@@ -177,6 +177,35 @@ namespace oadr2b
   }
 }
 
+#include <ostream>
+
+#include <xsd/cxx/tree/std-ostream-map.hxx>
+
+namespace _xsd
+{
+  static
+  const ::xsd::cxx::tree::std_ostream_plate< 0, char >
+  std_ostream_plate_init;
+}
+
+namespace oadr2b
+{
+  namespace ei
+  {
+    ::std::ostream&
+    operator<< (::std::ostream& o, schemaVersionEnumeratedType::value i)
+    {
+      return o << schemaVersionEnumeratedType::_xsd_schemaVersionEnumeratedType_literals_[i];
+    }
+
+    ::std::ostream&
+    operator<< (::std::ostream& o, const schemaVersionEnumeratedType& i)
+    {
+      return o << static_cast< const ::xml_schema::token& > (i);
+    }
+  }
+}
+
 #include <istream>
 #include <xsd/cxx/xml/sax/std-input-source.hxx>
 #include <xsd/cxx/tree/error-handler.hxx>

@@ -98,6 +98,8 @@
 #include <xsd/cxx/tree/serialization/double.hxx>
 #include <xsd/cxx/tree/serialization/decimal.hxx>
 
+#include <xsd/cxx/tree/std-ostream-operators.hxx>
+
 namespace xml_schema
 {
   // anyType and anySimpleType.
@@ -357,6 +359,14 @@ namespace power
     ::xsd::cxx::tree::one< voltage_type > voltage_;
     ::xsd::cxx::tree::one< ac_type > ac_;
   };
+}
+
+#include <iosfwd>
+
+namespace power
+{
+  ::std::ostream&
+  operator<< (::std::ostream&, const PowerAttributesType&);
 }
 
 #include <iosfwd>

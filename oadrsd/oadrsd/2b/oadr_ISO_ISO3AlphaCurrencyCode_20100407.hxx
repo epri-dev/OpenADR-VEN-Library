@@ -98,6 +98,8 @@
 #include <xsd/cxx/tree/serialization/double.hxx>
 #include <xsd/cxx/tree/serialization/decimal.hxx>
 
+#include <xsd/cxx/tree/std-ostream-operators.hxx>
+
 namespace xml_schema
 {
   // anyType and anySimpleType.
@@ -274,6 +276,12 @@ namespace ISO42173A_2010_04_07
 #include <xsd/cxx/xml/dom/parsing-header.hxx>
 
 #include "ISO3AlphaCurrencyCodeContentType.hxx"
+
+namespace ISO42173A_2010_04_07
+{
+}
+
+#include <iosfwd>
 
 namespace ISO42173A_2010_04_07
 {

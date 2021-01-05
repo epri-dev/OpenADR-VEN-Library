@@ -98,6 +98,8 @@
 #include <xsd/cxx/tree/serialization/double.hxx>
 #include <xsd/cxx/tree/serialization/decimal.hxx>
 
+#include <xsd/cxx/tree/std-ostream-operators.hxx>
+
 namespace xml_schema
 {
   // anyType and anySimpleType.
@@ -316,6 +318,17 @@ namespace oadr2b
       virtual 
       ~ECPointType ();
     };
+  }
+}
+
+#include <iosfwd>
+
+namespace oadr2b
+{
+  namespace dsig11
+  {
+    ::std::ostream&
+    operator<< (::std::ostream&, const ECPointType&);
   }
 }
 

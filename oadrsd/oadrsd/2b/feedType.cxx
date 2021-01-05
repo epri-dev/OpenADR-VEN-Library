@@ -663,6 +663,127 @@ namespace Atom
   }
 }
 
+#include <ostream>
+
+#include <xsd/cxx/tree/std-ostream-map.hxx>
+
+namespace _xsd
+{
+  static
+  const ::xsd::cxx::tree::std_ostream_plate< 0, char >
+  std_ostream_plate_init;
+}
+
+namespace Atom
+{
+  ::std::ostream&
+  operator<< (::std::ostream& o, const feedType& i)
+  {
+    for (feedType::author_const_iterator
+         b (i.author ().begin ()), e (i.author ().end ());
+         b != e; ++b)
+    {
+      o << ::std::endl << "author: " << *b;
+    }
+
+    for (feedType::category_const_iterator
+         b (i.category ().begin ()), e (i.category ().end ());
+         b != e; ++b)
+    {
+      o << ::std::endl << "category: " << *b;
+    }
+
+    for (feedType::contributor_const_iterator
+         b (i.contributor ().begin ()), e (i.contributor ().end ());
+         b != e; ++b)
+    {
+      o << ::std::endl << "contributor: " << *b;
+    }
+
+    for (feedType::generator_const_iterator
+         b (i.generator ().begin ()), e (i.generator ().end ());
+         b != e; ++b)
+    {
+      o << ::std::endl << "generator: " << *b;
+    }
+
+    for (feedType::icon_const_iterator
+         b (i.icon ().begin ()), e (i.icon ().end ());
+         b != e; ++b)
+    {
+      o << ::std::endl << "icon: " << *b;
+    }
+
+    for (feedType::id_const_iterator
+         b (i.id ().begin ()), e (i.id ().end ());
+         b != e; ++b)
+    {
+      o << ::std::endl << "id: " << *b;
+    }
+
+    for (feedType::link_const_iterator
+         b (i.link ().begin ()), e (i.link ().end ());
+         b != e; ++b)
+    {
+      o << ::std::endl << "link: " << *b;
+    }
+
+    for (feedType::logo_const_iterator
+         b (i.logo ().begin ()), e (i.logo ().end ());
+         b != e; ++b)
+    {
+      o << ::std::endl << "logo: " << *b;
+    }
+
+    for (feedType::rights_const_iterator
+         b (i.rights ().begin ()), e (i.rights ().end ());
+         b != e; ++b)
+    {
+      o << ::std::endl << "rights: " << *b;
+    }
+
+    for (feedType::subtitle_const_iterator
+         b (i.subtitle ().begin ()), e (i.subtitle ().end ());
+         b != e; ++b)
+    {
+      o << ::std::endl << "subtitle: " << *b;
+    }
+
+    for (feedType::title_const_iterator
+         b (i.title ().begin ()), e (i.title ().end ());
+         b != e; ++b)
+    {
+      o << ::std::endl << "title: " << *b;
+    }
+
+    for (feedType::updated_const_iterator
+         b (i.updated ().begin ()), e (i.updated ().end ());
+         b != e; ++b)
+    {
+      o << ::std::endl << "updated: " << *b;
+    }
+
+    for (feedType::entry_const_iterator
+         b (i.entry ().begin ()), e (i.entry ().end ());
+         b != e; ++b)
+    {
+      o << ::std::endl << "entry: " << *b;
+    }
+
+    if (i.base ())
+    {
+      o << ::std::endl << "base: " << *i.base ();
+    }
+
+    if (i.lang ())
+    {
+      o << ::std::endl << "lang: " << *i.lang ();
+    }
+
+    return o;
+  }
+}
+
 #include <istream>
 #include <xsd/cxx/xml/sax/std-input-source.hxx>
 #include <xsd/cxx/tree/error-handler.hxx>

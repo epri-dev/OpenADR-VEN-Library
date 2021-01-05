@@ -98,6 +98,8 @@
 #include <xsd/cxx/tree/serialization/double.hxx>
 #include <xsd/cxx/tree/serialization/decimal.hxx>
 
+#include <xsd/cxx/tree/std-ostream-operators.hxx>
+
 namespace xml_schema
 {
   // anyType and anySimpleType.
@@ -336,6 +338,14 @@ namespace stream
     protected:
     interval_sequence interval_;
   };
+}
+
+#include <iosfwd>
+
+namespace stream
+{
+  ::std::ostream&
+  operator<< (::std::ostream&, const intervals&);
 }
 
 #include <iosfwd>

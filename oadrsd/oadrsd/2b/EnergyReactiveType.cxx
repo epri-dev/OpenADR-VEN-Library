@@ -107,6 +107,32 @@ namespace power
     "http://docs.oasis-open.org/ns/emix/2011/06/power");
 }
 
+#include <ostream>
+
+#include <xsd/cxx/tree/std-ostream-map.hxx>
+
+namespace _xsd
+{
+  static
+  const ::xsd::cxx::tree::std_ostream_plate< 0, char >
+  std_ostream_plate_init;
+}
+
+namespace power
+{
+  ::std::ostream&
+  operator<< (::std::ostream& o, const EnergyReactiveType& i)
+  {
+    o << static_cast< const ::power::EnergyItemType& > (i);
+
+    return o;
+  }
+
+  static
+  const ::xsd::cxx::tree::std_ostream_initializer< 0, char, EnergyReactiveType >
+  _xsd_EnergyReactiveType_std_ostream_init;
+}
+
 #include <istream>
 #include <xsd/cxx/xml/sax/std-input-source.hxx>
 #include <xsd/cxx/tree/error-handler.hxx>

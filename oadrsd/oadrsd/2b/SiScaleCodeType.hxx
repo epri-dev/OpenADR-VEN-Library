@@ -98,6 +98,8 @@
 #include <xsd/cxx/tree/serialization/double.hxx>
 #include <xsd/cxx/tree/serialization/decimal.hxx>
 
+#include <xsd/cxx/tree/std-ostream-operators.hxx>
+
 namespace xml_schema
 {
   // anyType and anySimpleType.
@@ -340,6 +342,17 @@ namespace siscale
     static const char* const _xsd_SiScaleCodeType_literals_[11];
     static const value _xsd_SiScaleCodeType_indexes_[11];
   };
+}
+
+#include <iosfwd>
+
+namespace siscale
+{
+  ::std::ostream&
+  operator<< (::std::ostream&, SiScaleCodeType::value);
+
+  ::std::ostream&
+  operator<< (::std::ostream&, const SiScaleCodeType&);
 }
 
 #include <iosfwd>

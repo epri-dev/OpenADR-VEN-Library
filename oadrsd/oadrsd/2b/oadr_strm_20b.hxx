@@ -98,6 +98,8 @@
 #include <xsd/cxx/tree/serialization/double.hxx>
 #include <xsd/cxx/tree/serialization/decimal.hxx>
 
+#include <xsd/cxx/tree/std-ostream-operators.hxx>
+
 namespace xml_schema
 {
   // anyType and anySimpleType.
@@ -282,6 +284,12 @@ namespace stream
 #include "StreamBaseType.hxx"
 
 #include "intervals.hxx"
+
+namespace stream
+{
+}
+
+#include <iosfwd>
 
 namespace stream
 {

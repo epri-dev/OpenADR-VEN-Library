@@ -98,6 +98,8 @@
 #include <xsd/cxx/tree/serialization/double.hxx>
 #include <xsd/cxx/tree/serialization/decimal.hxx>
 
+#include <xsd/cxx/tree/std-ostream-operators.hxx>
+
 namespace xml_schema
 {
   // anyType and anySimpleType.
@@ -290,6 +292,8 @@ namespace oadr2b
 
 #include "oadr_ISO_ISO3AlphaCurrencyCode_20100407.hxx"
 
+#include "oadr_greenbutton.hxx"
+
 #include "oadr_atom.hxx"
 
 #include "oadr_xmldsig11.hxx"
@@ -417,6 +421,15 @@ namespace oadr2b
 #include "oadrTransport.hxx"
 
 #include "oadrService.hxx"
+
+namespace oadr2b
+{
+  namespace oadr
+  {
+  }
+}
+
+#include <iosfwd>
 
 namespace oadr2b
 {

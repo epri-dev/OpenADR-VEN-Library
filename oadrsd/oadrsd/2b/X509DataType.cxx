@@ -300,6 +300,64 @@ namespace oadr2b
   }
 }
 
+#include <ostream>
+
+#include <xsd/cxx/tree/std-ostream-map.hxx>
+
+namespace _xsd
+{
+  static
+  const ::xsd::cxx::tree::std_ostream_plate< 0, char >
+  std_ostream_plate_init;
+}
+
+namespace oadr2b
+{
+  namespace sig
+  {
+    ::std::ostream&
+    operator<< (::std::ostream& o, const X509DataType& i)
+    {
+      for (X509DataType::X509IssuerSerial_const_iterator
+           b (i.X509IssuerSerial ().begin ()), e (i.X509IssuerSerial ().end ());
+           b != e; ++b)
+      {
+        o << ::std::endl << "X509IssuerSerial: " << *b;
+      }
+
+      for (X509DataType::X509SKI_const_iterator
+           b (i.X509SKI ().begin ()), e (i.X509SKI ().end ());
+           b != e; ++b)
+      {
+        o << ::std::endl << "X509SKI: " << *b;
+      }
+
+      for (X509DataType::X509SubjectName_const_iterator
+           b (i.X509SubjectName ().begin ()), e (i.X509SubjectName ().end ());
+           b != e; ++b)
+      {
+        o << ::std::endl << "X509SubjectName: " << *b;
+      }
+
+      for (X509DataType::X509Certificate_const_iterator
+           b (i.X509Certificate ().begin ()), e (i.X509Certificate ().end ());
+           b != e; ++b)
+      {
+        o << ::std::endl << "X509Certificate: " << *b;
+      }
+
+      for (X509DataType::X509CRL_const_iterator
+           b (i.X509CRL ().begin ()), e (i.X509CRL ().end ());
+           b != e; ++b)
+      {
+        o << ::std::endl << "X509CRL: " << *b;
+      }
+
+      return o;
+    }
+  }
+}
+
 #include <istream>
 #include <xsd/cxx/xml/sax/std-input-source.hxx>
 #include <xsd/cxx/tree/error-handler.hxx>

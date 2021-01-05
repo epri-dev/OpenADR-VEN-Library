@@ -120,6 +120,30 @@ namespace stream
     "urn:ietf:params:xml:ns:icalendar-2.0:stream");
 }
 
+#include <ostream>
+
+#include <xsd/cxx/tree/std-ostream-map.hxx>
+
+namespace _xsd
+{
+  static
+  const ::xsd::cxx::tree::std_ostream_plate< 0, char >
+  std_ostream_plate_init;
+}
+
+namespace stream
+{
+  ::std::ostream&
+  operator<< (::std::ostream& o, const StreamPayloadBaseType&)
+  {
+    return o;
+  }
+
+  static
+  const ::xsd::cxx::tree::std_ostream_initializer< 0, char, StreamPayloadBaseType >
+  _xsd_StreamPayloadBaseType_std_ostream_init;
+}
+
 #include <istream>
 #include <xsd/cxx/xml/sax/std-input-source.hxx>
 #include <xsd/cxx/tree/error-handler.hxx>

@@ -98,6 +98,8 @@
 #include <xsd/cxx/tree/serialization/double.hxx>
 #include <xsd/cxx/tree/serialization/decimal.hxx>
 
+#include <xsd/cxx/tree/std-ostream-operators.hxx>
+
 namespace xml_schema
 {
   // anyType and anySimpleType.
@@ -366,6 +368,14 @@ namespace payloads
     ::xsd::cxx::tree::one< venID_type > venID_;
     replyLimit_optional replyLimit_;
   };
+}
+
+#include <iosfwd>
+
+namespace payloads
+{
+  ::std::ostream&
+  operator<< (::std::ostream&, const eiRequestEvent&);
 }
 
 #include <iosfwd>

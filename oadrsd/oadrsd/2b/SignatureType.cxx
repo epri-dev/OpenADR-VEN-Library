@@ -380,6 +380,48 @@ namespace oadr2b
   }
 }
 
+#include <ostream>
+
+#include <xsd/cxx/tree/std-ostream-map.hxx>
+
+namespace _xsd
+{
+  static
+  const ::xsd::cxx::tree::std_ostream_plate< 0, char >
+  std_ostream_plate_init;
+}
+
+namespace oadr2b
+{
+  namespace sig
+  {
+    ::std::ostream&
+    operator<< (::std::ostream& o, const SignatureType& i)
+    {
+      o << ::std::endl << "SignedInfo: " << i.SignedInfo ();
+      o << ::std::endl << "SignatureValue: " << i.SignatureValue ();
+      if (i.KeyInfo ())
+      {
+        o << ::std::endl << "KeyInfo: " << *i.KeyInfo ();
+      }
+
+      for (SignatureType::Object_const_iterator
+           b (i.Object ().begin ()), e (i.Object ().end ());
+           b != e; ++b)
+      {
+        o << ::std::endl << "Object: " << *b;
+      }
+
+      if (i.Id ())
+      {
+        o << ::std::endl << "Id: " << *i.Id ();
+      }
+
+      return o;
+    }
+  }
+}
+
 #include <istream>
 #include <xsd/cxx/xml/sax/std-input-source.hxx>
 #include <xsd/cxx/tree/error-handler.hxx>

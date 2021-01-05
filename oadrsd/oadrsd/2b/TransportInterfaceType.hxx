@@ -98,6 +98,8 @@
 #include <xsd/cxx/tree/serialization/double.hxx>
 #include <xsd/cxx/tree/serialization/decimal.hxx>
 
+#include <xsd/cxx/tree/std-ostream-operators.hxx>
+
 namespace xml_schema
 {
   // anyType and anySimpleType.
@@ -352,6 +354,14 @@ namespace power
     ::xsd::cxx::tree::one< pointOfReceipt_type > pointOfReceipt_;
     ::xsd::cxx::tree::one< pointOfDelivery_type > pointOfDelivery_;
   };
+}
+
+#include <iosfwd>
+
+namespace power
+{
+  ::std::ostream&
+  operator<< (::std::ostream&, const TransportInterfaceType&);
 }
 
 #include <iosfwd>

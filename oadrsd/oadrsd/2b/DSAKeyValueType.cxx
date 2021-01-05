@@ -472,6 +472,60 @@ namespace oadr2b
   }
 }
 
+#include <ostream>
+
+#include <xsd/cxx/tree/std-ostream-map.hxx>
+
+namespace _xsd
+{
+  static
+  const ::xsd::cxx::tree::std_ostream_plate< 0, char >
+  std_ostream_plate_init;
+}
+
+namespace oadr2b
+{
+  namespace sig
+  {
+    ::std::ostream&
+    operator<< (::std::ostream& o, const DSAKeyValueType& i)
+    {
+      if (i.P ())
+      {
+        o << ::std::endl << "P: " << *i.P ();
+      }
+
+      if (i.Q ())
+      {
+        o << ::std::endl << "Q: " << *i.Q ();
+      }
+
+      if (i.G ())
+      {
+        o << ::std::endl << "G: " << *i.G ();
+      }
+
+      o << ::std::endl << "Y: " << i.Y ();
+      if (i.J ())
+      {
+        o << ::std::endl << "J: " << *i.J ();
+      }
+
+      if (i.Seed ())
+      {
+        o << ::std::endl << "Seed: " << *i.Seed ();
+      }
+
+      if (i.PgenCounter ())
+      {
+        o << ::std::endl << "PgenCounter: " << *i.PgenCounter ();
+      }
+
+      return o;
+    }
+  }
+}
+
 #include <istream>
 #include <xsd/cxx/xml/sax/std-input-source.hxx>
 #include <xsd/cxx/tree/error-handler.hxx>

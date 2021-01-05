@@ -630,6 +630,59 @@ namespace oadr2b
   }
 }
 
+#include <ostream>
+
+#include <xsd/cxx/tree/std-ostream-map.hxx>
+
+namespace _xsd
+{
+  static
+  const ::xsd::cxx::tree::std_ostream_plate< 0, char >
+  std_ostream_plate_init;
+}
+
+namespace oadr2b
+{
+  namespace ei
+  {
+    ::std::ostream&
+    operator<< (::std::ostream& o, const eventDescriptorType& i)
+    {
+      o << ::std::endl << "eventID: " << i.eventID ();
+      o << ::std::endl << "modificationNumber: " << i.modificationNumber ();
+      if (i.modificationDateTime ())
+      {
+        o << ::std::endl << "modificationDateTime: " << *i.modificationDateTime ();
+      }
+
+      if (i.modificationReason ())
+      {
+        o << ::std::endl << "modificationReason: " << *i.modificationReason ();
+      }
+
+      if (i.priority ())
+      {
+        o << ::std::endl << "priority: " << *i.priority ();
+      }
+
+      o << ::std::endl << "eiMarketContext: " << i.eiMarketContext ();
+      o << ::std::endl << "createdDateTime: " << i.createdDateTime ();
+      o << ::std::endl << "eventStatus: " << i.eventStatus ();
+      if (i.testEvent ())
+      {
+        o << ::std::endl << "testEvent: " << *i.testEvent ();
+      }
+
+      if (i.vtnComment ())
+      {
+        o << ::std::endl << "vtnComment: " << *i.vtnComment ();
+      }
+
+      return o;
+    }
+  }
+}
+
 #include <istream>
 #include <xsd/cxx/xml/sax/std-input-source.hxx>
 #include <xsd/cxx/tree/error-handler.hxx>

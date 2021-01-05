@@ -239,6 +239,35 @@ namespace oadr2b
   }
 }
 
+#include <ostream>
+
+#include <xsd/cxx/tree/std-ostream-map.hxx>
+
+namespace _xsd
+{
+  static
+  const ::xsd::cxx::tree::std_ostream_plate< 0, char >
+  std_ostream_plate_init;
+}
+
+namespace oadr2b
+{
+  namespace gml
+  {
+    ::std::ostream&
+    operator<< (::std::ostream& o, const FeatureCollection& i)
+    {
+      o << ::std::endl << "location: " << i.location ();
+      if (i.id ())
+      {
+        o << ::std::endl << "id: " << *i.id ();
+      }
+
+      return o;
+    }
+  }
+}
+
 #include <istream>
 #include <xsd/cxx/xml/sax/std-input-source.hxx>
 #include <xsd/cxx/tree/error-handler.hxx>

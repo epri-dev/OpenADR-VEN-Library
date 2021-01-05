@@ -382,6 +382,44 @@ namespace oadr2b
   }
 }
 
+#include <ostream>
+
+#include <xsd/cxx/tree/std-ostream-map.hxx>
+
+namespace _xsd
+{
+  static
+  const ::xsd::cxx::tree::std_ostream_plate< 0, char >
+  std_ostream_plate_init;
+}
+
+namespace oadr2b
+{
+  namespace ei
+  {
+    ::std::ostream&
+    operator<< (::std::ostream& o, const ReportSpecifierType& i)
+    {
+      o << ::std::endl << "reportSpecifierID: " << i.reportSpecifierID ();
+      o << ::std::endl << "granularity: " << i.granularity ();
+      o << ::std::endl << "reportBackDuration: " << i.reportBackDuration ();
+      if (i.reportInterval ())
+      {
+        o << ::std::endl << "reportInterval: " << *i.reportInterval ();
+      }
+
+      for (ReportSpecifierType::specifierPayload_const_iterator
+           b (i.specifierPayload ().begin ()), e (i.specifierPayload ().end ());
+           b != e; ++b)
+      {
+        o << ::std::endl << "specifierPayload: " << *b;
+      }
+
+      return o;
+    }
+  }
+}
+
 #include <istream>
 #include <xsd/cxx/xml/sax/std-input-source.hxx>
 #include <xsd/cxx/tree/error-handler.hxx>

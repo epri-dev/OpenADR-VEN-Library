@@ -98,6 +98,8 @@
 #include <xsd/cxx/tree/serialization/double.hxx>
 #include <xsd/cxx/tree/serialization/decimal.hxx>
 
+#include <xsd/cxx/tree/std-ostream-operators.hxx>
+
 namespace xml_schema
 {
   // anyType and anySimpleType.
@@ -343,6 +345,17 @@ namespace oadr2b
       protected:
       ::xsd::cxx::tree::one< FeatureCollection_type > FeatureCollection_;
     };
+  }
+}
+
+#include <iosfwd>
+
+namespace oadr2b
+{
+  namespace emix
+  {
+    ::std::ostream&
+    operator<< (::std::ostream&, const ServiceAreaType&);
   }
 }
 

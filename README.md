@@ -4,15 +4,27 @@ Copyright (c) 2016, Electric Power Research Institute (EPRI)
 This project (OADRLIB) provides a basis for implementing an OpenADR2.0b VEN.  Http pull is the only supported transport.
 
 # Dependencies
-The library has the following dependencies:
-  * GTest (unit testing, source is inlcuded)  
-  * code synthesis XSD 4.0.0 (included in the project)
-  * curl (http/s communication) + any curl supported SSL library
 
-Follow the instructions for your operating system to install `curl` and a curl
-supported SSL library.
+The library is built and tested on Ubuntu Linux 20.04.
 
-The library is built and tested on Ubuntu Linux 16.04.
+```
+apt-get update
+apt-get install --yes   \
+   libcurl4-gnutls-dev  \
+   libxerces-c-dev
+```
+
+# Compiler Cache
+
+The project can use `ccache` in order to improve (re)compilation time. The `ccache` package is
+provided by Ubuntu Linux distribution:
+
+```
+apt-get install --yes ccache
+```
+
+After the first compilation (see the next paragraph), the compiler cache is saved to `~/.ccache`
+directory.
 
 # Build Instructions
 OADRLIB uses cmake.  Here are general instructions for starting the build:

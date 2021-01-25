@@ -3,7 +3,8 @@ name: CI
 on:
   pull_request:
   push:
-    branches: [master]
+    branches:
+      - master
   workflow_dispatch:
 
 jobs:
@@ -13,13 +14,15 @@ jobs:
       - uses: actions/checkout@v2
       - uses: actions/cache@v2
         with:
-          path: build
-          key: ${{ runner.os }}-build
+          path: ~/.ccache
+          key: ${{ runner.os }}-ccache-${{ github.run_number }}
+          restore-keys: ${{ runner.os }}-ccache-
 
       - name: Install Packages
         run: |
           sudo apt-get update
           sudo apt-get install --yes  \
+                  ccache \
                   libcurl4-gnutls-dev \
                   libxerces-c-dev
 

@@ -5,6 +5,12 @@ set(LIBOADR_MINOR_VERSION 0)
 set(LIBOADR_MICRO_VERSION 0)
 set(LIBOADR_VERSION ${LIBOADR_MAJOR_VERSION}.${LIBOADR_MINOR_VERSION}.${LIBOADR_MICRO_VERSION})
 
+find_program(CCACHE_PROGRAM ccache)
+if(CCACHE_PROGRAM)
+  set(CMAKE_C_COMPILER_LAUNCHER   ${CCACHE_PROGRAM})
+  set(CMAKE_CXX_COMPILER_LAUNCHER ${CCACHE_PROGRAM})
+endif()
+
 # Library notes:
 # apt-get install libxerces-c-dev
 # apt-get install libcurl4-gnutls-dev
@@ -63,7 +69,6 @@ if (SAMPLE)
 endif()
 
 if (TEST)
-  
   add_subdirectory(googletest-release-1.7.0)
 
   include_directories(googletest-release-1.7.0/include)
@@ -73,11 +78,10 @@ if (TEST)
   # file(COPY )
   file(REMOVE_RECURSE ./xml)
   file(COPY ./oadrtest/oadrtest DESTINATION ./xml FILES_MATCHING PATTERN "*.xml" PATTERN "*.txt")
-  
+
   # ---- tests ----
   file(GLOB_RECURSE oadrtest_SRC ./oadrtest/oadrtest/*.cpp)
   add_executable(testoadr ${oadrtest_SRC})
   target_link_libraries (testoadr LINK_PUBLIC oadr oadrsd curl xerces-c gtest pthread)
-
 endif()
 

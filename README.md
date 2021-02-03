@@ -61,3 +61,13 @@ steps are:
   1. Call the run() function on the object created in the previous step to start
      the VEN.  This function call will block.  Start the VEN manager in its own
      thread if you don't want to block on the run function.
+
+# Build and Test with Docker
+
+```
+make
+make test
+make coverage
+```
+
+The code coverage report HTML will be saved into `build/coverage` directory.

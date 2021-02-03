@@ -38,7 +38,7 @@ By default, these build steps will build the `oadr` and `oadrsd` libraries, and 
 `samplevenmanager` executable.  To build the unit test program `testoadr`, change the cmake
 command to the following:
 ```
-cmake -DTEST=1 ../../
+cmake -DTEST=1 -DCOVERAGE=1 ../../
 ```
 
 Running `testoadr` will execute the unit tests.

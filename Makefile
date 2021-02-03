@@ -49,4 +49,4 @@ test:
 coverage:
 	rm -rf build/coverage
 	mkdir -p build/coverage
-	$(BUILDER) gcovr
+	$(BUILDER) gcovr build/CMakeFiles

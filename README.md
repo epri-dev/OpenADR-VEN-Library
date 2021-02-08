@@ -37,14 +37,18 @@ make
 By default, these build steps will build the `oadr` and `oadrsd` libraries, and the
 `samplevenmanager` executable. Before build the unit test program `testoadr`, I recommend to install the follow libraries:
 ```
-apt-get install --yes 
-    gcovr \
-    lcov
+apt-get install --yes gcovr
 ```
 
 Then to build unit test, change the cmake command to the following:
 ```
 cmake -DTEST=1 -DCOVERAGE=1 ../../
+```
+
+If you want to print code coverage report:
+
+```
+gcovr build
 ```
 
 Running `testoadr` will execute the unit tests.

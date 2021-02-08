@@ -18,7 +18,6 @@ RUN set -ex \
             cmake                   \
             g++                     \
             gcovr                   \
-            lcov                    \
             libcurl4-gnutls-dev     \
             libxerces-c-dev         \
             libpthread-stubs0-dev   \

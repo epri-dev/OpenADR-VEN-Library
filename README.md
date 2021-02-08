@@ -35,8 +35,14 @@ make
 ```
 
 By default, these build steps will build the `oadr` and `oadrsd` libraries, and the
-`samplevenmanager` executable.  To build the unit test program `testoadr`, change the cmake
-command to the following:
+`samplevenmanager` executable. Before build the unit test program `testoadr`, I recommend to install the follow libraries:
+```
+apt-get install --yes 
+    gcovr \
+    lcov
+```
+
+Then to build unit test, change the cmake command to the following:
 ```
 cmake -DTEST=1 -DCOVERAGE=1 ../../
 ```

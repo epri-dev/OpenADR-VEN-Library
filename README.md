@@ -36,8 +36,10 @@ make
 
 By default, these build steps will build the `oadr` and `oadrsd` libraries, and the
 `samplevenmanager` executable. Before build the unit test program `testoadr`, I recommend to install the follow libraries:
+
 ```
-apt-get install --yes gcovr
+apt-get install --yes lcov
+pip3 install fastcov==1.10
 ```
 
 Then to build unit test, change the cmake command to the following:
@@ -48,7 +50,20 @@ cmake -DTEST=1 -DCOVERAGE=1 ../../
 If you want to print code coverage report:
 
 ```
-gcovr build
+fastcov \
+		--compiler-directory build \
+		--exclude /usr/include xsd-4.0.0 oadrsd googletest-release \
+		--jobs $(nproc) \
+		--lcov \
+		--output build/coverage.info
+
+genhtml \
+		--demangle-cpp \
+		--legend \
+		--output-directory build/coverage \
+		--prefix /openadr-ven-library \
+		--show-details \
+		build/coverage.info
 ```
 
 Running `testoadr` will execute the unit tests.

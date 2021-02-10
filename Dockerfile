@@ -17,12 +17,15 @@ RUN set -ex \
             ccache                  \
             cmake                   \
             g++                     \
-            gcovr                   \
+            lcov                    \
             libcurl4-gnutls-dev     \
             libxerces-c-dev         \
             libpthread-stubs0-dev   \
             make                    \
-            tzdata                  # for UT DateTimeConverterTest.ConvertToTime_t
+            python3                 \
+            python3-pip             \
+            tzdata                  \
+    && pip3 install fastcov==1.10
 
 WORKDIR /openadr-ven-library
 

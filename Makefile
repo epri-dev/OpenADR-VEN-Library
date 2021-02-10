@@ -48,6 +48,17 @@ test:
 
 .PHONY: coverage
 coverage:
-	rm -rf build/coverage
-	mkdir -p build/coverage
-	$(BUILDER) gcovr build/CMakeFiles
+	@rm -rf build/coverage.info build/coverage
+	@$(BUILDER) fastcov \
+		--compiler-directory build \
+		--exclude /usr/include xsd-4.0.0 oadrsd googletest-release \
+		--jobs $(shell nproc) \
+		--lcov \
+		--output build/coverage.info
+	@$(BUILDER) genhtml \
+		--demangle-cpp \
+		--legend \
+		--output-directory build/coverage \
+		--prefix /openadr-ven-library \
+		--show-details \
+		build/coverage.info

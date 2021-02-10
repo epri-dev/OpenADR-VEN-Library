@@ -19,7 +19,7 @@ jobs:
           restore-keys: ${{ runner.os }}-ccache-
 
       - name: Build
-        run: make
+        run: make build -e COVERAGE=1
 
       - name: Test
         run: make test

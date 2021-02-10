@@ -75,7 +75,7 @@ steps are:
 # Build and Test with Docker
 
 ```
-make
+make -e COVERAGE=1
 make test
 make coverage
 ```

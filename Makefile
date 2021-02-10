@@ -1,5 +1,6 @@
 .DEFAULT_GOAL := all
 
+COVERAGE          ?= 0
 DOCKER_EXTRA_ARGS ?=
 
 export DOCKER_BUILDKIT ?= 1
@@ -21,7 +22,7 @@ all: build
 
 .PHONY: build
 build: builder
-	$(BUILDER) cmake -B build -DTEST=1 -DCOVERAGE=1
+	$(BUILDER) cmake -B build -DTEST=1 -DCOVERAGE=$(COVERAGE)
 	$(BUILDER) cmake --build build --parallel $(shell nproc)
 
 .PHONY: builder

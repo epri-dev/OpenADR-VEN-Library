@@ -317,6 +317,12 @@
 
 #include "CurlException.h"
 
+CurlException::CurlException(CURLcode result) :
+	m_result(result),
+	m_message(curl_easy_strerror(result))
+{
+}
+
 CurlException::CurlException(CURLcode result, char *message) :
 	m_result(result),
 	m_message(message)

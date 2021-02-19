@@ -345,7 +345,7 @@ HttpCurl::HttpCurl()
 
 		if ((result = curl_global_init(CURL_GLOBAL_ALL)) != 0)
 		{
-			CurlException ex(result, m_message);
+			CurlException ex(result);
 			throw ex;
 		}
 	}
@@ -363,14 +363,14 @@ HttpCurl::HttpCurl()
 	// set error buffer
 	if ((result = curl_easy_setopt(m_curl, CURLOPT_ERRORBUFFER, m_message)) != 0)
 	{
-		CurlException ex(result, m_message);
+		CurlException ex(result);
 		throw ex;
 	}
 
 	// enable header output
 	if ((result = curl_easy_setopt(m_curl, CURLOPT_HEADER, 1)) != 0)
 	{
-		CurlException ex(result, m_message);
+		CurlException ex(result);
 		throw ex;
 	}
 
@@ -378,7 +378,7 @@ HttpCurl::HttpCurl()
 	// enable verbose output
 	if ((result = curl_easy_setopt(m_curl, CURLOPT_VERBOSE, 1)) != 0)
 	{
-		CurlException ex(result, m_message);
+		CurlException ex(result);
 		throw ex;
 	}
 
@@ -389,7 +389,7 @@ HttpCurl::HttpCurl()
 	{
 		if ((result = curl_easy_setopt(m_curl, CURLOPT_STDERR, fp)) != 0)
 		{
-			CurlException ex(result, m_message);
+			CurlException ex(result);
 			throw ex;
 		}
 	}
@@ -401,35 +401,35 @@ HttpCurl::HttpCurl()
 	// all requests will be posts
 	if ((result = curl_easy_setopt(m_curl, CURLOPT_POST, 1L)) != 0)
 	{
-		CurlException ex(result, m_message);
+		CurlException ex(result);
 		throw ex;
 	}
 
 	// set the write function
 	if ((result = curl_easy_setopt(m_curl, CURLOPT_WRITEFUNCTION, &::writeFunction)) != 0)
 	{
-		CurlException ex(result, m_message);
+		CurlException ex(result);
 		throw ex;
 	}
 
 	// set the write parameter
 	if ((result = curl_easy_setopt(m_curl, CURLOPT_WRITEDATA, this)) != 0)
 	{
-		CurlException ex(result, m_message);
+		CurlException ex(result);
 		throw ex;
 	}
 
 	// set the read function
 	if ((result = curl_easy_setopt(m_curl, CURLOPT_READFUNCTION, &::readFunction)) != 0)
 	{
-		CurlException ex(result, m_message);
+		CurlException ex(result);
 		throw ex;
 	}
 
 	// set the read parameter
 	if ((result = curl_easy_setopt(m_curl, CURLOPT_READDATA, this)) != 0)
 	{
-		CurlException ex(result, m_message);
+		CurlException ex(result);
 		throw ex;
 	}
 
@@ -504,20 +504,20 @@ bool HttpCurl::post(string url, string content)
 	// set the URL
 	if ((result = curl_easy_setopt(m_curl, CURLOPT_URL, url.c_str())) != 0)
 	{
-		CurlException ex(result, m_message);
+		CurlException ex(result);
 		throw ex;
 	}
 
 	if ((result = curl_easy_setopt(m_curl, CURLOPT_POSTFIELDSIZE, content.length())) != 0)
 	{
-		CurlException ex(result, m_message);
+		CurlException ex(result);
 		throw ex;
 	}
 
 	// set the application type header
 	if ((result = curl_easy_setopt(m_curl, CURLOPT_HTTPHEADER, m_requestHeaders)) != 0)
 	{
-		CurlException ex(result, m_message);
+		CurlException ex(result);
 		throw ex;
 	}
 
@@ -529,14 +529,14 @@ bool HttpCurl::post(string url, string content)
 			// verify the server certificate host name matches
 			if ((result = curl_easy_setopt(m_curl, CURLOPT_SSL_VERIFYHOST, 2)) != 0)
 			{
-				CurlException ex(result, m_message);
+				CurlException ex(result);
 				throw ex;
 			}
 
 			// verify the certificate is authentic against the CA bundle
 			if ((result = curl_easy_setopt(m_curl, CURLOPT_SSL_VERIFYPEER, 1)) != 0)
 			{
-				CurlException ex(result, m_message);
+				CurlException ex(result);
 				throw ex;
 			}
 		}
@@ -545,50 +545,50 @@ bool HttpCurl::post(string url, string content)
 			// don't verify the server certificate host name matches
 			if ((result = curl_easy_setopt(m_curl, CURLOPT_SSL_VERIFYHOST, 0)) != 0)
 			{
-				CurlException ex(result, m_message);
+				CurlException ex(result);
 				throw ex;
 			}
 
 			// verify the certificate is authentic against the CA bundle
 			if ((result = curl_easy_setopt(m_curl, CURLOPT_SSL_VERIFYPEER, 0)) != 0)
 			{
-				CurlException ex(result, m_message);
+				CurlException ex(result);
 				throw ex;
 			}
 		}
-
+ 
 		// set SSL version. If SSL 1.2, then requires libcurl >= 7.34.0)
 		if ((result = curl_easy_setopt(m_curl, CURLOPT_SSLVERSION, m_sslVersion)) != 0)
 		{
-			CurlException ex(result, m_message);
+			CurlException ex(result);
 			throw ex;
 		}
 
 		// set SSL cipher list of allowed ciphers
 		if ((result = curl_easy_setopt(m_curl, CURLOPT_SSL_CIPHER_LIST, m_sslCipherList.c_str())) != 0)
 		{
-			CurlException ex(result, m_message);
+			CurlException ex(result);
 			throw ex;
 		}
 
 		// set the client certificate
 		if ((result = curl_easy_setopt(m_curl, CURLOPT_SSLCERT, m_clientCertificatePath.c_str())) != 0)
 		{
-			CurlException ex(result, m_message);
+			CurlException ex(result);
 			throw ex;
 		}
 
 		// set the SSL private key
 		if ((result = curl_easy_setopt(m_curl, CURLOPT_SSLKEY, m_clientPrivateKeyPath.c_str())) != 0)
 		{
-			CurlException ex(result, m_message);
+			CurlException ex(result);
 			throw ex;
 		}
 
 		// set certificate authority bundle
 		if ((result = curl_easy_setopt(m_curl, CURLOPT_CAINFO, m_certificateAuthorityBundlePath.c_str())) != 0)
 		{
-			CurlException ex(result, m_message);
+			CurlException ex(result);
 			throw ex;
 		}
 	}
@@ -596,7 +596,7 @@ bool HttpCurl::post(string url, string content)
 	// initiate the request
 	if ((result = curl_easy_perform(m_curl)) != 0)
 	{
-		CurlException ex(result, m_message);
+		CurlException ex(result);
 		throw ex;
 	}
 
@@ -675,13 +675,13 @@ void HttpCurl::setTimeouts(long connectTimeout, long requestTimeout)
 
 	if ((result = curl_easy_setopt(m_curl, CURLOPT_CONNECTTIMEOUT, connectTimeout)) != 0)
 	{
-		CurlException ex(result, m_message);
+		CurlException ex(result);
 		throw ex;
 	}
 
 	if ((result = curl_easy_setopt(m_curl, CURLOPT_TIMEOUT, requestTimeout)) != 0)
 	{
-		CurlException ex(result, m_message);
+		CurlException ex(result);
 		throw ex;
 	}
 }

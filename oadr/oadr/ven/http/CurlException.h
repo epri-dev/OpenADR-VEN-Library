@@ -335,6 +335,7 @@ private:
 	string m_message;
 
 public:
+	explicit CurlException(CURLcode result);
 	CurlException(CURLcode result, char *message);
 	virtual ~CurlException() throw();
 

@@ -35,27 +35,28 @@
 class VENManager : public ISendCreatedEvent, public ISendReport, public IVENManager
 {
 private:
-	unique_ptr<VEN2b> m_ven;
-	unique_ptr<Scheduler> m_scheduler;
-	unique_ptr<EventManager> m_eventManager;
-	unique_ptr<ReportManager> m_reportManager;
+	std::unique_ptr<VEN2b> m_ven;
+	std::unique_ptr<Scheduler> m_scheduler;
+	std::unique_ptr<EventManager> m_eventManager;
+	std::unique_ptr<ReportManager> m_reportManager;
 
 	IReportService *m_reportService;
 
 	IOADRExceptionService *m_exceptionService;
 
-    condition_variable m_condition;
-    mutex m_mutex;
+    std::condition_variable m_condition;
+    std::mutex m_mutex;
+    std::chrono::seconds m_registerRetryInterval;
 
 	bool m_shutdown;
 
-	virtual void sendCreatedEvent(string responseCode, string responseDescription, string requestID, oadr2b::ei::eventResponses::eventResponse_sequence &eventResponses);
+	virtual void sendCreatedEvent(std::string responseCode, std::string responseDescription, std::string requestID, oadr2b::ei::eventResponses::eventResponse_sequence &eventResponses);
 
-	virtual void sendUpdateReport(oadrUpdateReportType::oadrReport_sequence &sequence, time_t dtstart, string reportRequestID, time_t createdDateTime);
-	virtual void sendCreatedReport(const set<string> &pendingReports, string requestID, string responseCode, string responseDescription);
-	virtual void sendCanceledReport(const set<string> &pendingReports, string requestID, string responseCode, string responseDescription);
+	virtual void sendUpdateReport(oadrUpdateReportType::oadrReport_sequence &sequence, time_t dtstart, std::string reportRequestID, time_t createdDateTime);
+	virtual void sendCreatedReport(const std::set<std::string> &pendingReports, std::string requestID, std::string responseCode, std::string responseDescription);
+	virtual void sendCanceledReport(const std::set<std::string> &pendingReports, std::string requestID, std::string responseCode, std::string responseDescription);
 
-	VENManager(unique_ptr<VEN2b> ven, IEventService *eventService, IReportService *reportService, IOADRExceptionService *exceptionService);
+	VENManager(std::unique_ptr<VEN2b> ven, IEventService *eventService, IReportService *reportService, IOADRExceptionService *exceptionService, std::chrono::seconds registerRetryInterval);
 
 	void exceptionWait();
 

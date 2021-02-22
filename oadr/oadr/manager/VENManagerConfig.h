@@ -8,16 +8,13 @@
 #ifndef OADR_OADR_MANAGER_VENMANAGERCONFIG_H_
 #define OADR_OADR_MANAGER_VENMANAGERCONFIG_H_
 
+#include <chrono>
 #include <string>
 
-// TODO: needed for TLS default version
-// remove reliance on curl
-#include <curl/curl.h>
-
-#include "eventmanager/IEventService.h"
-#include "reportmanager/IReportService.h"
-#include "IOADRExceptionService.h"
-#include "../ven/IOadrMessage.h"
+class IEventService;
+class IReportService;
+class IOADRExceptionService;
+class IOadrMessage;
 
 struct ttls
 {
@@ -29,6 +26,8 @@ struct ttls
 	bool verifyHostname;
 	std::string cipherList;
 	long sslVersion;
+
+	ttls();
 };
 
 struct tservices
@@ -37,12 +36,16 @@ struct tservices
 	IReportService *reportService;
 	IOADRExceptionService *exceptionService;
 	IOadrMessage *oadrMessage;
+
+	tservices();
 };
 
 struct ttimeouts
 {
 	unsigned int connectTimeout;
 	unsigned int requestTimeout;
+
+	ttimeouts();
 };
 
 struct VENManagerConfig
@@ -58,21 +61,9 @@ struct VENManagerConfig
 
 	ttimeouts timeouts;
 
-	VENManagerConfig()
-	{
-		tls.useTls = false;
-		tls.verifyHostname = true;
-		tls.cipherList = "AES128-SHA256:ECDHE-ECDSA-AES128-SHA256";
-		tls.sslVersion = CURL_SSLVERSION_TLSv1_2;
+	std::chrono::seconds registerRetryInterval;
 
-		services.eventService = NULL;
-		services.reportService = NULL;
-		services.exceptionService = NULL;
-		services.oadrMessage = &OadrMessageBlank::oadrMessageBlank;
-
-		timeouts.connectTimeout = 120;
-		timeouts.requestTimeout = 30;
-	};
+	VENManagerConfig();
 };
 
 #endif /* OADR_OADR_MANAGER_VENMANAGERCONFIG_H_ */

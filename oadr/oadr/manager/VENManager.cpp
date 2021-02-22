@@ -7,11 +7,12 @@
 
 #include "../manager/VENManager.h"
 
-VENManager::VENManager(unique_ptr<VEN2b> ven, IEventService *eventService, IReportService *reportService, IOADRExceptionService *exceptionService, seconds registerRetryInterval) :
+VENManager::VENManager(unique_ptr<VEN2b> ven, IEventService *eventService, IReportService *reportService, IOADRExceptionService *exceptionService, seconds registerRetryInterval, seconds exceptionRetryInterval) :
 	m_ven(std::move(ven)),
 	m_reportService(reportService),
 	m_exceptionService(exceptionService),
-	m_registerRetryInterval(registerRetryInterval)
+	m_registerRetryInterval(registerRetryInterval),
+	m_exceptionRetryInterval(exceptionRetryInterval)
 {
 	m_scheduler = unique_ptr<Scheduler>(new Scheduler());
 
@@ -94,7 +95,8 @@ IVENManager *VENManager::init(VENManagerConfig &config)
 			config.services.eventService,
 			config.services.reportService,
 			config.services.exceptionService,
-			config.registerRetryInterval);
+			config.registerRetryInterval,
+			config.exceptionRetryInterval);
 
 	return venManager;
 }
@@ -105,7 +107,7 @@ void VENManager::exceptionWait()
 {
 	std::unique_lock<std::mutex> lock(m_mutex);
 
-	m_condition.wait_for(lock, seconds(10));
+	m_condition.wait_for(lock, seconds(m_exceptionRetryInterval));
 }
 
 /********************************************************************************/

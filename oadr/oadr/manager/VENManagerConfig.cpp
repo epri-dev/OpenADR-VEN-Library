@@ -44,6 +44,7 @@ VENManagerConfig::VENManagerConfig() :
 	tls(),
 	services(),
 	timeouts(),
-	registerRetryInterval(10)
+	registerRetryInterval(10),
+	exceptionRetryInterval(10)
 {
 }

@@ -62,6 +62,7 @@ struct VENManagerConfig
 	ttimeouts timeouts;
 
 	std::chrono::seconds registerRetryInterval;
+	std::chrono::seconds exceptionRetryInterval;
 
 	VENManagerConfig();
 };

@@ -47,6 +47,7 @@ private:
     std::condition_variable m_condition;
     std::mutex m_mutex;
     std::chrono::seconds m_registerRetryInterval;
+    std::chrono::seconds m_exceptionRetryInterval;
 
 	bool m_shutdown;
 
@@ -56,7 +57,12 @@ private:
 	virtual void sendCreatedReport(const std::set<std::string> &pendingReports, std::string requestID, std::string responseCode, std::string responseDescription);
 	virtual void sendCanceledReport(const std::set<std::string> &pendingReports, std::string requestID, std::string responseCode, std::string responseDescription);
 
-	VENManager(std::unique_ptr<VEN2b> ven, IEventService *eventService, IReportService *reportService, IOADRExceptionService *exceptionService, std::chrono::seconds registerRetryInterval);
+	VENManager(std::unique_ptr<VEN2b> ven,
+	           IEventService *eventService,
+	           IReportService *reportService,
+	           IOADRExceptionService *exceptionService,
+	           std::chrono::seconds registerRetryInterval,
+	           std::chrono::seconds exceptionRetryInterval);
 
 	void exceptionWait();
 

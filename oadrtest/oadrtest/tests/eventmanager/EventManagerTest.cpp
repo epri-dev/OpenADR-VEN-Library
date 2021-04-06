@@ -328,275 +328,342 @@
 #include "BlankEventService.h"
 #include "BlankSendCreatedEvent.h"
 
-/********************************************************************************/
-
-TEST(EventManager, EventWTimeInPastNotScheduled)
+struct EventManagerTest : public ::testing::Test
 {
+	MockGlobalTime globalTime;
+
+	Timezone tz;
+
 	BlankEventService mockEventService;
 	BlankSendCreatedEvent blankSendCreatedEvent;
 	MockScheduler mockScheduler;
 
+	EventManagerTest()
+	{
+		tz.SetTimezone("");
+	}
+};
+
+/********************************************************************************/
+
+TEST_F(EventManagerTest, EventWTimeInPastNotScheduled)
+{
+	// Set the current time to a few minutes posterior to the dtstart time of the event in
+	// the test message
+	globalTime.setNow(2015, 06, 26, 21, 0, 0);
+
 	EventManager eventManager(&mockScheduler, &mockEventService, &blankSendCreatedEvent);
 
-	unique_ptr<oadrPayload> payload;
+	auto payload = LoadFile::loadPayload("distribute_event_1event2signals.xml");
 
-	payload = LoadFile::loadPayload("distribute_event_1event2signals.xml");
+	eventManager.manageEvents(payload->oadrSignedObject().oadrDistributeEvent().get());
 
-	eventManager.manageEvents(payload.get()->oadrSignedObject().oadrDistributeEvent().get());
+	EXPECT_EQ(0u, mockScheduler.scheduleIDs.size());
 
-	EXPECT_EQ((size_t)0, mockScheduler.scheduleIDs.size());
-
-	EXPECT_EQ((unsigned int)1, blankSendCreatedEvent.SendCreatedEventCount);
+	EXPECT_EQ(1u, blankSendCreatedEvent.SendCreatedEventCount);
 }
 
 /********************************************************************************/
 
-TEST(EventManager, ScheduleEvent)
+TEST_F(EventManagerTest, ScheduleEvent)
 {
-	MockGlobalTime globalTime;
-
 	// Set the current time to a few minutes prior to the dtstart time of the event in
 	// the test message
-	Timezone tz;
-	tz.SetTimezone("");
 	globalTime.setNow(2015, 06, 26, 16, 0, 0);
-
-	BlankEventService mockEventService;
-	BlankSendCreatedEvent blankSendCreatedEvent;
-	MockScheduler mockScheduler;
 
 	EventManager eventManager(&mockScheduler, &mockEventService, &blankSendCreatedEvent);
 
-	unique_ptr<oadrPayload> payload = LoadFile::loadPayload("distribute_event_1event2signals.xml");
+	auto payload = LoadFile::loadPayload("distribute_event_1event2signals.xml");
 
 	//
 	// Schedule a new event
 	//
-	eventManager.manageEvents(payload.get()->oadrSignedObject().oadrDistributeEvent().get());
+	eventManager.manageEvents(payload->oadrSignedObject().oadrDistributeEvent().get());
 
 	// 1 event with two signals and a total of 5 intervals should create 9 jobs
 	// 1 event start, 1 event complete, and one event signal start for each interval
-	EXPECT_EQ((size_t)7, mockScheduler.scheduleIDs.size());
-	EXPECT_EQ((size_t)0, mockScheduler.removedScheduleIDs.size());
+	EXPECT_EQ(7u, mockScheduler.scheduleIDs.size());
+	EXPECT_EQ(0u, mockScheduler.removedScheduleIDs.size());
 
-	EXPECT_EQ((size_t)7, mockScheduler.AddJobCalledCount);
-	EXPECT_EQ((size_t)0, mockScheduler.RemoveJobCalledCount);
+	EXPECT_EQ(7u, mockScheduler.AddJobCalledCount);
+	EXPECT_EQ(0u, mockScheduler.RemoveJobCalledCount);
 
-	EXPECT_EQ((size_t)1, mockEventService.OnNewCount);
+	EXPECT_EQ(1u, mockEventService.OnNewCount);
+	EXPECT_EQ(0u, mockEventService.OnNewNoResponseExpectedCount);
 
-	EXPECT_EQ((size_t)1, blankSendCreatedEvent.EventResponseCount);
+	EXPECT_EQ(1u, blankSendCreatedEvent.EventResponseCount);
 
 	//
 	// Schedule the same event - nothing should change
 	//
-	eventManager.manageEvents(payload.get()->oadrSignedObject().oadrDistributeEvent().get());
+	eventManager.manageEvents(payload->oadrSignedObject().oadrDistributeEvent().get());
 
-	EXPECT_EQ((size_t)7, mockScheduler.scheduleIDs.size());
-	EXPECT_EQ((size_t)0, mockScheduler.removedScheduleIDs.size());
+	EXPECT_EQ(7u, mockScheduler.scheduleIDs.size());
+	EXPECT_EQ(0u, mockScheduler.removedScheduleIDs.size());
 
-	EXPECT_EQ((size_t)7, mockScheduler.AddJobCalledCount);
-	EXPECT_EQ((size_t)0, mockScheduler.RemoveJobCalledCount);
+	EXPECT_EQ(7u, mockScheduler.AddJobCalledCount);
+	EXPECT_EQ(0u, mockScheduler.RemoveJobCalledCount);
 
-	EXPECT_EQ((size_t)1, mockEventService.OnNewCount); // shouldn't change
+	EXPECT_EQ(1u, mockEventService.OnNewCount); // shouldn't change
+	EXPECT_EQ(0u, mockEventService.OnNewNoResponseExpectedCount);
 
 	//
 	// Modify the event - the event should be rescheduled
 	//
-	oadrEvent *event = &(payload.get()->oadrSignedObject().oadrDistributeEvent()->oadrEvent().front());
+	auto &event = payload->oadrSignedObject().oadrDistributeEvent()->oadrEvent().front();
 
-	event->eiEvent().eventDescriptor().modificationNumber(1);
-	event->eiEvent().eiEventSignals().eiEventSignal().front().intervals().interval().erase(event->eiEvent().eiEventSignals().eiEventSignal().front().intervals().interval().begin());
+	event.eiEvent().eventDescriptor().modificationNumber(1);
+	event.eiEvent().eiEventSignals().eiEventSignal().front().intervals().interval().erase(event.eiEvent().eiEventSignals().eiEventSignal().front().intervals().interval().begin());
 
 	// reschedule
-	eventManager.manageEvents(payload.get()->oadrSignedObject().oadrDistributeEvent().get());
+	eventManager.manageEvents(payload->oadrSignedObject().oadrDistributeEvent().get());
 
-	EXPECT_EQ((size_t)6, mockScheduler.scheduleIDs.size());
-	EXPECT_EQ((size_t)7, mockScheduler.removedScheduleIDs.size());
+	EXPECT_EQ(6u, mockScheduler.scheduleIDs.size());
+	EXPECT_EQ(7u, mockScheduler.removedScheduleIDs.size());
 
-	EXPECT_EQ((size_t)13, mockScheduler.AddJobCalledCount);
-	EXPECT_EQ((size_t)7, mockScheduler.RemoveJobCalledCount);
+	EXPECT_EQ(13u, mockScheduler.AddJobCalledCount);
+	EXPECT_EQ(7u, mockScheduler.RemoveJobCalledCount);
 
-	EXPECT_EQ((size_t)1, mockEventService.OnModifyCount);
+	EXPECT_EQ(1u, mockEventService.OnModifyCount);
+	EXPECT_EQ(0u, mockEventService.OnModifyNoResponseExpectedCount);
 
-	EXPECT_EQ((size_t)1, blankSendCreatedEvent.EventResponseCount);
+	EXPECT_EQ(1u, blankSendCreatedEvent.EventResponseCount);
 
 	//
 	// Cancel the event - should be removed from the scheduler
 	//
 
-	event->eiEvent().eventDescriptor().eventStatus(eventDescriptorType::eventStatus_type(oadr2b::ei::EventStatusEnumeratedType::cancelled));
-	event->eiEvent().eventDescriptor().modificationNumber(2);
+	event.eiEvent().eventDescriptor().eventStatus(eventDescriptorType::eventStatus_type(oadr2b::ei::EventStatusEnumeratedType::cancelled));
+	event.eiEvent().eventDescriptor().modificationNumber(2);
 
 	// reschedule
-	eventManager.manageEvents(payload.get()->oadrSignedObject().oadrDistributeEvent().get());
+	eventManager.manageEvents(payload->oadrSignedObject().oadrDistributeEvent().get());
 
-	EXPECT_EQ((size_t)0, mockScheduler.scheduleIDs.size());
-	EXPECT_EQ((size_t)13, mockScheduler.removedScheduleIDs.size());
+	EXPECT_EQ(0u, mockScheduler.scheduleIDs.size());
+	EXPECT_EQ(13u, mockScheduler.removedScheduleIDs.size());
 
-	EXPECT_EQ((size_t)13, mockScheduler.RemoveJobCalledCount);
+	EXPECT_EQ(13u, mockScheduler.RemoveJobCalledCount);
 
-	EXPECT_EQ((size_t)1, mockEventService.OnCancelCount);
+	EXPECT_EQ(1u, mockEventService.OnCancelCount);
+	EXPECT_EQ(0u, mockEventService.OnCancelNoResponseExpectedCount);
 
-	EXPECT_EQ((size_t)1, blankSendCreatedEvent.EventResponseCount);
+	EXPECT_EQ(1u, blankSendCreatedEvent.EventResponseCount);
 }
 
 /********************************************************************************/
 
-TEST(EventManager, ScheduleCancelledEvent)
+TEST_F(EventManagerTest, ScheduleEventWithNoResponseExpected)
 {
-	MockGlobalTime globalTime;
-
 	// Set the current time to a few minutes prior to the dtstart time of the event in
 	// the test message
-	Timezone tz;
-	tz.SetTimezone("");
 	globalTime.setNow(2015, 06, 26, 16, 0, 0);
-
-	BlankEventService mockEventService;
-	BlankSendCreatedEvent blankSendCreatedEvent;
-	MockScheduler mockScheduler;
 
 	EventManager eventManager(&mockScheduler, &mockEventService, &blankSendCreatedEvent);
 
-	unique_ptr<oadrPayload> payload = LoadFile::loadPayload("distribute_event_1event2signals.xml");
+	auto payload = LoadFile::loadPayload("distribute_event_1event2signals.xml");
+
+	// alter oadrResponseRequired to never so that the VEN is expected to not send responses
+	auto &event = payload->oadrSignedObject().oadrDistributeEvent()->oadrEvent().front();
+	event.oadrResponseRequired() = oadr2b::oadr::ResponseRequiredType::value::never;
+
+	//
+	// Schedule a new event
+	//
+	eventManager.manageEvents(payload->oadrSignedObject().oadrDistributeEvent().get());
+
+	// 1 event with two signals and a total of 5 intervals should create 9 jobs
+	// 1 event start, 1 event complete, and one event signal start for each interval
+	EXPECT_EQ(7u, mockScheduler.scheduleIDs.size());
+	EXPECT_EQ(0u, mockScheduler.removedScheduleIDs.size());
+
+	EXPECT_EQ(7u, mockScheduler.AddJobCalledCount);
+	EXPECT_EQ(0u, mockScheduler.RemoveJobCalledCount);
+
+	EXPECT_EQ(0u, mockEventService.OnNewCount);
+	EXPECT_EQ(1u, mockEventService.OnNewNoResponseExpectedCount);
+
+	EXPECT_EQ(0u, blankSendCreatedEvent.EventResponseCount);
+
+	//
+	// Schedule the same event - nothing should change
+	//
+	eventManager.manageEvents(payload->oadrSignedObject().oadrDistributeEvent().get());
+
+	EXPECT_EQ(7u, mockScheduler.scheduleIDs.size());
+	EXPECT_EQ(0u, mockScheduler.removedScheduleIDs.size());
+
+	EXPECT_EQ(7u, mockScheduler.AddJobCalledCount);
+	EXPECT_EQ(0u, mockScheduler.RemoveJobCalledCount);
+
+	EXPECT_EQ(0u, mockEventService.OnNewCount);
+	EXPECT_EQ(1u, mockEventService.OnNewNoResponseExpectedCount); // shouldn't change
+
+	//
+	// Modify the event - the event should be rescheduled
+	//
+	event.eiEvent().eventDescriptor().modificationNumber(1);
+	event.eiEvent().eiEventSignals().eiEventSignal().front().intervals().interval().erase(event.eiEvent().eiEventSignals().eiEventSignal().front().intervals().interval().begin());
+
+	// reschedule
+	eventManager.manageEvents(payload->oadrSignedObject().oadrDistributeEvent().get());
+
+	EXPECT_EQ(6u, mockScheduler.scheduleIDs.size());
+	EXPECT_EQ(7u, mockScheduler.removedScheduleIDs.size());
+
+	EXPECT_EQ(13u, mockScheduler.AddJobCalledCount);
+	EXPECT_EQ(7u, mockScheduler.RemoveJobCalledCount);
+
+	EXPECT_EQ(0u, mockEventService.OnModifyCount);
+	EXPECT_EQ(1u, mockEventService.OnModifyNoResponseExpectedCount);
+
+	EXPECT_EQ(0u, blankSendCreatedEvent.EventResponseCount);
+
+	//
+	// Cancel the event - should be removed from the scheduler
+	//
+
+	event.eiEvent().eventDescriptor().eventStatus(eventDescriptorType::eventStatus_type(oadr2b::ei::EventStatusEnumeratedType::cancelled));
+	event.eiEvent().eventDescriptor().modificationNumber(2);
+
+	// reschedule
+	eventManager.manageEvents(payload->oadrSignedObject().oadrDistributeEvent().get());
+
+	EXPECT_EQ(0u, mockScheduler.scheduleIDs.size());
+	EXPECT_EQ(13u, mockScheduler.removedScheduleIDs.size());
+
+	EXPECT_EQ(13u, mockScheduler.RemoveJobCalledCount);
+
+	EXPECT_EQ(0u, mockEventService.OnCancelCount);
+	EXPECT_EQ(1u, mockEventService.OnCancelNoResponseExpectedCount);
+
+	EXPECT_EQ(0u, blankSendCreatedEvent.EventResponseCount);
+}
+
+/********************************************************************************/
+
+TEST_F(EventManagerTest, ScheduleCancelledEvent)
+{
+	// Set the current time to a few minutes prior to the dtstart time of the event in
+	// the test message
+	globalTime.setNow(2015, 06, 26, 16, 0, 0);
+
+	EventManager eventManager(&mockScheduler, &mockEventService, &blankSendCreatedEvent);
+
+	auto payload = LoadFile::loadPayload("distribute_event_1event2signals.xml");
 
 	//
 	// Cancel the event
 	//
-	oadrEvent *event = &(payload.get()->oadrSignedObject().oadrDistributeEvent()->oadrEvent().front());
+	auto &event = payload->oadrSignedObject().oadrDistributeEvent()->oadrEvent().front();
 
-	event->eiEvent().eventDescriptor().eventStatus(eventDescriptorType::eventStatus_type(oadr2b::ei::EventStatusEnumeratedType::cancelled));
-	event->eiEvent().eventDescriptor().modificationNumber(2);
+	event.eiEvent().eventDescriptor().eventStatus(eventDescriptorType::eventStatus_type(oadr2b::ei::EventStatusEnumeratedType::cancelled));
+	event.eiEvent().eventDescriptor().modificationNumber(2);
 
-	eventManager.manageEvents(payload.get()->oadrSignedObject().oadrDistributeEvent().get());
+	eventManager.manageEvents(payload->oadrSignedObject().oadrDistributeEvent().get());
 
 	// 1 event with two signals and a total of 5 intervals should create 9 jobs
 	// 1 event start, 1 event complete, and one event signal start for each interval
-	EXPECT_EQ((size_t)0, mockScheduler.scheduleIDs.size());
-	EXPECT_EQ((size_t)0, mockScheduler.removedScheduleIDs.size());
+	EXPECT_EQ(0u, mockScheduler.scheduleIDs.size());
+	EXPECT_EQ(0u, mockScheduler.removedScheduleIDs.size());
 
-	EXPECT_EQ((size_t)1, mockEventService.OnNewCount);
-	EXPECT_EQ((size_t)0, mockEventService.OnModifyCount);
-	EXPECT_EQ((size_t)0, mockEventService.OnCancelCount);
+	EXPECT_EQ(1u, mockEventService.OnNewCount);
+	EXPECT_EQ(0u, mockEventService.OnModifyCount);
+	EXPECT_EQ(0u, mockEventService.OnCancelCount);
 }
 
 /********************************************************************************/
 
-TEST(EventManager, ScheduleCompletedEvent)
+TEST_F(EventManagerTest, ScheduleCompletedEvent)
 {
-	MockGlobalTime globalTime;
-
 	// Set the current time to a few minutes prior to the dtstart time of the event in
 	// the test message
-	Timezone tz;
-	tz.SetTimezone("");
 	globalTime.setNow(2015, 06, 26, 16, 0, 0);
-
-	BlankEventService mockEventService;
-	BlankSendCreatedEvent blankSendCreatedEvent;
-	MockScheduler mockScheduler;
 
 	EventManager eventManager(&mockScheduler, &mockEventService, &blankSendCreatedEvent);
 
-	unique_ptr<oadrPayload> payload = LoadFile::loadPayload("distribute_event_1event2signals.xml");
+	auto payload = LoadFile::loadPayload("distribute_event_1event2signals.xml");
 
 	//
 	// Set the event to completed
 	//
-	oadrEvent *event = &(payload.get()->oadrSignedObject().oadrDistributeEvent()->oadrEvent().front());
+	auto &event = payload->oadrSignedObject().oadrDistributeEvent()->oadrEvent().front();
 
-	event->eiEvent().eventDescriptor().eventStatus(eventDescriptorType::eventStatus_type(oadr2b::ei::EventStatusEnumeratedType::completed));
-	event->eiEvent().eventDescriptor().modificationNumber(3);
+	event.eiEvent().eventDescriptor().eventStatus(eventDescriptorType::eventStatus_type(oadr2b::ei::EventStatusEnumeratedType::completed));
+	event.eiEvent().eventDescriptor().modificationNumber(3);
 
-	eventManager.manageEvents(payload.get()->oadrSignedObject().oadrDistributeEvent().get());
+	eventManager.manageEvents(payload->oadrSignedObject().oadrDistributeEvent().get());
 
 	// 1 event with two signals and a total of 5 intervals should create 9 jobs
 	// 1 event start, 1 event complete, and one event signal start for each interval
-	EXPECT_EQ((size_t)0, mockScheduler.scheduleIDs.size());
-	EXPECT_EQ((size_t)0, mockScheduler.removedScheduleIDs.size());
+	EXPECT_EQ(0u, mockScheduler.scheduleIDs.size());
+	EXPECT_EQ(0u, mockScheduler.removedScheduleIDs.size());
 
-	EXPECT_EQ((size_t)1, mockEventService.OnNewCount);
-	EXPECT_EQ((size_t)0, mockEventService.OnModifyCount);
+	EXPECT_EQ(1u, mockEventService.OnNewCount);
+	EXPECT_EQ(0u, mockEventService.OnModifyCount);
 }
 
 /********************************************************************************/
 
-TEST(EventManager, ScheduleActiveEvent)
+TEST_F(EventManagerTest, ScheduleActiveEvent)
 {
 	// The event is active and not complete
 	// Should call OnStart, and OnIntervalStart
-	MockGlobalTime globalTime;
-
 	// Set the current time to 6 minutes after teh start of the event
-	Timezone tz;
-	tz.SetTimezone("");
 	globalTime.setNow(2015, 06, 26, 18, 6, 0);
-
-	BlankEventService mockEventService;
-	BlankSendCreatedEvent blankSendCreatedEvent;
-	MockScheduler mockScheduler;
 
 	EventManager eventManager(&mockScheduler, &mockEventService, &blankSendCreatedEvent);
 
-	unique_ptr<oadrPayload> payload = LoadFile::loadPayload("distribute_event_active.xml");
+	auto payload = LoadFile::loadPayload("distribute_event_active.xml");
 
-	eventManager.manageEvents(payload.get()->oadrSignedObject().oadrDistributeEvent().get());
+	eventManager.manageEvents(payload->oadrSignedObject().oadrDistributeEvent().get());
 
 	// 1 event with two signals and a total of 5 intervals should create 9 jobs
 	// 1 event start, 1 event complete, and one event signal start for each interval
-	EXPECT_EQ((size_t)1, mockScheduler.scheduleIDs.size());
-	EXPECT_EQ((size_t)0, mockScheduler.removedScheduleIDs.size());
+	EXPECT_EQ(1u, mockScheduler.scheduleIDs.size());
+	EXPECT_EQ(0u, mockScheduler.removedScheduleIDs.size());
 
-	EXPECT_EQ((size_t)1, mockScheduler.AddJobCalledCount);
+	EXPECT_EQ(1u, mockScheduler.AddJobCalledCount);
 
-	EXPECT_EQ((size_t)1, mockEventService.OnNewCount);
+	EXPECT_EQ(1u, mockEventService.OnNewCount);
 
-	EXPECT_EQ((size_t)1, mockEventService.OnStartCount);
-	EXPECT_EQ((size_t)1, mockEventService.OnIntervalStartCount);
+	EXPECT_EQ(1u, mockEventService.OnStartCount);
+	EXPECT_EQ(1u, mockEventService.OnIntervalStartCount);
 
 	EXPECT_EQ(true, mockEventService.OnNewCalledFirst);
 
 	// remaining time should be 6 minutes less than the full event duration
-	EXPECT_EQ((unsigned int)6840, mockEventService.remainingDuration);
-	EXPECT_EQ((unsigned int)6840, mockEventService.remainingIntervalDuration);
+	EXPECT_EQ(6840u, mockEventService.remainingDuration);
+	EXPECT_EQ(6840u, mockEventService.remainingIntervalDuration);
 }
 
 /********************************************************************************/
 
-TEST(EventManager, ScheduleEventDuration0)
+TEST_F(EventManagerTest, ScheduleEventDuration0)
 {
 	// The event is active and not complete
 	// Should call OnStart, and OnIntervalStart
-	MockGlobalTime globalTime;
-
 	// Set the current time to when the event is active
 	// the test message
-	Timezone tz;
-	tz.SetTimezone("");
 	globalTime.setNow(2015, 06, 26, 17, 6, 0);
-
-	BlankEventService mockEventService;
-	BlankSendCreatedEvent blankSendCreatedEvent;
-	MockScheduler mockScheduler;
 
 	EventManager eventManager(&mockScheduler, &mockEventService, &blankSendCreatedEvent);
 
-	unique_ptr<oadrPayload> payload = LoadFile::loadPayload("distribute_event_1event2signals.xml");
+	auto payload = LoadFile::loadPayload("distribute_event_1event2signals.xml");
 
 	// set the duration to 0
-	payload.get()->oadrSignedObject().oadrDistributeEvent()->oadrEvent().at(0).eiEvent().eiActivePeriod().properties().duration().duration("PT0M");
+	payload->oadrSignedObject().oadrDistributeEvent()->oadrEvent().at(0).eiEvent().eiActivePeriod().properties().duration().duration("PT0M");
 
-	eventManager.manageEvents(payload.get()->oadrSignedObject().oadrDistributeEvent().get());
+	eventManager.manageEvents(payload->oadrSignedObject().oadrDistributeEvent().get());
 
 	// schedule job start, and 5 interval starts for a total of 6 jobs
 	// event end should not be scheduled since duration == 0
-	EXPECT_EQ((size_t)6, mockScheduler.scheduleIDs.size());
-	EXPECT_EQ((size_t)0, mockScheduler.removedScheduleIDs.size());
+	EXPECT_EQ(6u, mockScheduler.scheduleIDs.size());
+	EXPECT_EQ(0u, mockScheduler.removedScheduleIDs.size());
 
-	EXPECT_EQ((size_t)6, mockScheduler.AddJobCalledCount);
+	EXPECT_EQ(6u, mockScheduler.AddJobCalledCount);
 
-	EXPECT_EQ((size_t)1, mockEventService.OnNewCount);
+	EXPECT_EQ(1u, mockEventService.OnNewCount);
 
-	EXPECT_EQ((size_t)0, mockEventService.OnStartCount);
-	EXPECT_EQ((size_t)0, mockEventService.OnIntervalStartCount);
+	EXPECT_EQ(0u, mockEventService.OnStartCount);
+	EXPECT_EQ(0u, mockEventService.OnIntervalStartCount);
 }

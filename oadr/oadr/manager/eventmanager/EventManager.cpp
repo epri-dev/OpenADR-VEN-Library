@@ -219,23 +219,37 @@ void EventManager::handleExistingEvent(const string &eventID, const oadr2b::oadr
 
 	if (event->eiEvent().eventDescriptor().eventStatus() == EventStatusEnumeratedType::cancelled)
 	{
-		oadr2b::ei::OptTypeType::value optType = oadr2b::ei::OptTypeType::optIn;
+		if (oadr2b::oadr::ResponseRequiredType::value::always == event->oadrResponseRequired())
+		{
+			oadr2b::ei::OptTypeType::value optType = oadr2b::ei::OptTypeType::optIn;
 
-		m_service->OnEventCancel(eventID, event, optType);
+			m_service->OnEventCancel(eventID, event, optType);
 
-		Oadr2bHelper::appendEventResponse(eventResponses, "200", "OK", eventID,
-				event->eiEvent().eventDescriptor().modificationNumber(), optType, requestID);
+			Oadr2bHelper::appendEventResponse(eventResponses, "200", "OK", eventID,
+					event->eiEvent().eventDescriptor().modificationNumber(), optType, requestID);
+		}
+		else // oadr2b::oadr::ResponseRequiredType::value::never
+		{
+			m_service->OnEventCancel(eventID, event);
+		}
 
 		removeSchedule(eventID);
 	}
 	else
 	{
-		oadr2b::ei::OptTypeType::value optType = oadr2b::ei::OptTypeType::optOut;
+		if (oadr2b::oadr::ResponseRequiredType::value::always == event->oadrResponseRequired())
+		{
+			oadr2b::ei::OptTypeType::value optType = oadr2b::ei::OptTypeType::optOut;
 
-		m_service->OnEventModify(eventID, event, existingEvent, optType);
+			m_service->OnEventModify(eventID, event, existingEvent, optType);
 
-		Oadr2bHelper::appendEventResponse(eventResponses, "200", "OK", eventID,
-				event->eiEvent().eventDescriptor().modificationNumber(), optType, requestID);
+			Oadr2bHelper::appendEventResponse(eventResponses, "200", "OK", eventID,
+					event->eiEvent().eventDescriptor().modificationNumber(), optType, requestID);
+		}
+		else // oadr2b::oadr::ResponseRequiredType::value::never
+		{
+			m_service->OnEventModify(eventID, event, existingEvent);
+		}
 
 		removeSchedule(eventID);
 		scheduleEvent(eventID, eventCopy);
@@ -252,12 +266,19 @@ void EventManager::handleNewEvent(const string &eventID, const oadr2b::oadr::oad
 
 	m_events[eventID] = unique_ptr<oadr2b::oadr::oadrEvent>(eventCopy);
 
-	oadr2b::ei::OptTypeType::value optType = oadr2b::ei::OptTypeType::optOut;
+	if (oadr2b::oadr::ResponseRequiredType::value::always == event->oadrResponseRequired())
+	{
+		oadr2b::ei::OptTypeType::value optType = oadr2b::ei::OptTypeType::optOut;
 
-	m_service->OnEventNew(eventID, eventCopy, optType);
+		m_service->OnEventNew(eventID, eventCopy, optType);
 
-	Oadr2bHelper::appendEventResponse(eventResponses, "200", "OK", eventID,
-			eventCopy->eiEvent().eventDescriptor().modificationNumber(), optType, requestID);
+		Oadr2bHelper::appendEventResponse(eventResponses, "200", "OK", eventID,
+				eventCopy->eiEvent().eventDescriptor().modificationNumber(), optType, requestID);
+	}
+	else // oadr2b::oadr::ResponseRequiredType::value::never
+	{
+		m_service->OnEventNew(eventID, event);
+	}
 
 	scheduleEvent(eventID, eventCopy);
 }

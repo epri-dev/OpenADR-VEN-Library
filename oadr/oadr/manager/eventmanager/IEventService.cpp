@@ -11,7 +11,3 @@ IEventService::IEventService()
 {
 }
 
-IEventService::~IEventService()
-{
-}
-

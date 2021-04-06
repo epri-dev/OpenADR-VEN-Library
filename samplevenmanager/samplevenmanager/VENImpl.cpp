@@ -195,11 +195,28 @@ void VENImpl::OnEventNew(const std::string& eventID,
 
 /********************************************************************************/
 
+void VENImpl::OnEventNew(const std::string& eventID,
+		const oadr2b::oadr::oadrEvent* event)
+{
+	LOG(INFO) << "new event received: " << eventID << " (no response expected)";
+}
+
+/********************************************************************************/
+
 void VENImpl::OnEventModify(const std::string& eventID,
 		const oadr2b::oadr::oadrEvent* newEvent,
 		const oadr2b::oadr::oadrEvent* oldEvent, oadr2b::ei::OptTypeType::value &optType)
 {
 	LOG(INFO) << "event modified: " << eventID;
+}
+
+/********************************************************************************/
+
+void VENImpl::OnEventModify(const std::string& eventID,
+		const oadr2b::oadr::oadrEvent* newEvent,
+		const oadr2b::oadr::oadrEvent* oldEvent)
+{
+	LOG(INFO) << "event modified: " << eventID << " (no response expected)";
 }
 
 /********************************************************************************/
@@ -212,32 +229,18 @@ void VENImpl::OnEventCancel(const std::string& eventID,
 
 /********************************************************************************/
 
+void VENImpl::OnEventCancel(const std::string& eventID,
+		const oadr2b::oadr::oadrEvent* event)
+{
+	LOG(INFO) << "event cancelled: " << eventID;
+}
+
+/********************************************************************************/
+
 void VENImpl::OnEventImplicitCancel(const std::string& eventID,
 		const oadr2b::oadr::oadrEvent* event)
 {
 	LOG(INFO) << "event imiplicitly cancelled: " << eventID;
-}
-
-/********************************************************************************/
-
-void VENImpl::OnProcessDistributeEventStart()
-{
-	LOG(INFO) << "processing distribute event message";
-}
-
-/********************************************************************************/
-
-void VENImpl::OnGenerateCreatedEvent(
-		oadr2b::ei::eventResponses::eventResponse_sequence& eventResponses)
-{
-	LOG(INFO) << "generate created event";
-}
-
-/********************************************************************************/
-
-void VENImpl::OnProcessDistributeEventComplete()
-{
-	LOG(INFO) << "processing distribute event message complete";
 }
 
 /********************************************************************************/

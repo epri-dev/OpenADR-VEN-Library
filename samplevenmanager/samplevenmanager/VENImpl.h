@@ -25,40 +25,43 @@ class VENImpl : public IEventService, public IReportService, public IOadrMessage
 
 public:
 	VENImpl(string venName, bool logToStdout);
-	virtual ~VENImpl();
+	~VENImpl() override;
 
-	virtual void OnPeriodicReportStart(const oadrReportRequestType &reportRequest);
+public: // from IReportService
+	void OnPeriodicReportStart(const oadrReportRequestType &reportRequest) override;
 
-	virtual void OnPeriodicReportComplete(const oadrReportRequestType &reportRequest);
+	void OnPeriodicReportComplete(const oadrReportRequestType &reportRequest) override;
 
-	virtual void OnGenerateOneshotReport(const oadrReportRequestType &reportRequest, oadrUpdateReportType::oadrReport_sequence &sequence);
+	void OnGenerateOneshotReport(const oadrReportRequestType &reportRequest, oadrUpdateReportType::oadrReport_sequence &sequence) override;
 
-	virtual void OnGeneratePeriodicReport(const oadrReportRequestType &reportRequest, oadrUpdateReportType::oadrReport_sequence &sequence, time_t dtstart,
-			unsigned int durationInSeconds);
+	void OnGeneratePeriodicReport(const oadrReportRequestType &reportRequest, oadrUpdateReportType::oadrReport_sequence &sequence, time_t dtstart,
+			unsigned int durationInSeconds) override;
 
-	virtual void OnGenerateHistoricalReport(const oadrReportRequestType &reportRequest, oadrUpdateReportType::oadrReport_sequence &sequence, time_t dtstart,
-			unsigned int durationInSeconds);
+	void OnGenerateHistoricalReport(const oadrReportRequestType &reportRequest, oadrUpdateReportType::oadrReport_sequence &sequence, time_t dtstart,
+			unsigned int durationInSeconds) override;
 
-	virtual void OnGenerateRegisterReport(oadrRegisterReportType::oadrReport_sequence &sequence);
+	void OnGenerateRegisterReport(oadrRegisterReportType::oadrReport_sequence &sequence) override;
 
-	virtual void OnEventStart(const std::string &eventID, const oadr2b::oadr::oadrEvent *event, unsigned int remainingDurationInSeconds);
-	virtual void OnEventComplete(const std::string &eventID, const oadr2b::oadr::oadrEvent *event);
-	virtual void OnEventIntervalStart(const std::string &eventID, const oadr2b::oadr::oadrEvent *event, const oadr2b::ei::eiEventSignalType *eventSignal, std::string uid, float payload, time_t dtstart, unsigned int remainingDurationInSeconds);
+public: // from IEventService
+	void OnEventStart(const std::string &eventID, const oadr2b::oadr::oadrEvent *event, unsigned int remainingDurationInSeconds) override;
+	void OnEventComplete(const std::string &eventID, const oadr2b::oadr::oadrEvent *event) override;
+	void OnEventIntervalStart(const std::string &eventID, const oadr2b::oadr::oadrEvent *event, const oadr2b::ei::eiEventSignalType *eventSignal, std::string uid, float payload, time_t dtstart, unsigned int remainingDurationInSeconds) override;
 
-	virtual void OnEventNew(const std::string &eventID, const oadr2b::oadr::oadrEvent *event, oadr2b::ei::OptTypeType::value &optType);
-	virtual void OnEventModify(const std::string &eventID, const oadr2b::oadr::oadrEvent *newEvent, const oadr2b::oadr::oadrEvent *oldEvent, oadr2b::ei::OptTypeType::value &optType);
-	virtual void OnEventCancel(const std::string &eventID, const oadr2b::oadr::oadrEvent *event, oadr2b::ei::OptTypeType::value &optType);
-	virtual void OnEventImplicitCancel(const std::string &eventID, const oadr2b::oadr::oadrEvent *event);
+	void OnEventNew(const std::string &eventID, const oadr2b::oadr::oadrEvent *event, oadr2b::ei::OptTypeType::value &optType) override;
+	void OnEventNew(const std::string &eventID, const oadr2b::oadr::oadrEvent *event) override;
+	void OnEventModify(const std::string &eventID, const oadr2b::oadr::oadrEvent *newEvent, const oadr2b::oadr::oadrEvent *oldEvent, oadr2b::ei::OptTypeType::value &optType) override;
+	void OnEventModify(const std::string &eventID, const oadr2b::oadr::oadrEvent *newEvent, const oadr2b::oadr::oadrEvent *oldEvent) override;
+	void OnEventCancel(const std::string &eventID, const oadr2b::oadr::oadrEvent *event, oadr2b::ei::OptTypeType::value &optType) override;
+	void OnEventCancel(const std::string &eventID, const oadr2b::oadr::oadrEvent *event) override;
+	void OnEventImplicitCancel(const std::string &eventID, const oadr2b::oadr::oadrEvent *event) override;
 
-	virtual void OnProcessDistributeEventStart();
-	virtual void OnGenerateCreatedEvent(oadr2b::ei::eventResponses::eventResponse_sequence &eventResponses);
-	virtual void OnProcessDistributeEventComplete();
+public: // from IOadrMessage
+	void OnOadrMessageReceived(std::string &message) override;
+	void OnOadrMessageSent(std::string &message) override;
 
-	virtual void OnOadrMessageReceived(std::string &message);
-	virtual void OnOadrMessageSent(std::string &message);
-
-	virtual void OnCurlException(CurlException &ex);
-	virtual void OnException(std::exception &ex);
+public: // from IOADRExceptionService
+	void OnCurlException(CurlException &ex) override;
+	void OnException(std::exception &ex) override;
 };
 
 } /* namespace samplevenmanager */

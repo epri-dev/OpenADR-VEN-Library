@@ -325,12 +325,18 @@ const string VEN2b::_EndpointEiPoll = "/OpenADR2/Simple/2.0b/OadrPoll";
 
 /********************************************************************************/
 
-VEN2b::VEN2b(unique_ptr<IHttp> http, string baseURL, string venName, string venID, string registrationID) :
+VEN2b::VEN2b(unique_ptr<IHttp> http,
+             string baseURL,
+             string venName,
+             string venID,
+             string registrationID,
+             std::unique_ptr<ISignatureContext> signatureContext) :
 	m_http(std::move(http)),
 	m_baseURL(baseURL),
 	m_venName(venName),
 	m_venID(venID),
 	m_registrationID(registrationID),
+	m_signatureContext(std::move(signatureContext)),
 	m_defaultVenID(venID),
 	m_defaultRegistrationID(registrationID),
 	m_isRegistered(false)
@@ -338,9 +344,7 @@ VEN2b::VEN2b(unique_ptr<IHttp> http, string baseURL, string venName, string venI
 	m_oadrMessage = &OadrMessageBlank::oadrMessageBlank;
 
 	// initialize xerces; required for some of the code synthesis parsing routines
-	// TODO: init/terminate need only be called once.  Should we add an object
-	// counter and initialize xerces when the count == 0 and terminate when
-	// count goes back to 0?
+	// xerces does initialization counting so for each Initialize() call we must have the Terminate() counterpart.
 	XMLPlatformUtils::Initialize();
 }
 
@@ -402,7 +406,7 @@ void VEN2b::postRequest(Oadr2bRequest *request, string endPoint)
 {
 	std::unique_lock<std::mutex> lock(m_mutex);
 
-	string requestBody = request->generateRequestXML();
+	string requestBody = request->generateRequestXML(m_signatureContext.get());
 
 	m_oadrMessage->OnOadrMessageSent(requestBody);
 
@@ -410,7 +414,7 @@ void VEN2b::postRequest(Oadr2bRequest *request, string endPoint)
 
 	m_oadrMessage->OnOadrMessageReceived(m_http->getResponseBody());
 
-	request->setHttpFields(requestBody, m_http->getResponseBody(), m_http->getResponseCode(), m_http->getResponseMessage());
+	request->setHttpFields(requestBody, m_http->getResponseBody(), m_http->getResponseCode(), m_http->getResponseMessage(), m_signatureContext.get());
 }
 
 /********************************************************************************/

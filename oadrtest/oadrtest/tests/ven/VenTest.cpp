@@ -319,20 +319,63 @@
 #include <gtest/gtest.h>
 
 #include <oadr/ven/VEN2b.h>
+#include <oadr/helper/OadrPayloadHelpers.h>
+#include <oadr/helper/SignatureContext.h>
 
 #include "MockHttp.h"
 #include "../../helper/LoadFile.h"
+#include "../../helper/MockGlobalTime.h"
+
+namespace
+{
+	/**
+	 * This delegate allows to release ownership to the client and keep ownership
+	 * over actual instantiation. For usage, check examples below.
+	 */
+	class SignatureContextDelegate : public ISignatureContext
+	{
+	private:
+		ISignatureContext &m_signatureContext;
+
+	public:
+		SignatureContextDelegate(ISignatureContext &signatureContext)
+		: m_signatureContext(signatureContext)
+		{
+		}
+
+		std::string sign(oadr2b::oadr::oadrPayload &payload)
+		{
+			return m_signatureContext.sign(payload);
+		}
+
+		bool verify(oadr2b::oadr::oadrPayload &payload)
+		{
+			return m_signatureContext.verify(payload);
+		}
+	};
+
+	const string url = "url";
+	const string venName = "venName_unique";
+	const string venId = "venId_unique";
+	const string registrationId = "registrationId_unique";
+}
+
+class VEN2bTest : public testing::Test
+{
+protected:
+	MockHttp *http;
+
+public:
+	VEN2bTest()
+	: http(new MockHttp())
+	{
+	}
+};
 
 /********************************************************************************/
 
-TEST(VEN2bTest, Registration)
+TEST_F(VEN2bTest, Registration)
 {
-	MockHttp *http = new MockHttp();
-	string url = "url";
-	string venName = "venName_unique";
-	string venId = "venId_unique";
-	string registrationId = "registrationId_unique";
-
 	VEN2b ven(unique_ptr<IHttp>(http), url, venName, venId, registrationId);
 
 	EXPECT_FALSE(ven.isRegistered()) << " should start in an unregistered state";
@@ -361,14 +404,8 @@ TEST(VEN2bTest, Registration)
 
 /********************************************************************************/
 
-TEST(VEN2bTest, RegistrationFail)
+TEST_F(VEN2bTest, RegistrationFail)
 {
-	MockHttp *http = new MockHttp();
-	string url = "url";
-	string venName = "venName_unique";
-	string venId = "venId_unique";
-	string registrationId = "registrationId_unique";
-
 	VEN2b ven(unique_ptr<IHttp>(http), url, venName, venId, registrationId);
 
 	http->setResponseBody(LoadFile::loadTestInputFile("created_party_registration-invalid-ven-name.xml"));
@@ -379,3 +416,106 @@ TEST(VEN2bTest, RegistrationFail)
 
 	EXPECT_FALSE(ven.isRegistered()) << " should not be registered after unsuccessful registration";
 }
+
+/********************************************************************************/
+
+TEST_F(VEN2bTest, venHasSignatureContext_whenRequestIsSent_signatureCanBeVerified)
+{
+	http->setResponseBody(LoadFile::loadTestInputFile("created_party_registration-with-signature.xml"));
+
+	MockGlobalTime globalTime;
+	globalTime.setNow(2019, 9, 11, 20, 42, 0);
+
+	SignatureContext signatureContext("xml/oadrtest/test_input/signatures/certificate-attached-to-signature.der",
+	                                  "xml/oadrtest/test_input/signatures/private-key-for-signing.der",
+	                                  "xml/oadrtest/test_input/signatures/certificate-authority-bundle-for-verifying-signatures.pem");
+
+	// TODO: create a delegate for IHttp like SignatureContextDelegate so the tests don't operate on an object which lifetime is unsure
+	VEN2b ven(unique_ptr<IHttp>(http), url, venName, venId, registrationId,
+	          std::unique_ptr<ISignatureContext>(new SignatureContextDelegate(signatureContext)));
+
+	EXPECT_FALSE(ven.isRegistered()) << " should start in an unregistered state";
+
+	EXPECT_NO_THROW(ven.createPartyRegistration(oadrProfileType::cxx_2_0b,
+			oadrTransportType::simpleHttp,
+			"", false, false, true));
+
+	EXPECT_TRUE(ven.isRegistered()) << " should be a registered state after successful registration";
+
+	EXPECT_TRUE(signatureContext.verify(*to_oadrPayload(http->getRequestBody())));
+}
+
+/********************************************************************************/
+
+TEST_F(VEN2bTest, venSendsSignedRequest_whenResponseComesTooLate_responseIsIgnored)
+{
+	// The response should be sent at 20:42:06
+	http->setResponseBody(LoadFile::loadTestInputFile("created_party_registration-with-signature.xml"));
+
+	MockGlobalTime globalTime;
+
+	SignatureContext signatureContext("xml/oadrtest/test_input/signatures/certificate-attached-to-signature.der",
+	                                  "xml/oadrtest/test_input/signatures/private-key-for-signing.der",
+	                                  "xml/oadrtest/test_input/signatures/certificate-authority-bundle-for-verifying-signatures.pem");
+
+	VEN2b ven(unique_ptr<IHttp>(http), url, venName, venId, registrationId,
+	          std::unique_ptr<ISignatureContext>(new SignatureContextDelegate(signatureContext)));
+
+	EXPECT_FALSE(ven.isRegistered()) << " should start in an unregistered state";
+
+	// after 5 seconds messages got rejected
+	globalTime.setNow(2019, 9, 11, 20, 42, 6);
+	EXPECT_NO_THROW(ven.createPartyRegistration(oadrProfileType::cxx_2_0b,
+			oadrTransportType::simpleHttp,
+			"", false, false, true));
+
+	EXPECT_FALSE(ven.isRegistered()) << " should stay in an unregistered state since the response was rejected";
+}
+
+/********************************************************************************/
+
+class Ven2bInvalidSignatureTest : public VEN2bTest, public testing::WithParamInterface<const char*>
+{
+};
+
+/********************************************************************************/
+
+TEST_P(Ven2bInvalidSignatureTest, rejectResponse)
+{
+	const char *responsePath = GetParam();
+
+	http->setResponseBody(LoadFile::loadTestInputFile(responsePath));
+
+	MockGlobalTime globalTime;
+	globalTime.setNow(2019, 9, 11, 20, 42, 0);
+
+	SignatureContext signatureContext("xml/oadrtest/test_input/signatures/certificate-attached-to-signature.der",
+	                                  "xml/oadrtest/test_input/signatures/private-key-for-signing.der",
+	                                  "xml/oadrtest/test_input/signatures/certificate-authority-bundle-for-verifying-signatures.pem");
+
+	VEN2b ven(unique_ptr<IHttp>(http), url, venName, venId, registrationId,
+	          std::unique_ptr<ISignatureContext>(new SignatureContextDelegate(signatureContext)));
+
+	EXPECT_FALSE(ven.isRegistered()) << " should start in an unregistered state";
+
+	EXPECT_NO_THROW(ven.createPartyRegistration(oadrProfileType::cxx_2_0b,
+			oadrTransportType::simpleHttp,
+			"", false, false, true));
+
+	EXPECT_FALSE(ven.isRegistered()) << " should stay in an unregistered state since the response was rejected";
+}
+
+/********************************************************************************/
+
+INSTANTIATE_TEST_CASE_P(
+		Ven2bInvalidSignatureTest,
+		Ven2bInvalidSignatureTest,
+		testing::Values(
+				"created_party_registration-with-signature-tampered.xml",
+				"created_party_registration-with-signature-empty-nonce.xml",
+				"created_party_registration-with-signature-two-oadrSignedObject.xml",
+				"created_party_registration-with-signature-no-reference-to-oadrSignedObject.xml",
+				"created_party_registration-with-signature-no-reference-to-ReplayProtect.xml",
+				"created_party_registration-with-signature-wrong-certificate.xml",
+				"created_party_registration-with-signature-timestamp-missing.xml"
+		));

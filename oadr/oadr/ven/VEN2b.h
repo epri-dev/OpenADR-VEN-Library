@@ -350,6 +350,7 @@
 #include "../request/Poll.h"
 
 #include "../helper/ISO8601Duration.h"
+#include "../helper/ISignatureContext.h"
 
 using namespace std;
 using namespace XERCES_CPP_NAMESPACE;
@@ -362,6 +363,9 @@ private:
 	string m_venName;
 	string m_venID;
 	string m_registrationID;
+
+	std::unique_ptr<ISignatureContext> m_signatureContext;
+
 	string m_vtnID;
 	string m_pollFrequency;
 
@@ -385,7 +389,12 @@ private:
 	void setIDs(oadrCreatedPartyRegistrationType *cpr);
 
 public:
-	VEN2b(unique_ptr<IHttp> http, string baseURL, string venName, string venID = "", string registrationID = "");
+	VEN2b(unique_ptr<IHttp> http,
+	      string baseURL,
+	      string venName,
+	      string venID = "",
+	      string registrationID = "",
+	      std::unique_ptr<ISignatureContext> signatureContext = nullptr);
 
 	virtual ~VEN2b();
 

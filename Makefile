@@ -13,6 +13,7 @@ define BUILDER
 		--volume "$(shell pwd)":/openadr-ven-library/ \
 		--user $(shell id -u):$(shell id -g) \
 		--workdir /openadr-ven-library/ \
+		--tty \
 		$(DOCKER_EXTRA_ARGS) \
 		analyticsfire/openadr-ven-library-builder
 endef

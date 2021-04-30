@@ -35,7 +35,7 @@
                 </ns4:oadrProfile>
             </ns4:oadrProfiles>
             <ns4:oadrRequestedOadrPollFreq>
-                <ns10:duration>PTS</ns10:duration>
+                <ns10:duration>PT10S</ns10:duration>
             </ns4:oadrRequestedOadrPollFreq>
         </ns4:oadrCreatedPartyRegistration>
     </ns4:oadrSignedObject>

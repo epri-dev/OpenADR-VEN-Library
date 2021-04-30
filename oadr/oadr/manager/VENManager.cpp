@@ -6,6 +6,7 @@
  */
 
 #include "../manager/VENManager.h"
+#include "../helper/SignatureContext.h"
 
 VENManager::VENManager(unique_ptr<VEN2b> ven, IEventService *eventService, IReportService *reportService, IOADRExceptionService *exceptionService, seconds registerRetryInterval, seconds exceptionRetryInterval) :
 	m_ven(std::move(ven)),
@@ -83,11 +84,33 @@ IVENManager *VENManager::init(VENManagerConfig &config)
 				config.tls.sslVersion);
 	}
 
+	auto SignatureContextCreator = [&]()
+	{
+		std::unique_ptr<SignatureContext> result;
+		if (config.signature.certPath.empty() &&
+			config.signature.signingKeyPath.empty() &&
+			config.signature.caBundlePath.empty())
+		{
+			return result;
+		}
+		if (!config.signature.certPath.empty() &&
+			!config.signature.signingKeyPath.empty() &&
+			!config.signature.caBundlePath.empty())
+		{
+			result.reset(new SignatureContext(config.signature.certPath,
+			                                  config.signature.signingKeyPath,
+			                                  config.signature.caBundlePath));
+			return result;
+		}
+		throw std::runtime_error("Signature config incomplete! Expected all certPath, signingKeyPath, and caBundlePath.");
+	};
+
 	unique_ptr<VEN2b> ven(new VEN2b(std::move(http),
 			config.vtnURL,
 			config.venName,
 			config.venID,
-			config.registrationID));
+			config.registrationID,
+			SignatureContextCreator()));
 
 	ven->setOadrMessage(config.services.oadrMessage);
 

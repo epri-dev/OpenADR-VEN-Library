@@ -332,63 +332,66 @@
 using namespace std;
 using namespace oadr2b::oadr;
 
+class ISignatureContext;
+
 class Oadr2bRequest
 {
 private:
-	string m_requestType;
-	string m_responseType;
+	std::string m_requestType;
+	std::string m_responseType;
 
-	string m_venID;
+	std::string m_venID;
 
-	string m_requestID;
+	std::string m_requestID;
 
-	string m_responseCode;
-	string m_responseDescription;
+	std::string m_responseCode;
+	std::string m_responseDescription;
 
-	string m_requestBody;
-	string m_responseBody;
+	std::string m_requestBody;
+	std::string m_responseBody;
 
-	string m_httpResponseMessage;
-	string m_httpResponseCode;
+	std::string m_httpResponseMessage;
+	std::string m_httpResponseCode;
 
-	unique_ptr<oadrPayload> m_request;
-	unique_ptr<oadrPayload> m_response;
+	std::unique_ptr<oadr2b::oadr::oadrPayload> m_request;
+	std::unique_ptr<oadr2b::oadr::oadrPayload> m_response;
 
 	RandomHex m_randomHex;
 
 protected:
-
-	string serializePayload(oadrPayload *payload);
-
-	virtual unique_ptr<oadrPayload> generatePayload() = 0;
+	virtual std::unique_ptr<oadr2b::oadr::oadrPayload> generatePayload() = 0;
 
 public:
-	Oadr2bRequest(string requestType, string responseType, string requestID);
-	Oadr2bRequest(string requestType, string responseType, string venID, string requestID);
-	Oadr2bRequest(string requestType, string responseType, string venID, string responseCode, string responseDescription, string requestID);
+	Oadr2bRequest(std::string requestType, std::string responseType, std::string requestID);
+	Oadr2bRequest(std::string requestType, std::string responseType, std::string venID, std::string requestID);
+	Oadr2bRequest(std::string requestType, std::string responseType, std::string venID, std::string responseCode, std::string responseDescription, std::string requestID);
 
-	virtual ~Oadr2bRequest();
+	virtual ~Oadr2bRequest() = default;
 
-	virtual string generateRequestXML();
+	std::string generateRequestXML(ISignatureContext *signatureContext = nullptr);
 
-	void setHttpFields(string requestBody, string responseBody, string httpResponseCode, string httpResponseMessage);
+	void setHttpFields(std::string requestBody,
+	                   std::string responseBody,
+	                   std::string httpResponseCode,
+	                   std::string httpResponseMessage,
+	                   ISignatureContext *signatureContext = nullptr);
 
-	string requestID();
-	string venID();
-	string responseCode();
-	string responseDescription();
+	std::string requestID();
+	std::string venID();
+	std::string responseCode();
+	std::string responseDescription();
 
-	string requestType();
-	string responseType();
+	std::string requestType();
+	std::string responseType();
 
-	string responseBody();
-	string requestBody();
+	std::string responseBody();
+	std::string requestBody();
 
-	string httpResponseCode();
-	string httpResponseMessage();
+	std::string httpResponseCode();
+	std::string httpResponseMessage();
 
-	oadrPayload *request();
-	oadrPayload *response();
+	oadr2b::oadr::oadrPayload *request();
+	oadr2b::oadr::oadrPayload *response();
 };
 
 #endif /* OADR2BREQUEST_H_ */

@@ -316,6 +316,8 @@
 //
 
 #include "Oadr2bRequest.h"
+#include "../helper/OadrPayloadHelpers.h"
+#include "../helper/SignatureContext.h"
 
 Oadr2bRequest::Oadr2bRequest(string requestType, string responseType, string requestID)
 {
@@ -354,30 +356,11 @@ Oadr2bRequest::Oadr2bRequest(string requestType, string responseType, string ven
 
 /********************************************************************************/
 
-Oadr2bRequest::~Oadr2bRequest()
-{
-}
-
-/********************************************************************************/
-
-string Oadr2bRequest::serializePayload(oadrPayload *payload)
-{
-	xml_schema::namespace_infomap map;
-	stringstream ss;
-
-	map[""].name = "";
-	map[""].schema = "";
-
-	::xml_schema::flags f = xml_schema::flags::dont_initialize;
-
-	oadrPayload_(ss, *payload, map, "", f);
-
-	return ss.str();
-}
-
-/********************************************************************************/
-
-void Oadr2bRequest::setHttpFields(string requestBody, string responseBody, string httpResponseCode, string httpResponseMessage)
+void Oadr2bRequest::setHttpFields(string requestBody,
+                                  string responseBody,
+                                  string httpResponseCode,
+                                  string httpResponseMessage,
+                                  ISignatureContext *signatureContext)
 {
 	m_requestBody = requestBody;
 	m_responseBody = responseBody;
@@ -386,11 +369,16 @@ void Oadr2bRequest::setHttpFields(string requestBody, string responseBody, strin
 
 	if (m_httpResponseCode.compare("200") == 0 && m_responseBody.length() > 0)
 	{
-		istringstream iss(m_responseBody);
+		unique_ptr<oadrPayload> response = to_oadrPayload(m_responseBody);
 
-		// TODO: not currently validating the XML; need to figure out
-		// how to specify the location
-		unique_ptr<oadrPayload> response(oadrPayload_(iss, xsd::cxx::tree::flags::keep_dom | xsd::cxx::tree::flags::dont_validate | xml_schema::flags::dont_initialize));
+		if (nullptr != response && nullptr != signatureContext)
+		{
+			if (!signatureContext->verify(*response))
+			{
+				// ignore the message if the signature cannot be verified
+				return;
+			}
+		}
 
 		m_response = std::move(response);
 	}
@@ -453,11 +441,16 @@ string Oadr2bRequest::httpResponseMessage()
 
 /********************************************************************************/
 
-string Oadr2bRequest::generateRequestXML()
+string Oadr2bRequest::generateRequestXML(ISignatureContext *signatureContext)
 {
 	m_request = generatePayload();
 
-	return serializePayload(m_request.get());
+	if (nullptr == signatureContext)
+	{
+		return to_string(*m_request);
+	}
+
+	return signatureContext->sign(*m_request);
 }
 
 /********************************************************************************/

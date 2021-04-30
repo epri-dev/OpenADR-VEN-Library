@@ -30,6 +30,15 @@ struct ttls
 	ttls();
 };
 
+struct tsignature
+{
+	std::string certPath;
+	std::string signingKeyPath;
+	std::string caBundlePath;
+
+	tsignature();
+};
+
 struct tservices
 {
 	IEventService *eventService;
@@ -60,6 +69,8 @@ struct VENManagerConfig
 	tservices services;
 
 	ttimeouts timeouts;
+
+	tsignature signature;
 
 	std::chrono::seconds registerRetryInterval;
 	std::chrono::seconds exceptionRetryInterval;

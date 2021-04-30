@@ -22,6 +22,13 @@ ttls::ttls() :
 {
 }
 
+tsignature::tsignature() :
+	certPath(),
+	signingKeyPath(),
+	caBundlePath()
+{
+}
+
 tservices::tservices() :
 	eventService(nullptr),
 	reportService(nullptr),

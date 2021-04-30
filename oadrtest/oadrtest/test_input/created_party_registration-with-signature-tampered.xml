@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no" ?><p1:oadrPayload xmlns:p1="http://openadr.org/oadr-2.0b/2012/07"><ds:Signature xmlns:ds="http://www.w3.org/2000/09/xmldsig#">
+<ds:SignedInfo>
+<ds:CanonicalizationMethod Algorithm="http://www.w3.org/TR/2001/REC-xml-c14n-20010315"/>
+<ds:SignatureMethod Algorithm="http://www.w3.org/2001/04/xmldsig-more#ecdsa-sha256"/>
+<ds:Reference URI="#oadrSignedObject">
+<ds:Transforms>
+<ds:Transform Algorithm="http://www.w3.org/TR/2001/REC-xml-c14n-20010315"/>
+</ds:Transforms>
+<ds:DigestMethod Algorithm="http://www.w3.org/2001/04/xmlenc#sha256"/>
+<ds:DigestValue>AC4X1IVg3GOBr6Qd1ok/0NIJYzkL1Uyh+YNobmRtsjU=</ds:DigestValue>
+</ds:Reference>
+<ds:Reference URI="#prop">
+<ds:Transforms>
+<ds:Transform Algorithm="http://www.w3.org/TR/2001/REC-xml-c14n-20010315"/>
+</ds:Transforms>
+<ds:DigestMethod Algorithm="http://www.w3.org/2001/04/xmlenc#sha256"/>
+<ds:DigestValue>8f0fAJpoTa3XASndlyMwsj0GZAx+NRSRQk5WRQus/W4=</ds:DigestValue>
+</ds:Reference>
+</ds:SignedInfo>
+<ds:SignatureValue>CKpjKbHlw8cln8DSfadtZUbEPHrUNVs92lB2+BpGE0PgKUhv9aowDUoWz/4MUFx
+3n/iY1kzv4Jt9DSoGXkbXg==</ds:SignatureValue>
+<ds:KeyInfo>
+<ds:X509Data>
+<ds:X509Certificate>MIICZjCCAU4CFGI/TA0hQqPcgLBn8T9tSauyEsnnMA0GCSqGSIb3DQEBCwUAMEYxCzAJBgNVBAYT
+AlBMMRAwDgYDVQQIDAdsb2R6a2llMQ0wCwYDVQQHDARMb2R6MRYwFAYDVQQKDA1BbmFseXRpY3NG
+aXJlMCAXDTIxMDQyMTEzMDEyNloYDzIxMjEwMzI4MTMwMTI2WjBiMQswCQYDVQQGEwJQTDEQMA4G
+A1UECAwHbG9kemtpZTENMAsGA1UEBwwETG9kejEWMBQGA1UECgwNQW5hbHl0aWNzRmlyZTEMMAoG
+A1UECwwDVlROMQwwCgYDVQQDDAN2dG4wWTATBgcqhkjOPQIBBggqhkjOPQMBBwNCAATFlCIWbOB9
+UrjeyQkyv+S/e3QfJ+1UhjUP9b7wr1AB2gMg5JmE7V5WMKyTjojzagdP3NOuia0iK2z87weBcAAv
+MA0GCSqGSIb3DQEBCwUAA4IBAQByAdXMdjt+F8Iowsxo/vGFOJ8WFBkQeyRhWQZ0ZAziQ+1k9XzI
+uH0q+z7pPYzxjkea0HfHjvNVkIvOtT7+S7+tXrDauZiNqWVBWZ5GbVsaJrUkuT/3E4LxTrSaARUJ
+QLfc7ihkgXVBqvbaPVKg1AHzVTKPIsE9A0d0N50TGTjKF1gsW5HGBPmPccoyzbg7U3HPJVy+iWuB
+ZGK+ffyTG7s31+h1u7Wqic0B129dwtaG293ETubvCBPV3ZRtg5QCavj8/c4w6uY0fbFogDzw+oc2
+wDfJbIimpXU+ptYKRZy/HcCwVLG2F/36OFKLWRtC6ijV9PeVtwI7bFYo1dxy77NK</ds:X509Certificate>
+</ds:X509Data>
+</ds:KeyInfo>
+<ds:Object Id="prop"><ds:SignatureProperties><ds:SignatureProperty Id="myid" Target="#mytarget"><dsp:ReplayProtect xmlns:dsp="http://openadr.org/oadr-2.0b/2012/07/xmldsig-properties"><dsp:timestamp>2019-09-11T20:42:00.000000Z</dsp:timestamp><dsp:nonce>3Ygjeg64UsMHIAsV3rySF9ySIE0Eu/Xe</dsp:nonce></dsp:ReplayProtect></ds:SignatureProperty></ds:SignatureProperties></ds:Object>
+</ds:Signature><p1:oadrSignedObject p1:Id="oadrSignedObject"><p1:oadrCreatedPartyRegistration xmlns:p2="http://docs.oasis-open.org/ns/energyinterop/201110" p2:schemaVersion="2.0b"><p2:eiResponse xmlns:p3="http://docs.oasis-open.org/ns/energyinterop/201110/payloads"><p2:responseCode>200</p2:responseCode><p2:responseDescription>OK</p2:responseDescription><p3:requestID>4C805D0094</p3:requestID></p2:eiResponse><p2:registrationID>752e4cc6c5413baa1a80</p2:registrationID><p2:venID>edac8fec7527cb960967</p2:venID><p2:vtnID>EPRI_VTN</p2:vtnID><p1:oadrProfiles><p1:oadrProfile><p1:oadrProfileName>2.0a</p1:oadrProfileName><p1:oadrTransports><p1:oadrTransport><p1:oadrTransportName>simpleHttp</p1:oadrTransportName></p1:oadrTransport><p1:oadrTransport><p1:oadrTransportName>xmpp</p1:oadrTransportName></p1:oadrTransport></p1:oadrTransports></p1:oadrProfile><p1:oadrProfile><p1:oadrProfileName>2.0b</p1:oadrProfileName><p1:oadrTransports><p1:oadrTransport><p1:oadrTransportName>simpleHttp</p1:oadrTransportName></p1:oadrTransport><p1:oadrTransport><p1:oadrTransportName>xmpp</p1:oadrTransportName></p1:oadrTransport></p1:oadrTransports></p1:oadrProfile></p1:oadrProfiles><p1:oadrRequestedOadrPollFreq xmlns:p3="urn:ietf:params:xml:ns:icalendar-2.0"><p3:duration>PT10S</p3:duration></p1:oadrRequestedOadrPollFreq></p1:oadrCreatedPartyRegistration></p1:oadrSignedObject></p1:oadrPayload>

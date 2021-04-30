@@ -19,8 +19,9 @@ RUN set -ex \
             g++                     \
             lcov                    \
             libcurl4-gnutls-dev     \
-            libxerces-c-dev         \
             libpthread-stubs0-dev   \
+            libxerces-c-dev         \
+            libxml-security-c-dev   \
             make                    \
             python3                 \
             python3-pip             \

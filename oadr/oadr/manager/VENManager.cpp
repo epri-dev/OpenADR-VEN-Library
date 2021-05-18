@@ -8,6 +8,44 @@
 #include "../manager/VENManager.h"
 #include "../helper/SignatureContext.h"
 
+namespace
+{
+	std::unique_ptr<SignatureContext> createSignatureContext(const tsignature &signatureConfig)
+	{
+		constexpr std::array<const std::string tsignature::*, 6> fields = 
+		{
+			&tsignature::certPath,
+			&tsignature::signingKeyPath,
+			&tsignature::caBundlePath,
+			&tsignature::canonicalizationMethod,
+			&tsignature::signatureMethod,
+			&tsignature::digestMethod
+		};
+
+		const auto isEmpty = [&](const std::string tsignature::* pointerToMember)
+		{
+			return (signatureConfig.*pointerToMember).empty();
+		};
+
+		if (std::all_of(fields.begin(), fields.end(), isEmpty))
+		{
+			return {};
+		}
+
+		if (std::none_of(fields.begin(), fields.end(), isEmpty))
+		{
+			return std::unique_ptr<SignatureContext>(new SignatureContext(signatureConfig.certPath,
+			                                                              signatureConfig.signingKeyPath,
+			                                                              signatureConfig.caBundlePath,
+			                                                              signatureConfig.canonicalizationMethod,
+			                                                              signatureConfig.signatureMethod,
+			                                                              signatureConfig.digestMethod));
+		}
+
+		throw std::runtime_error("Signature config incomplete! Expected all certPath, signingKeyPath, caBundlePath, canonicalizationMethod, signatureMethod, and digestMethod.");
+	};
+}
+
 VENManager::VENManager(unique_ptr<VEN2b> ven, IEventService *eventService, IReportService *reportService, IOADRExceptionService *exceptionService, seconds registerRetryInterval, seconds exceptionRetryInterval) :
 	m_ven(std::move(ven)),
 	m_reportService(reportService),
@@ -84,33 +122,12 @@ IVENManager *VENManager::init(VENManagerConfig &config)
 				config.tls.sslVersion);
 	}
 
-	auto SignatureContextCreator = [&]()
-	{
-		std::unique_ptr<SignatureContext> result;
-		if (config.signature.certPath.empty() &&
-			config.signature.signingKeyPath.empty() &&
-			config.signature.caBundlePath.empty())
-		{
-			return result;
-		}
-		if (!config.signature.certPath.empty() &&
-			!config.signature.signingKeyPath.empty() &&
-			!config.signature.caBundlePath.empty())
-		{
-			result.reset(new SignatureContext(config.signature.certPath,
-			                                  config.signature.signingKeyPath,
-			                                  config.signature.caBundlePath));
-			return result;
-		}
-		throw std::runtime_error("Signature config incomplete! Expected all certPath, signingKeyPath, and caBundlePath.");
-	};
-
 	unique_ptr<VEN2b> ven(new VEN2b(std::move(http),
 			config.vtnURL,
 			config.venName,
 			config.venID,
 			config.registrationID,
-			SignatureContextCreator()));
+			createSignatureContext(config.signature)));
 
 	ven->setOadrMessage(config.services.oadrMessage);
 

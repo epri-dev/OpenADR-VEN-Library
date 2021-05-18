@@ -354,6 +354,17 @@ namespace
 		}
 	};
 
+	std::unique_ptr<SignatureContext> createSignatureContext()
+	{
+		return std::unique_ptr<SignatureContext>(new SignatureContext(
+				"xml/oadrtest/test_input/signatures/certificate-attached-to-signature.der",
+				"xml/oadrtest/test_input/signatures/private-key-for-signing.der",
+				"xml/oadrtest/test_input/signatures/certificate-authority-bundle-for-verifying-signatures.pem",
+				"http://www.w3.org/TR/2001/REC-xml-c14n-20010315",
+				"http://www.w3.org/2001/04/xmldsig-more#ecdsa-sha256",
+				"http://www.w3.org/2001/04/xmlenc#sha256"));
+	}
+
 	const string url = "url";
 	const string venName = "venName_unique";
 	const string venId = "venId_unique";
@@ -426,13 +437,11 @@ TEST_F(VEN2bTest, venHasSignatureContext_whenRequestIsSent_signatureCanBeVerifie
 	MockGlobalTime globalTime;
 	globalTime.setNow(2019, 9, 11, 20, 42, 0);
 
-	SignatureContext signatureContext("xml/oadrtest/test_input/signatures/certificate-attached-to-signature.der",
-	                                  "xml/oadrtest/test_input/signatures/private-key-for-signing.der",
-	                                  "xml/oadrtest/test_input/signatures/certificate-authority-bundle-for-verifying-signatures.pem");
+	auto signatureContext = createSignatureContext();
 
 	// TODO: create a delegate for IHttp like SignatureContextDelegate so the tests don't operate on an object which lifetime is unsure
 	VEN2b ven(unique_ptr<IHttp>(http), url, venName, venId, registrationId,
-	          std::unique_ptr<ISignatureContext>(new SignatureContextDelegate(signatureContext)));
+	          std::unique_ptr<ISignatureContext>(new SignatureContextDelegate(*signatureContext)));
 
 	EXPECT_FALSE(ven.isRegistered()) << " should start in an unregistered state";
 
@@ -442,7 +451,7 @@ TEST_F(VEN2bTest, venHasSignatureContext_whenRequestIsSent_signatureCanBeVerifie
 
 	EXPECT_TRUE(ven.isRegistered()) << " should be a registered state after successful registration";
 
-	EXPECT_TRUE(signatureContext.verify(*to_oadrPayload(http->getRequestBody())));
+	EXPECT_TRUE(signatureContext->verify(*to_oadrPayload(http->getRequestBody())));
 }
 
 /********************************************************************************/
@@ -454,12 +463,10 @@ TEST_F(VEN2bTest, venSendsSignedRequest_whenResponseComesTooLate_responseIsIgnor
 
 	MockGlobalTime globalTime;
 
-	SignatureContext signatureContext("xml/oadrtest/test_input/signatures/certificate-attached-to-signature.der",
-	                                  "xml/oadrtest/test_input/signatures/private-key-for-signing.der",
-	                                  "xml/oadrtest/test_input/signatures/certificate-authority-bundle-for-verifying-signatures.pem");
+	auto signatureContext = createSignatureContext();
 
 	VEN2b ven(unique_ptr<IHttp>(http), url, venName, venId, registrationId,
-	          std::unique_ptr<ISignatureContext>(new SignatureContextDelegate(signatureContext)));
+	          std::unique_ptr<ISignatureContext>(new SignatureContextDelegate(*signatureContext)));
 
 	EXPECT_FALSE(ven.isRegistered()) << " should start in an unregistered state";
 
@@ -489,12 +496,10 @@ TEST_P(Ven2bInvalidSignatureTest, rejectResponse)
 	MockGlobalTime globalTime;
 	globalTime.setNow(2019, 9, 11, 20, 42, 0);
 
-	SignatureContext signatureContext("xml/oadrtest/test_input/signatures/certificate-attached-to-signature.der",
-	                                  "xml/oadrtest/test_input/signatures/private-key-for-signing.der",
-	                                  "xml/oadrtest/test_input/signatures/certificate-authority-bundle-for-verifying-signatures.pem");
+	auto signatureContext = createSignatureContext();
 
 	VEN2b ven(unique_ptr<IHttp>(http), url, venName, venId, registrationId,
-	          std::unique_ptr<ISignatureContext>(new SignatureContextDelegate(signatureContext)));
+	          std::unique_ptr<ISignatureContext>(new SignatureContextDelegate(*signatureContext)));
 
 	EXPECT_FALSE(ven.isRegistered()) << " should start in an unregistered state";
 

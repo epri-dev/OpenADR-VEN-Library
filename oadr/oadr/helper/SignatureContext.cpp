@@ -123,9 +123,12 @@ namespace
 	}
 
 	void decorateDocumentWithSignatureSkeleton(xercesc::DOMDocument &document,
-											   DSIGSignature &dsigSignature,
-											   const char* x509Certificate,
-											   const std::string& oadrSignedObjectId)
+			DSIGSignature &dsigSignature,
+			const char* x509Certificate,
+			const std::string& oadrSignedObjectId,
+			const char* canonicalizationMethod,
+			const char* signatureMethod,
+			const char* digestMethod)
 	{
 		// We need to create a few extra nodes to the DOMDocument so the signature can be stored.
 		// The structure is same for each message so we could consider creating a DOMDocumentFragment
@@ -139,8 +142,8 @@ namespace
 		dsigSignature.setDSIGNSPrefix(u"ds");
 
 		DOMElement *signatureNode = dsigSignature.createBlankSignature(&document,
-				DSIGConstants::s_unicodeStrURIC14N_NOC,
-				DSIGConstants::s_unicodeStrURIECDSA_SHA256);
+				MAKE_UNICODE_STRING(canonicalizationMethod),
+				MAKE_UNICODE_STRING(signatureMethod));
 
 		// TODO: when schema check is on, we should make sure that this ID is unique
 		signatureNode->setAttribute(u"Id", u"oadrPayloadSignature");
@@ -159,10 +162,10 @@ namespace
 		const std::string oadrSignedObjectUri = "#" + oadrSignedObjectId;
 
 		// DSIGSignature cares for cleaning up after DSIGReference
-		dsigSignature.createReference(MAKE_UNICODE_STRING(oadrSignedObjectUri.c_str()), DSIGConstants::s_unicodeStrURISHA256)
-					 ->appendCanonicalizationTransform(DSIGConstants::s_unicodeStrURIC14N_NOC);
-		dsigSignature.createReference(u"#signatureProperties", DSIGConstants::s_unicodeStrURISHA256)
-					 ->appendCanonicalizationTransform(DSIGConstants::s_unicodeStrURIC14N_NOC);
+		dsigSignature.createReference(MAKE_UNICODE_STRING(oadrSignedObjectUri.c_str()), MAKE_UNICODE_STRING(digestMethod))
+		             ->appendCanonicalizationTransform(MAKE_UNICODE_STRING(canonicalizationMethod));
+		dsigSignature.createReference(u"#signatureProperties", MAKE_UNICODE_STRING(digestMethod))
+		             ->appendCanonicalizationTransform(MAKE_UNICODE_STRING(canonicalizationMethod));
 
 		DOMElement &payloadNode = *document.getDocumentElement();
 
@@ -314,7 +317,18 @@ namespace
 	}
 }
 
-SignatureContext::SignatureContext(const std::string& certPath, const std::string& signingKeyPath, const std::string& caPath)
+SignatureContext::SignatureContext(const std::string& certPath,
+                                   const std::string& signingKeyPath,
+                                   const std::string& caPath,
+                                   const std::string& canonicalizationMethod,
+                                   const std::string& signatureMethod,
+                                   const std::string& digestMethod)
+: m_certificate()
+, m_signingKey()
+, m_caPath(caPath)
+, m_canonicalizationMethod(canonicalizationMethod)
+, m_signatureMethod(signatureMethod)
+, m_digestMethod(digestMethod)
 {
 	// init must be before any use of the XSEC library.
 	xercesc::XMLPlatformUtils::Initialize();
@@ -329,8 +343,6 @@ SignatureContext::SignatureContext(const std::string& certPath, const std::strin
 		std::vector<unsigned char> data = readBinaryFile(signingKeyPath);
 		m_signingKey = makeKeyFromDerBuffer(data.data(), data.size());
 	}
-
-	m_caPath = caPath;
 }
 
 SignatureContext::~SignatureContext()
@@ -366,7 +378,13 @@ std::string SignatureContext::sign(oadr2b::oadr::oadrPayload &payload)
 		dsigSignature->registerIdAttributeNameNS(u"http://openadr.org/oadr-2.0b/2012/07", u"Id");
 		dsigSignature->registerIdAttributeNameNS(u"http://www.w3.org/2000/09/xmldsig#", u"Id");
 
-		decorateDocumentWithSignatureSkeleton(*document, *dsigSignature, m_certificate.c_str(), oadrSignedObjectId);
+		decorateDocumentWithSignatureSkeleton(*document,
+		                                      *dsigSignature,
+		                                      m_certificate.c_str(),
+		                                      oadrSignedObjectId,
+		                                      m_canonicalizationMethod.c_str(),
+		                                      m_signatureMethod.c_str(),
+		                                      m_digestMethod.c_str());
 
 		dsigSignature->setSigningKey(m_signingKey->clone());
 

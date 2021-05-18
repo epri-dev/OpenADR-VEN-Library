@@ -25,7 +25,10 @@ ttls::ttls() :
 tsignature::tsignature() :
 	certPath(),
 	signingKeyPath(),
-	caBundlePath()
+	caBundlePath(),
+	canonicalizationMethod(),
+	signatureMethod(),
+	digestMethod()
 {
 }
 

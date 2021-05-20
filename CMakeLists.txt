@@ -80,13 +80,13 @@ if (SAMPLE)
 endif()
 
 if (TEST)
-  add_subdirectory(googletest-release-1.7.0)
+  include(FetchContent)
+  FetchContent_Declare(
+    googletest
+    URL https://github.com/google/googletest/archive/609281088cfefc76f9d0ce82e1ff6c30cc3591e5.zip
+  )
+  FetchContent_MakeAvailable(googletest)
 
-  include_directories(googletest-release-1.7.0/include)
-  link_directories(googletest-release-1.7.0/lib)
-  set (CMAKE_REQUIRED_INCLUDES googletest-release-1.7.0/include)
-
-  # file(COPY )
   file(REMOVE_RECURSE ./xml)
   file(COPY ./oadrtest/oadrtest DESTINATION ./xml FILES_MATCHING PATTERN "*.xml" PATTERN "*.txt" PATTERN "*.der" PATTERN "*.pem")
 

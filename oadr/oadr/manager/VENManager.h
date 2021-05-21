@@ -83,6 +83,7 @@ public:
 	virtual ~VENManager();
 
 	static IVENManager *init(VENManagerConfig &config);
+	static IVENManager *init(VENManagerConfig &config, std::unique_ptr<IHttp> http);
 
 	virtual void run();
 

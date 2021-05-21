@@ -379,8 +379,6 @@ int main(int argc, char **argv)
 {
 	XMLPlatformUtils::Initialize();
 
-	::testing::GTEST_FLAG(filter) = "-VEN2bTestSet.*:CurlHTTPTest.*";
-
 	::testing::InitGoogleTest(&argc, argv);
 
 	int ret = RUN_ALL_TESTS();

@@ -325,8 +325,7 @@ using namespace std;
 class IHttp
 {
 public:
-	IHttp();
-	virtual ~IHttp();
+	virtual ~IHttp() = default;
 
 	virtual bool post(string url, string content) = 0;
 

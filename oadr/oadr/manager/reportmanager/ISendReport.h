@@ -20,8 +20,7 @@ using namespace oadr2b::oadr;
 class ISendReport
 {
 public:
-	ISendReport();
-	virtual ~ISendReport();
+	virtual ~ISendReport() = default;
 
 	virtual void sendUpdateReport(oadrUpdateReportType::oadrReport_sequence &sequence, time_t dtstart, string reportRequestID, time_t createdDateTime) = 0;
 

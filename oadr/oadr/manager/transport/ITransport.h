@@ -25,8 +25,7 @@ enum class OadrEndpoint
 class ITransport
 {
 public:
-	ITransport();
-	virtual ~ITransport();
+	virtual ~ITransport() = default;
 
 	virtual void sendMessage(OadrEndpoint, std::unique_ptr<std::string> xml) = 0;
 

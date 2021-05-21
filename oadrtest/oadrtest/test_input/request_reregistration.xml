@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<oadr:oadrPayload xmlns:oadr="http://openadr.org/oadr-2.0b/2012/07">
+    <oadr:oadrSignedObject xmlns:oadr="http://openadr.org/oadr-2.0b/2012/07" oadr:Id="oadrSignedObject">
+        <oadr:oadrRequestReregistration ei:schemaVersion="2.0b" xmlns:ei="http://docs.oasis-open.org/ns/energyinterop/201110">
+            <ei:venID>e044448e-aa19-4117-868e-4abd3affe8d5</ei:venID>
+        </oadr:oadrRequestReregistration>
+    </oadr:oadrSignedObject>
+</oadr:oadrPayload>

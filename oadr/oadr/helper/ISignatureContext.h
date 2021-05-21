@@ -1,4 +1,9 @@
-// TODO: think of licences
+/*
+ * ISignatureContext.h
+ *
+ *  Created on: Apr 30, 2021
+ *      Author: Michal Kowalczyk
+ */
 
 #ifndef ISIGNATURECONTEXT_H_
 #define ISIGNATURECONTEXT_H_

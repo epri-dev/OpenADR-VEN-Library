@@ -11,8 +11,7 @@
 class IRun
 {
 public:
-	IRun();
-	virtual ~IRun();
+	virtual ~IRun() = default;
 
 	virtual void run() = 0;
 	virtual void stop() = 0;

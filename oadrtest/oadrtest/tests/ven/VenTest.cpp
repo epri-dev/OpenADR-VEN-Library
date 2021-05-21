@@ -322,9 +322,11 @@
 #include <oadr/helper/OadrPayloadHelpers.h>
 #include <oadr/helper/SignatureContext.h>
 
+#include <oadrtest/helper/HttpDelegate.h>
+#include <oadrtest/helper/LoadFile.h>
+#include <oadrtest/helper/MockGlobalTime.h>
+
 #include "MockHttp.h"
-#include "../../helper/LoadFile.h"
-#include "../../helper/MockGlobalTime.h"
 
 namespace
 {
@@ -374,24 +376,18 @@ namespace
 class VEN2bTest : public testing::Test
 {
 protected:
-	MockHttp *http;
-
-public:
-	VEN2bTest()
-	: http(new MockHttp())
-	{
-	}
+	MockHttp http;
 };
 
 /********************************************************************************/
 
 TEST_F(VEN2bTest, Registration)
 {
-	VEN2b ven(unique_ptr<IHttp>(http), url, venName, venId, registrationId);
+	VEN2b ven(unique_ptr<IHttp>(new HttpDelegate(http)), url, venName, venId, registrationId);
 
 	EXPECT_FALSE(ven.isRegistered()) << " should start in an unregistered state";
 
-	http->setResponseBody(LoadFile::loadTestInputFile("created_party_registration.xml"));
+	http.setResponseBody(LoadFile::loadTestInputFile("created_party_registration.xml"));
 
 	ven.createPartyRegistration(oadrProfileType::cxx_2_0b,
 			oadrTransportType::simpleHttp,
@@ -409,17 +405,17 @@ TEST_F(VEN2bTest, Registration)
 	EXPECT_EQ(venId, ven.venID()) << " ven ID should match the default ven id";
 	EXPECT_EQ(registrationId, ven.registrationID()) << "ven ID should match the default ven id";
 
-	EXPECT_TRUE(http->getRequestBody().find(venId) !=  string::npos) << " should use original ven ID";
-	EXPECT_TRUE(http->getRequestBody().find(registrationId) !=  string::npos) << " should use original registration ID";
+	EXPECT_TRUE(http.getRequestBody().find(venId) !=  string::npos) << " should use original ven ID";
+	EXPECT_TRUE(http.getRequestBody().find(registrationId) !=  string::npos) << " should use original registration ID";
 }
 
 /********************************************************************************/
 
 TEST_F(VEN2bTest, RegistrationFail)
 {
-	VEN2b ven(unique_ptr<IHttp>(http), url, venName, venId, registrationId);
+	VEN2b ven(unique_ptr<IHttp>(new HttpDelegate(http)), url, venName, venId, registrationId);
 
-	http->setResponseBody(LoadFile::loadTestInputFile("created_party_registration-invalid-ven-name.xml"));
+	http.setResponseBody(LoadFile::loadTestInputFile("created_party_registration-invalid-ven-name.xml"));
 
 	ven.createPartyRegistration(oadrProfileType::cxx_2_0b,
 			oadrTransportType::simpleHttp,
@@ -432,15 +428,14 @@ TEST_F(VEN2bTest, RegistrationFail)
 
 TEST_F(VEN2bTest, venHasSignatureContext_whenRequestIsSent_signatureCanBeVerified)
 {
-	http->setResponseBody(LoadFile::loadTestInputFile("created_party_registration-with-signature.xml"));
+	http.setResponseBody(LoadFile::loadTestInputFile("created_party_registration-with-signature.xml"));
 
 	MockGlobalTime globalTime;
 	globalTime.setNow(2019, 9, 11, 20, 42, 0);
 
 	auto signatureContext = createSignatureContext();
 
-	// TODO: create a delegate for IHttp like SignatureContextDelegate so the tests don't operate on an object which lifetime is unsure
-	VEN2b ven(unique_ptr<IHttp>(http), url, venName, venId, registrationId,
+	VEN2b ven(unique_ptr<IHttp>(new HttpDelegate(http)), url, venName, venId, registrationId,
 	          std::unique_ptr<ISignatureContext>(new SignatureContextDelegate(*signatureContext)));
 
 	EXPECT_FALSE(ven.isRegistered()) << " should start in an unregistered state";
@@ -451,7 +446,7 @@ TEST_F(VEN2bTest, venHasSignatureContext_whenRequestIsSent_signatureCanBeVerifie
 
 	EXPECT_TRUE(ven.isRegistered()) << " should be a registered state after successful registration";
 
-	EXPECT_TRUE(signatureContext->verify(*to_oadrPayload(http->getRequestBody())));
+	EXPECT_TRUE(signatureContext->verify(*to_oadrPayload(http.getRequestBody())));
 }
 
 /********************************************************************************/
@@ -459,13 +454,13 @@ TEST_F(VEN2bTest, venHasSignatureContext_whenRequestIsSent_signatureCanBeVerifie
 TEST_F(VEN2bTest, venSendsSignedRequest_whenResponseComesTooLate_responseIsIgnored)
 {
 	// The response should be sent at 20:42:06
-	http->setResponseBody(LoadFile::loadTestInputFile("created_party_registration-with-signature.xml"));
+	http.setResponseBody(LoadFile::loadTestInputFile("created_party_registration-with-signature.xml"));
 
 	MockGlobalTime globalTime;
 
 	auto signatureContext = createSignatureContext();
 
-	VEN2b ven(unique_ptr<IHttp>(http), url, venName, venId, registrationId,
+	VEN2b ven(unique_ptr<IHttp>(new HttpDelegate(http)), url, venName, venId, registrationId,
 	          std::unique_ptr<ISignatureContext>(new SignatureContextDelegate(*signatureContext)));
 
 	EXPECT_FALSE(ven.isRegistered()) << " should start in an unregistered state";
@@ -491,14 +486,14 @@ TEST_P(Ven2bInvalidSignatureTest, rejectResponse)
 {
 	const char *responsePath = GetParam();
 
-	http->setResponseBody(LoadFile::loadTestInputFile(responsePath));
+	http.setResponseBody(LoadFile::loadTestInputFile(responsePath));
 
 	MockGlobalTime globalTime;
 	globalTime.setNow(2019, 9, 11, 20, 42, 0);
 
 	auto signatureContext = createSignatureContext();
 
-	VEN2b ven(unique_ptr<IHttp>(http), url, venName, venId, registrationId,
+	VEN2b ven(unique_ptr<IHttp>(new HttpDelegate(http)), url, venName, venId, registrationId,
 	          std::unique_ptr<ISignatureContext>(new SignatureContextDelegate(*signatureContext)));
 
 	EXPECT_FALSE(ven.isRegistered()) << " should start in an unregistered state";

@@ -13,10 +13,7 @@
 class GlobalTimeStandard: public IGlobalTime
 {
 public:
-	GlobalTimeStandard();
-	virtual ~GlobalTimeStandard();
-
-	virtual time_t now();
+	time_t now() override;
 };
 
 #endif /* OADR_OADR_HELPER_GLOBALTIME_GLOBALTIMESTANDARD_H_ */

@@ -122,6 +122,13 @@ IVENManager *VENManager::init(VENManagerConfig &config)
 				config.tls.sslVersion);
 	}
 
+	return init(config, std::move(http));
+}
+
+/********************************************************************************/
+
+IVENManager *VENManager::init(VENManagerConfig &config, std::unique_ptr<IHttp> http)
+{
 	unique_ptr<VEN2b> ven(new VEN2b(std::move(http),
 			config.vtnURL,
 			config.venName,
@@ -200,6 +207,9 @@ void VENManager::poll()
 		// processMessage(response->oadrSignedObject().oadrCancelPartyRegistration().get());
 		// TODO: what's the proper response when a cancel registration message is received?
 
+		// oadrCanceledPartyRegistration()?
+		// Check Certification Test Specification: Diagram: S0-003 VTN Registration - Cancel Registration
+
 		m_ven->clearRegistration();
 	}
 	else if (response->oadrSignedObject().oadrRequestReregistration().present())
@@ -266,6 +276,11 @@ void VENManager::registerVen()
 	registerReports();
 
 	poll();
+
+	if (!m_ven->isRegistered())
+	{
+		return;
+	}
 
 	requestEvents();
 }
@@ -338,11 +353,7 @@ void VENManager::run()
 
 void VENManager::stop()
 {
-	std::unique_lock<std::mutex> lock(m_mutex);
-
 	m_shutdown = true;
-
-	m_condition.notify_all();
 }
 
 /********************************************************************************/
